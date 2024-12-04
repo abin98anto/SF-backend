@@ -1,6 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
 
+import { messages } from "./shared/constants/misc";
+
 dotenv.config();
 
 const app = express();
@@ -13,5 +15,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(messages.SERVER_STARTED);
 });
