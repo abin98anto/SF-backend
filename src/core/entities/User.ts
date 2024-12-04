@@ -15,7 +15,7 @@ export interface User {
   email: string;
   password: string;
   role: UserRole;
-  profilePicture: string;
+  profilePicture: string | null | undefined;
   subscription: SubscriptionType;
   dateJoined: Date;
   isActive: boolean;

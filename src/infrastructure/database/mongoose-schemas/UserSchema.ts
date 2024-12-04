@@ -22,6 +22,7 @@ const userSchema = new Schema({
   },
   profilePicture: {
     type: String,
+    default: null,
   },
   subscription: {
     type: String,
