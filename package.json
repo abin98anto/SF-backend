@@ -23,12 +23,14 @@
   "dependencies": {
     "dotenv": "^16.4.7",
     "express": "^4.21.1",
-    "mongoose": "^8.8.3"
+    "mongoose": "^8.8.3",
+    "nodemailer": "^6.9.16"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.0",
     "@types/node": "^22.10.1",
+    "@types/nodemailer": "^6.4.17",
     "bcrypt": "^5.1.1",
     "concurrently": "^9.1.0",
     "nodemon": "^3.1.7",
