@@ -4,7 +4,11 @@
   "description": "This is the back end for the SkillForge (Second Project).",
   "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "clean": "rimraf dist",
+    "build": "npm run clean && tsc",
+    "watch:build": "tsc --watch",
+    "start:compiled": "node dist/index.js",
+    "dev": "npm run build && concurrently \"npm run watch:build\" \"nodemon dist/index.js\""
   },
   "repository": {
     "type": "git",
@@ -24,6 +28,7 @@
   "devDependencies": {
     "@types/express": "^5.0.0",
     "@types/node": "^22.10.1",
+    "concurrently": "^9.1.0",
     "nodemon": "^3.1.7",
     "rimraf": "^6.0.1",
     "typescript": "^5.7.2"
