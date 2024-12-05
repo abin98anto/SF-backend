@@ -25,4 +25,16 @@ export class UserRepository implements UserRepositoryInterface {
   async delete(id: string): Promise<void> {
     await UserModel.findByIdAndDelete(id);
   }
+
+  async saveOTP(email: string, otp: string, expiration: Date): Promise<void> {
+    await UserModel.updateOne({ email }, { otp, otpExpiration: expiration });
+  }
+
+  async verifyOTP(email: string, otp: string): Promise<boolean> {
+    const user: User | null = await UserModel.findOne({ email });
+    if (!user || user.otp !== otp || user.otpExpiration! < new Date()) {
+      return false;
+    }
+    return true;
+  }
 }
