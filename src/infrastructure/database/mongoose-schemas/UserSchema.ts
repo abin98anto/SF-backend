@@ -27,6 +27,7 @@ const userSchema = new Schema({
   subscription: {
     type: String,
     enum: Object.values(SubscriptionType),
+    default: SubscriptionType.FREE,
     required: true,
   },
   dateJoined: {
@@ -35,7 +36,13 @@ const userSchema = new Schema({
   },
   isActive: {
     type: Boolean,
-    default: true,
+    default: false,
+  },
+  otp: {
+    type: String,
+  },
+  otpExpiration: {
+    type: Date,
   },
 });
 

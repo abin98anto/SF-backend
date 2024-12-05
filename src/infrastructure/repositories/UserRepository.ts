@@ -27,7 +27,11 @@ export class UserRepository implements UserRepositoryInterface {
   }
 
   async saveOTP(email: string, otp: string, expiration: Date): Promise<void> {
-    await UserModel.updateOne({ email }, { otp, otpExpiration: expiration });
+    await UserModel.updateOne(
+      { email },
+      { otp, otpExpiration: expiration },
+      { upsert: true }
+    );
   }
 
   async verifyOTP(email: string, otp: string): Promise<boolean> {
@@ -36,5 +40,18 @@ export class UserRepository implements UserRepositoryInterface {
       return false;
     }
     return true;
+  }
+
+  async toggleUserStatus(email: string): Promise<void> {
+    await UserModel.updateOne(
+      { email },
+      {
+        $set: {
+          isActive: { $not: "$isActive" },
+          otp: null,
+          otpExpiration: null,
+        },
+      }
+    );
   }
 }

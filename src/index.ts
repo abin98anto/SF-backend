@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 
-import { messages } from "./shared/constants/misc";
+import { messages } from "./shared/constants/miscErrors";
 
 dotenv.config();
 

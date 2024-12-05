@@ -1,6 +1,7 @@
 import { UserRepositoryInterface } from "../../interfaces/UserRepositoryInterface";
 import { EmailService } from "../../../infrastructure/external-services/EmailService";
 import { generateOTP } from "../../../shared/utils/generateOTP";
+import { User } from "../../entities/User";
 
 export class SendOTPUseCase {
   constructor(
@@ -8,10 +9,12 @@ export class SendOTPUseCase {
     private emailService: EmailService
   ) {}
 
-  async execute(email: string): Promise<void> {
+  async execute(user: User): Promise<void> {
+    await this.userRepository.add(user);
+
     const { otp, expiresAt: expiration } = generateOTP();
 
-    await this.userRepository.saveOTP(email, otp, expiration);
-    await this.emailService.sendOTP(email, otp);
+    await this.userRepository.saveOTP(user.email, otp, expiration);
+    await this.emailService.sendOTP(user.email, otp);
   }
 }

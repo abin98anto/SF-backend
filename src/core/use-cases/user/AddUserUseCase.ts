@@ -1,6 +1,6 @@
 import { User } from "../../entities/User";
 import { UserRepositoryInterface } from "../../interfaces/UserRepositoryInterface";
-import { userErrors } from "../../../shared/constants/errors";
+import { userMessages } from "../../../shared/constants/errorsMessages";
 import { hashPassword } from "../../../shared/utils/hashing";
 
 export class AddUserUseCase {
@@ -10,7 +10,7 @@ export class AddUserUseCase {
     const existingUser = await this.userRepository.findByEmail(userData.email);
 
     if (existingUser) {
-      throw new Error(userErrors.EMAIL_EXISTS);
+      throw new Error(userMessages.EMAIL_EXISTS);
     }
 
     const hashedPassword = (await hashPassword(userData.password)).toString();
