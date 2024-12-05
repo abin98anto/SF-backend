@@ -1,4 +1,6 @@
 import nodemailer from "nodemailer";
+import dotenv from "dotenv";
+dotenv.config();
 
 const MAIL = process.env.MAIL;
 const MAIL_PASS = process.env.MAIL_PASS;
@@ -8,7 +10,9 @@ export class EmailService {
 
   constructor() {
     this.transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: process.env.MAIL_HOST,
+      port: parseInt(process.env.MAIL_PORT || "587", 10),
+      secure: false,
       auth: {
         user: MAIL,
         pass: MAIL_PASS,
