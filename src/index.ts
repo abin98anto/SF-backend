@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 
 import { DatabaseConnection } from "./infrastructure/database/connection";
 import { messages } from "./shared/constants/miscErrors";
+import userRouter from "./presentation/routes/userRoutes";
 
 dotenv.config();
 
@@ -17,6 +18,8 @@ const databaseConnection = new DatabaseConnection(dbURI);
 app.get("/", (req, res) => {
   res.send("Hello, Worlds!");
 });
+
+app.use("/", userRouter);
 
 databaseConnection.connect().then(() => {
   app.listen(PORT, () => {

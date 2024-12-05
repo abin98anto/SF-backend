@@ -5,7 +5,7 @@ import { EmailService } from "../../infrastructure/external-services/EmailServic
 import { SendOTPUseCase } from "../../core/use-cases/user/SendOTPUseCase";
 import { VerifyOTPUseCase } from "../../core/use-cases/user/VerifyOTPUseCase";
 
-const router = express.Router();
+const userRouter = express.Router();
 
 const userRepository = new UserRepository();
 const emailService = new EmailService();
@@ -13,7 +13,9 @@ const sendOTPUseCase = new SendOTPUseCase(userRepository, emailService);
 const verifyOTPUseCase = new VerifyOTPUseCase(userRepository);
 const userController = new UserController(sendOTPUseCase, verifyOTPUseCase);
 
-router.post("/send-otp", (req, res) => userController.sendOTP(req, res));
-router.post("/verify-otp", (req, res) => userController.verifyOTP(req, res));
+userRouter.post("/send-otp", (req, res) => userController.sendOTP(req, res));
+userRouter.post("/verify-otp", (req, res) =>
+  userController.verifyOTP(req, res)
+);
 
-export default router;
+export default userRouter;
