@@ -22,4 +22,7 @@ export const databaseMessages = {
 export const miscMessages = {
   SERVER_STARTED: `Server is running on http://localhost:${PORT}`,
   UNKNOWN_ERROR: "An unknown error occurred",
+  ERROR: "An Error occured: ",
 };
+
+export const jwtMessages = {};
