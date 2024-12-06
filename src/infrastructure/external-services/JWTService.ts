@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-import { miscMessages } from "../../shared/constants/constants";
+import { errorObjectCatch } from "../../shared/utils/errorObjectCatch";
 
 const ACCESS_TOKEN_SECRET = process.env.JWT_ACCESS!;
 const REFRESH_TOKEN_SECRET = process.env.JWT_REFRESH!;
@@ -14,20 +14,20 @@ export class JWTService {
         expiresIn: ACCESS_TOKEN_EXPIRY,
       });
     } catch (error) {
-      if (error instanceof Error) {
-        console.error(miscMessages.ERROR, error.message);
-        return "";
-      } else {
-        console.error(miscMessages.UNKNOWN_ERROR);
-        return "";
-      }
+      errorObjectCatch(error);
+      return "";
     }
   }
 
   static generateRefreshToken(payload: object): string {
-    return jwt.sign(payload, REFRESH_TOKEN_SECRET, {
-      expiresIn: REFRESH_TOKEN_EXPIRY,
-    });
+    try {
+      return jwt.sign(payload, REFRESH_TOKEN_SECRET, {
+        expiresIn: REFRESH_TOKEN_EXPIRY,
+      });
+    } catch (error) {
+      errorObjectCatch(error);
+      return "";
+    }
   }
 
   //   static verifyAccessToken(token: string): object | null {

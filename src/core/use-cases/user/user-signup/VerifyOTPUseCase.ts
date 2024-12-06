@@ -1,6 +1,7 @@
 import { UserRepositoryInterface } from "../../../interfaces/UserRepositoryInterface";
 import { otpMessages } from "../../../../shared/constants/constants";
 import { miscMessages } from "../../../../shared/constants/constants";
+import { errorObjectCatch } from "../../../../shared/utils/errorObjectCatch";
 
 export class VerifyOTPUseCase {
   constructor(private userRepository: UserRepositoryInterface) {}
@@ -30,11 +31,7 @@ export class VerifyOTPUseCase {
 
       return { success: true, message: otpMessages.USER_VERFIED };
     } catch (error) {
-      if (error instanceof Error) {
-        console.log(miscMessages.UNKNOWN_ERROR, error.message);
-      } else {
-        console.log(miscMessages.UNKNOWN_ERROR, error);
-      }
+      errorObjectCatch(error)
       return { success: false, message: miscMessages.UNKNOWN_ERROR };
     }
   }

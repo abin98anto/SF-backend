@@ -2,11 +2,9 @@ import { UserRepositoryInterface } from "../../../interfaces/UserRepositoryInter
 import { EmailService } from "../../../../infrastructure/external-services/EmailService";
 import { generateOTP } from "../../../../shared/utils/generateOTP";
 import { User } from "../../../entities/User";
-import {
-  miscMessages,
-  userMessages,
-} from "../../../../shared/constants/constants";
+import { userMessages } from "../../../../shared/constants/constants";
 import { hashPassword } from "../../../../shared/utils/hashing";
+import { errorObjectCatch } from "../../../../shared/utils/errorObjectCatch";
 
 export class SendOTPUseCase {
   constructor(
@@ -31,11 +29,7 @@ export class SendOTPUseCase {
       await this.userRepository.saveOTP(user.email, otp, expiration);
       await this.emailService.sendOTP(user.email, otp);
     } catch (error) {
-      if (error instanceof Error) {
-        console.error(miscMessages.ERROR, error.message);
-      } else {
-        console.error(miscMessages.UNKNOWN_ERROR, error);
-      }
+      errorObjectCatch(error);
     }
   }
 }
