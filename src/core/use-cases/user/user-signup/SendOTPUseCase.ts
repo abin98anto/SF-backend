@@ -1,9 +1,8 @@
-import { UserRepositoryInterface } from "../../interfaces/UserRepositoryInterface";
-import { EmailService } from "../../../infrastructure/external-services/EmailService";
-import { generateOTP } from "../../../shared/utils/generateOTP";
-import { User } from "../../entities/User";
-import { UserModel } from "../../../infrastructure/database/mongoose-schemas/UserSchema";
-import { userMessages } from "../../../shared/constants/errorsMessages";
+import { UserRepositoryInterface } from "../../../interfaces/UserRepositoryInterface";
+import { EmailService } from "../../../../infrastructure/external-services/EmailService";
+import { generateOTP } from "../../../../shared/utils/generateOTP";
+import { User } from "../../../entities/User";
+import { userMessages } from "../../../../shared/constants/constants";
 
 export class SendOTPUseCase {
   constructor(

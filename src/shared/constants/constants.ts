@@ -1,3 +1,5 @@
+const PORT = process.env.PORT || 3000;
+
 export const userMessages = {
   EMAIL_EXISTS: "Email already in use",
 };
@@ -15,4 +17,9 @@ export const databaseMessages = {
   CONNECTION_SUCCESSFUL: "Database connection successful.",
   CONNECTION_ERROR: "Database connection error:",
   CONNECTION_DISCONNECTED: "Database disconnected.",
+};
+
+export const miscMessages = {
+  SERVER_STARTED: `Server is running on http://localhost:${PORT}`,
+  UNKNOWN_ERROR: "An unknown error occurred",
 };

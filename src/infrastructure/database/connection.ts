@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { databaseMessages } from "../../shared/constants/errorsMessages";
+import { databaseMessages } from "../../shared/constants/constants";
 
 export class DatabaseConnection {
   private dbURI: string;

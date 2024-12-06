@@ -10,5 +10,3 @@ export interface UserRepositoryInterface {
   saveOTP(email: string, otp: string, expiration: Date): Promise<void>;
   toggleUserStatus(email: string): Promise<void>;
 }
-
-// verifyOTP(email: string, otp: string): Promise<boolean>;

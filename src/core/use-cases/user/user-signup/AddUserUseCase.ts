@@ -1,7 +1,7 @@
-import { User } from "../../entities/User";
-import { UserRepositoryInterface } from "../../interfaces/UserRepositoryInterface";
-import { userMessages } from "../../../shared/constants/errorsMessages";
-import { hashPassword } from "../../../shared/utils/hashing";
+import { User } from "../../../entities/User";
+import { UserRepositoryInterface } from "../../../interfaces/UserRepositoryInterface";
+import { userMessages } from "../../../../shared/constants/constants";
+import { hashPassword } from "../../../../shared/utils/hashing";
 
 export class AddUserUseCase {
   constructor(private userRepository: UserRepositoryInterface) {}

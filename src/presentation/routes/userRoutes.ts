@@ -1,9 +1,9 @@
 import express from "express";
-import { UserController } from "../controllers/UserController";
+import { UserController } from "../controllers/userController/userSignupController";
 import { UserRepository } from "../../infrastructure/repositories/UserRepository";
 import { EmailService } from "../../infrastructure/external-services/EmailService";
-import { SendOTPUseCase } from "../../core/use-cases/user/SendOTPUseCase";
-import { VerifyOTPUseCase } from "../../core/use-cases/user/VerifyOTPUseCase";
+import { SendOTPUseCase } from "../../core/use-cases/user/user-signup/SendOTPUseCase";
+import { VerifyOTPUseCase } from "../../core/use-cases/user/user-signup/VerifyOTPUseCase";
 
 const userRouter = express.Router();
 

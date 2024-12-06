@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { otpMessages } from "../../shared/constants/errorsMessages";
-import { User } from "../../core/entities/User";
-import { SendOTPUseCase } from "../../core/use-cases/user/SendOTPUseCase";
-import { VerifyOTPUseCase } from "../../core/use-cases/user/VerifyOTPUseCase";
+import { otpMessages } from "../../../shared/constants/constants";
+import { User } from "../../../core/entities/User";
+import { SendOTPUseCase } from "../../../core/use-cases/user/user-signup/SendOTPUseCase";
+import { VerifyOTPUseCase } from "../../../core/use-cases/user/user-signup/VerifyOTPUseCase";
 
 export class UserController {
   constructor(
@@ -34,10 +34,8 @@ export class UserController {
   verifyOTP = async (req: Request, res: Response): Promise<void> => {
     const { email, otp } = req.body;
 
-    // Call the use case and get the response
     const result = await this.verifyOTPUseCase.execute(email, otp);
 
-    // Respond based on the result
     if (result.success) {
       res.status(200).json({ message: result.message });
     } else {
