@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 
 import { DatabaseConnection } from "./infrastructure/database/connection";
-import { messages } from "./shared/constants/miscErrors";
+import { miscMessages } from "./shared/constants/constants";
 import userRouter from "./presentation/routes/userRoutes";
 
 dotenv.config();
@@ -23,6 +23,6 @@ app.use("/", userRouter);
 
 databaseConnection.connect().then(() => {
   app.listen(PORT, () => {
-    console.log(messages.SERVER_STARTED);
+    console.log(miscMessages.SERVER_STARTED);
   });
 });
