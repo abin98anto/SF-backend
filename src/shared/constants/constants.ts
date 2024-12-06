@@ -2,6 +2,7 @@ const PORT = process.env.PORT || 3000;
 
 export const userMessages = {
   EMAIL_EXISTS: "Email already in use",
+  INVALID_CRED: "Invalid Credentials",
 };
 
 export const otpMessages = {
@@ -24,6 +25,7 @@ export const miscMessages = {
   UNKNOWN_ERROR: "An unknown error occurred",
   ERROR: "An Error occured: ",
   ERROR_OBJECT: "And Error in the Error Object Catch!",
+  INTERNAL_SERVER_ERROR: "Internal Server Error",
 };
 
 export const jwtMessages = {};
