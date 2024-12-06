@@ -8,15 +8,25 @@ export class VerifyOTPUseCase {
 
   async execute(email: string, otp: string): Promise<void> {
     try {
-      const user = await UserModel.findOne({ email });
+      const user = await this.userRepository.findByEmail(email);
+      if (!user) {
+        throw new Error(otpMessages.USER_NOT_FOUND);
+      }
 
-      if (!user || user.otp !== otp || user.otpExpiration! < new Date()) {
+      if (user.otp != otp) {
+        throw new Error(otpMessages.WRONG_OTP);
+      }
+
+      if (user.otpExpiration && user.otpExpiration! < new Date()) {
         throw new Error(otpMessages.OTP_EXPIRED);
       }
 
-      await this.userRepository.toggleUserStatus(email);
+      user.isActive = true;
+      user.otp = null;
+      user.otpExpiration = null;
+      await this.userRepository.update(user);
 
-      console.log(`OTP has been sent to ${email}, and the OTP  is ${otp}`);
+    //   await this.userRepository.toggleUserStatus(email);
     } catch (error) {
       if (error instanceof Error) {
         console.log(messages.UNKNOWN_ERROR, error.message);

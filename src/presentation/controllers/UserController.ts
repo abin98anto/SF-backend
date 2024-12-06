@@ -33,7 +33,7 @@ export class UserController {
       };
 
       await this.sendOTPUseCase.execute(user);
-      res.status(200).send(otpMessages.OTP_SENT);
+      res.status(200).send(`${otpMessages.OTP_SENT} ${email}`);
     } catch (error) {
       if (error instanceof Error) {
         res.status(400).send(error.message);
@@ -46,10 +46,19 @@ export class UserController {
       const { email, otp } = req.body;
 
       await this.verifyOTPUseCase.execute(email, otp);
-      res.status(200).json({ message: otpMessages.OTP_SENT });
+      res.status(200).json({ message: otpMessages.USER_VERFIED });
     } catch (error) {
       if (error instanceof Error) {
-        res.status(400).send(error.message);
+        if (
+          error.message === otpMessages.OTP_SENDING_ERROR ||
+          error.message === otpMessages.OTP_EXPIRED ||
+          error.message === otpMessages.USER_NOT_FOUND
+        ) {
+          res.status(400).json({ error: error.message });
+        }
+
+        // Internal Server Error for unexpected errors
+        ;res.status(500).json({ error: "Internal Server Error" });
       }
     }
   }
