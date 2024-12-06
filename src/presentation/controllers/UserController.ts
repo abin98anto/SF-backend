@@ -1,12 +1,6 @@
 import { Request, Response } from "express";
-import { AddUserUseCase } from "../../core/use-cases/user/AddUserUseCase";
-import { UserRepository } from "../../infrastructure/repositories/UserRepository";
 import { otpMessages } from "../../shared/constants/errorsMessages";
-import { generateOTP } from "../../shared/utils/generateOTP";
-import { EmailService } from "../../infrastructure/external-services/EmailService";
 import { User } from "../../core/entities/User";
-import { UserRole } from "../../core/entities/User";
-import { SubscriptionType } from "../../core/entities/User";
 import { SendOTPUseCase } from "../../core/use-cases/user/SendOTPUseCase";
 import { VerifyOTPUseCase } from "../../core/use-cases/user/VerifyOTPUseCase";
 
@@ -42,23 +36,24 @@ export class UserController {
   }
 
   async verifyOTP(req: Request, res: Response): Promise<void> {
-    try {
-      const { email, otp } = req.body;
+    const { email, otp } = req.body;
 
-      await this.verifyOTPUseCase.execute(email, otp);
-      res.status(200).json({ message: otpMessages.USER_VERFIED });
-    } catch (error) {
-      if (error instanceof Error) {
-        if (
-          error.message === otpMessages.OTP_SENDING_ERROR ||
-          error.message === otpMessages.OTP_EXPIRED ||
-          error.message === otpMessages.USER_NOT_FOUND
-        ) {
-          res.status(400).json({ error: error.message });
-        }
+    // Call the use case and get the response
+    const result = await this.verifyOTPUseCase.execute(email, otp);
 
-        // Internal Server Error for unexpected errors
-        ;res.status(500).json({ error: "Internal Server Error" });
+    // Respond based on the result
+    if (result.success) {
+      res.status(200).json({ message: result.message });
+    } else {
+      if (
+        result.message === otpMessages.OTP_SENDING_ERROR ||
+        result.message === otpMessages.OTP_EXPIRED ||
+        result.message === otpMessages.USER_NOT_FOUND ||
+        result.message === otpMessages.WRONG_OTP
+      ) {
+        res.status(400).json({ error: result.message });
+      } else {
+        res.status(500).json({ error: "Internal Server Error" });
       }
     }
   }

@@ -5,10 +5,10 @@ export const userMessages = {
 export const otpMessages = {
   OTP_SENT: `OTP send to the mail : `,
   OTP_SENDING_ERROR: "Error sending OTP.",
-  OTP_EXPIRED: "Time expired!",
-  USER_VERFIED: "OTP verification successful.",
+  OTP_EXPIRED: "The OTP has expired. Please request a new one.",
+  USER_VERFIED: "OTP verification successful. User is now active.",
   USER_NOT_FOUND: "User not found! Try signing up again.",
-  WRONG_OTP: "Wrong OTP entered!",
+  WRONG_OTP: "The OTP you entered is incorrect.",
 };
 
 export const databaseMessages = {
