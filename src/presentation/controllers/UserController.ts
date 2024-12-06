@@ -4,17 +4,13 @@ import { User } from "../../core/entities/User";
 import { SendOTPUseCase } from "../../core/use-cases/user/SendOTPUseCase";
 import { VerifyOTPUseCase } from "../../core/use-cases/user/VerifyOTPUseCase";
 
-const tempOTPStore: {
-  [email: string]: { otp: string; expiresAt: Date; userData: User };
-} = {};
-
 export class UserController {
   constructor(
     private sendOTPUseCase: SendOTPUseCase,
     private verifyOTPUseCase: VerifyOTPUseCase
   ) {}
 
-  async sendOTP(req: Request, res: Response): Promise<void> {
+  sendOTP = async (req: Request, res: Response): Promise<void> => {
     try {
       const { name, email, password, role, profilePicture } = req.body;
       const user: User = {
@@ -33,9 +29,9 @@ export class UserController {
         res.status(400).send(error.message);
       }
     }
-  }
+  };
 
-  async verifyOTP(req: Request, res: Response): Promise<void> {
+  verifyOTP = async (req: Request, res: Response): Promise<void> => {
     const { email, otp } = req.body;
 
     // Call the use case and get the response
@@ -56,5 +52,5 @@ export class UserController {
         res.status(500).json({ error: "Internal Server Error" });
       }
     }
-  }
+  };
 }

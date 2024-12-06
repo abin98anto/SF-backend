@@ -13,9 +13,7 @@ const sendOTPUseCase = new SendOTPUseCase(userRepository, emailService);
 const verifyOTPUseCase = new VerifyOTPUseCase(userRepository);
 const userController = new UserController(sendOTPUseCase, verifyOTPUseCase);
 
-userRouter.post("/send-otp", (req, res) => userController.sendOTP(req, res));
-userRouter.post("/verify-otp", (req, res) =>
-  userController.verifyOTP(req, res)
-);
+userRouter.post("/send-otp", userController.sendOTP);
+userRouter.post("/verify-otp", userController.verifyOTP);
 
 export default userRouter;
