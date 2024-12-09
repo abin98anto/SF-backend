@@ -8,6 +8,7 @@ export const userMessages = {
   INVALID_TOKEN: "Invalid or expired token",
   ACCESS_REFRESHED: "Access token refreshed successfully",
   NO_COOKIES: "No Cookies found!",
+  LOGOUT_SUCCESS: "Logout Successful",
 };
 
 export const otpMessages = {

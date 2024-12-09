@@ -7,7 +7,10 @@ import { VerifyOTPUseCase } from "../../core/use-cases/user/user-signup/VerifyOT
 import { AuthController } from "../controllers/userController/userAuthController";
 import { LoginUseCase } from "../../core/use-cases/user/user-login/LoginUseCase";
 import { JWTService } from "../../infrastructure/external-services/JWTService";
-import { verifyRefreshToken } from "../middleware/authMiddleware";
+import {
+  verifyAccessToken,
+  verifyRefreshToken,
+} from "../middleware/authMiddleware";
 
 const userRouter = express.Router();
 
@@ -30,5 +33,6 @@ userRouter.post(
   verifyRefreshToken,
   authController.refreshAccessToken
 );
+userRouter.post("/logout", verifyAccessToken, authController.logout);
 
 export default userRouter;

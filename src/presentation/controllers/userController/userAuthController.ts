@@ -85,4 +85,24 @@ export class AuthController {
       return;
     }
   };
+
+  logout = async (req: Request, res: Response): Promise<void> => {
+    try {
+      res
+        .clearCookie("userAccess", {
+          httpOnly: true,
+          secure: true,
+          sameSite: "strict",
+        })
+        .clearCookie("userRefresh", {
+          httpOnly: true,
+          secure: true,
+          sameSite: "strict",
+        })
+        .status(200)
+        .json({ message: userMessages.LOGOUT_SUCCESS });
+    } catch (error) {
+      res.status(500).json({ message: miscMessages.INTERNAL_SERVER_ERROR });
+    }
+  };
 }
