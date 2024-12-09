@@ -21,6 +21,7 @@ export class User {
     public dateJoined?: Date,
     public isActive: boolean = false,
     public otp?: string | null | undefined,
-    public otpExpiration?: Date | null | undefined
+    public otpExpiration?: Date | null | undefined,
+    public resumeUrl?: string | null | undefined
   ) {}
 }
