@@ -6,6 +6,7 @@ import { DatabaseConnection } from "./infrastructure/database/connection";
 import { miscMessages } from "./shared/constants/constants";
 import userRouter from "./presentation/routes/userRoutes";
 import { verifyAccessToken } from "./presentation/middleware/authMiddleware";
+import tutorRouter from "./presentation/routes/tutorRoutes";
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.get(
 );
 
 app.use("/", userRouter);
+app.use("/tutor", tutorRouter);
 
 databaseConnection.connect().then(() => {
   app.listen(PORT, () => {
