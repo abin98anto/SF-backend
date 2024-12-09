@@ -1,4 +1,4 @@
-import { UserRepositoryInterface } from "../../../interfaces/UserRepositoryInterface";
+import { UserRepositoryInterface } from "../../../interfaces/user/UserRepositoryInterface";
 import { otpMessages } from "../../../../shared/constants/constants";
 import { miscMessages } from "../../../../shared/constants/constants";
 import { errorObjectCatch } from "../../../../shared/utils/errorObjectCatch";
@@ -31,7 +31,7 @@ export class VerifyOTPUseCase {
 
       return { success: true, message: otpMessages.USER_VERFIED };
     } catch (error) {
-      errorObjectCatch(error)
+      errorObjectCatch(error);
       return { success: false, message: miscMessages.UNKNOWN_ERROR };
     }
   }

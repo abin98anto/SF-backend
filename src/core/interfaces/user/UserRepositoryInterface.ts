@@ -1,4 +1,4 @@
-import { User } from "../entities/User";
+import { User } from "../../entities/User";
 
 export interface UserRepositoryInterface {
   add(user: User): Promise<User>;
@@ -9,5 +9,5 @@ export interface UserRepositoryInterface {
 
   saveOTP(email: string, otp: string, expiration: Date): Promise<void>;
   verifyOTP(email: string, otp: string): Promise<boolean>;
-  toggleUserStatus(email: string): Promise<void>;
+  // toggleUserStatus(email: string): Promise<void>;
 }

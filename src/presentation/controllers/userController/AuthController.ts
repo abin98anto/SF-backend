@@ -1,43 +1,20 @@
 import { Request, Response } from "express";
-import bcrypt from "bcrypt";
-
-import { UserRepository } from "../../../infrastructure/repositories/UserRepository";
-import {
-  miscMessages,
-  otpMessages,
-  userMessages,
-} from "../../../shared/constants/constants";
+import { miscMessages } from "../../../shared/constants/constants";
 import { errorObjectCatch } from "../../../shared/utils/errorObjectCatch";
-import { JWTService } from "../../../infrastructure/external-services/JWTService";
+import { LoginUseCase } from "../../../core/use-cases/user/user-login/LoginUseCase";
 
 export class AuthController {
-  constructor(private userRepository: UserRepository) {}
+  constructor(private loginUseCase: LoginUseCase) {}
 
   Login = async (req: Request, res: Response): Promise<void> => {
     try {
       const { email, password } = req.body;
+      console.log(email, password);
 
-      const user = await this.userRepository.findByEmail(email);
-      if (!user) {
-        res.status(404).json({ message: otpMessages.USER_NOT_FOUND });
-        return;
-      }
-
-      const isPasswordValid = await bcrypt.compare(password, user.password);
-      if (!isPasswordValid) {
-        res.status(401).json({ message: userMessages.INVALID_CRED });
-        return;
-      }
-
-      const accessToken = JWTService.generateAccessToken({
-        email: user.email,
-        role: user.role,
-      });
-
-      const refreshToken = JWTService.generateRefreshToken({
-        email: user.email,
-        role: user.role,
-      });
+      const { accessToken, refreshToken } = await this.loginUseCase.execute(
+        email,
+        password
+      );
 
       res
         .cookie("accessToken", accessToken, {

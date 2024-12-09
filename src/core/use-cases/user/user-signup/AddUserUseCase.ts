@@ -1,5 +1,5 @@
 import { User } from "../../../entities/User";
-import { UserRepositoryInterface } from "../../../interfaces/UserRepositoryInterface";
+import { UserRepositoryInterface } from "../../../interfaces/user/UserRepositoryInterface";
 import { userMessages } from "../../../../shared/constants/constants";
 import { hashPassword } from "../../../../shared/utils/hashing";
 import { errorObjectCatch } from "../../../../shared/utils/errorObjectCatch";

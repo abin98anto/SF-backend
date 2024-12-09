@@ -1,4 +1,4 @@
-import { UserRepositoryInterface } from "../../core/interfaces/UserRepositoryInterface";
+import { UserRepositoryInterface } from "../../core/interfaces/user/UserRepositoryInterface";
 import { User } from "../../core/entities/User";
 import { UserModel } from "../database/mongoose-schemas/UserSchema";
 
@@ -40,18 +40,5 @@ export class UserRepository implements UserRepositoryInterface {
       return false;
     }
     return true;
-  }
-
-  async toggleUserStatus(email: string): Promise<void> {
-    await UserModel.updateOne(
-      { email },
-      {
-        $set: {
-          isActive: { $not: "$isActive" },
-          otp: null,
-          otpExpiration: null,
-        },
-      }
-    );
   }
 }
