@@ -4,7 +4,7 @@ import { UserRepository } from "../../infrastructure/repositories/UserRepository
 import { EmailService } from "../../infrastructure/external-services/EmailService";
 import { SendOTPUseCase } from "../../core/use-cases/user/user-signup/SendOTPUseCase";
 import { VerifyOTPUseCase } from "../../core/use-cases/user/user-signup/VerifyOTPUseCase";
-import { AuthController } from "../controllers/userController/AuthController";
+import { AuthController } from "../controllers/userController/userAuthController";
 import { LoginUseCase } from "../../core/use-cases/user/user-login/LoginUseCase";
 import { JWTService } from "../../infrastructure/external-services/JWTService";
 
