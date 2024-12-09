@@ -7,6 +7,7 @@ import { VerifyOTPUseCase } from "../../core/use-cases/user/user-signup/VerifyOT
 import { AuthController } from "../controllers/userController/userAuthController";
 import { LoginUseCase } from "../../core/use-cases/user/user-login/LoginUseCase";
 import { JWTService } from "../../infrastructure/external-services/JWTService";
+import { verifyRefreshToken } from "../middleware/authMiddleware";
 
 const userRouter = express.Router();
 
@@ -18,10 +19,16 @@ const loginUseCase = new LoginUseCase(userRepository, jwtService);
 const sendOTPUseCase = new SendOTPUseCase(userRepository, emailService);
 const verifyOTPUseCase = new VerifyOTPUseCase(userRepository);
 const userController = new UserController(sendOTPUseCase, verifyOTPUseCase);
-const authController = new AuthController(loginUseCase);
+const authController = new AuthController(loginUseCase, jwtService);
 
 userRouter.post("/send-otp", userController.sendOTP);
 userRouter.post("/verify-otp", userController.verifyOTP);
+
 userRouter.post("/login", authController.Login);
+userRouter.post(
+  "/refresh-token",
+  verifyRefreshToken,
+  authController.refreshAccessToken
+);
 
 export default userRouter;

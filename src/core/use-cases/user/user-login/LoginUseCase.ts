@@ -1,8 +1,10 @@
+import bcrypt from "bcrypt";
+
 import { UserRepositoryInterface } from "../../../interfaces/user/UserRepositoryInterface";
 import { JWTService } from "../../../../infrastructure/external-services/JWTService";
 import { userMessages } from "../../../../shared/constants/constants";
 import { Token } from "../../../entities/Token";
-import bcrypt from "bcrypt";
+import { JwtPayload } from "../../../entities/JwtPayload";
 
 export class LoginUseCase {
   constructor(
@@ -22,7 +24,7 @@ export class LoginUseCase {
       throw new Error(userMessages.INVALID_CRED);
     }
 
-    let arg = { email: user.email, role: user.role };
+    let arg: JwtPayload = { email: user.email, role: user.role };
 
     const accessToken = this.jwtService.generateAccessToken(arg);
     const refreshToken = this.jwtService.generateRefreshToken(arg);

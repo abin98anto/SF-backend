@@ -3,6 +3,11 @@ const PORT = process.env.PORT || 3000;
 export const userMessages = {
   EMAIL_EXISTS: "Email already in use",
   INVALID_CRED: "Invalid Credentials",
+  LOGIN_SUCCESS: "Login successful",
+  TOKEN_NOT_FOUND: "Token not found",
+  INVALID_TOKEN: "Invalid or expired token",
+  ACCESS_REFRESHED: "Access token refreshed successfully",
+  NO_COOKIES: "No Cookies found!",
 };
 
 export const otpMessages = {

@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 
 import { errorObjectCatch } from "../../shared/utils/errorObjectCatch";
+import { JwtPayload } from "../../core/entities/JwtPayload";
 
 const ACCESS_TOKEN_SECRET = process.env.JWT_ACCESS!;
 const REFRESH_TOKEN_SECRET = process.env.JWT_REFRESH!;
@@ -30,19 +31,20 @@ export class JWTService {
     }
   }
 
-  //   static verifyAccessToken(token: string): object | null {
-  //     try {
-  //       return jwt.verify(token, ACCESS_TOKEN_SECRET);
-  //     } catch (error) {
-  //       return null;
-  //     }
-  //   }
+  verifyAccessToken(token: string): JwtPayload | null {
+    try {
+      return jwt.verify(token, ACCESS_TOKEN_SECRET) as JwtPayload;
+    } catch (error) {
+      errorObjectCatch(error);
+      return null;
+    }
+  }
 
-  //   static verifyRefreshToken(token: string): object | null {
-  //     try {
-  //       return jwt.verify(token, REFRESH_TOKEN_SECRET);
-  //     } catch (error) {
-  //       return null;
-  //     }
-  //   }
+  verifyRefreshToken(token: string): JwtPayload | null {
+    try {
+      return jwt.verify(token, REFRESH_TOKEN_SECRET) as JwtPayload;
+    } catch (error) {
+      return null;
+    }
+  }
 }
