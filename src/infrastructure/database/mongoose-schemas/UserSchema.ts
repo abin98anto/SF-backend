@@ -46,6 +46,6 @@ const userSchema = new Schema({
   },
 });
 
-userSchema.index({ otpExpiration: 1 }, { expireAfterSeconds: 10 });
+userSchema.index({ otpExpiration: 1 }, { expireAfterSeconds: 0 });
 
 export const UserModel = mongoose.model("User", userSchema);

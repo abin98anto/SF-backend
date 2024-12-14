@@ -1,5 +1,9 @@
 import { Request, Response } from "express";
-import { otpMessages, userMessages } from "../../../shared/constants/constants";
+import {
+  miscMessages,
+  otpMessages,
+  userMessages,
+} from "../../../shared/constants/constants";
 import { User, UserRole } from "../../../core/entities/User";
 import { SendOTPUseCase } from "../../../core/use-cases/user/user-signup/SendOTPUseCase";
 import { VerifyOTPUseCase } from "../../../core/use-cases/user/user-signup/VerifyOTPUseCase";
@@ -29,15 +33,15 @@ export class UserController {
       };
 
       const result = await this.sendOTPUseCase.execute(user);
-      console.log("jowy", result);
+      // console.log("jowy", result.data);
 
       if (result.data === userMessages.EMAIL_EXISTS) {
-        console.log("email exists");
+        // console.log("email exists");
         res.status(200).json({
           message: result.data,
         });
       } else {
-        console.log("some other error");
+        // console.log("some other error");
         res.status(200).json({
           message: result.data,
         });
@@ -57,23 +61,34 @@ export class UserController {
   };
 
   verifyOTP = async (req: Request, res: Response): Promise<void> => {
+    // console.log("It's here!!!", req.body);
     const { email, otp } = req.body;
 
     const result = await this.verifyOTPUseCase.execute(email, otp);
 
+    // console.log("vOTP", result);
     if (result.success) {
+      // console.log("first");
       res.status(200).json({ success: true, message: result.message });
+      // console.log("W");
+      return;
     } else {
       if (
-        result.message === otpMessages.OTP_SENDING_ERROR ||
         result.message === otpMessages.OTP_EXPIRED ||
-        result.message === otpMessages.USER_NOT_FOUND ||
         result.message === otpMessages.WRONG_OTP
       ) {
+        // console.log("Third");
         res.status(400).json({ success: true, error: result.message });
+        return;
       } else {
-        res.status(500).json({ success: true, error: "Internal Server Error" });
+        // console.log("fourth");
+        res
+          .status(500)
+          .json({ success: true, error: miscMessages.INTERNAL_SERVER_ERROR });
+        return;
       }
     }
+    // res.status(400).json({ success: true, error: "nothing happened!" });
+    // return;
   };
 }
