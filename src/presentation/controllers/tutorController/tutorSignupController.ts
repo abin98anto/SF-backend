@@ -1,14 +1,20 @@
 import { Request, Response } from "express";
-import { TutorSignupUseCase } from "../../../core/use-cases/tutor/tutor-signup/TutorSignupUseCase";
-import { miscMessages, otpMessages } from "../../../shared/constants/constants";
-import { TutorOTPUseCase } from "../../../core/use-cases/tutor/tutor-signup/TutorOTPUseCase";
-import { User } from "../../../core/entities/User";
+import {
+  miscMessages,
+  otpMessages,
+  userMessages,
+} from "../../../shared/constants/constants";
+import { User, UserRole } from "../../../core/entities/User";
 import { errorObjectCatch } from "../../../shared/utils/errorObjectCatch";
+import { SendOTPUseCase } from "../../../core/use-cases/user/user-signup/SendOTPUseCase";
+import { VerifyOTPUseCase } from "../../../core/use-cases/user/user-signup/VerifyOTPUseCase";
+import { UserRepository } from "../../../infrastructure/repositories/UserRepository";
 
 export class TutorController {
   constructor(
-    private tutorSignupUseCase: TutorSignupUseCase,
-    private tutorOTPUseCase: TutorOTPUseCase
+    private userRepository: UserRepository,
+    private tutorSignupUseCase: SendOTPUseCase,
+    private tutorOTPUseCase: VerifyOTPUseCase
   ) {}
 
   sendOTP = async (req: Request, res: Response): Promise<void> => {
@@ -19,15 +25,18 @@ export class TutorController {
         name,
         email,
         password,
-        role,
+        role: UserRole.TUTOR,
         isActive: false,
         profilePicture,
+        resumeUrl,
       };
 
-      await this.tutorSignupUseCase.execute(user);
-
-      res.status(200).json({ message: otpMessages.OTP_SENT });
+      let result = await this.tutorSignupUseCase.execute(user);
+      result.success
+        ? res.status(200).json({ message: "heyy " + otpMessages.OTP_SENT })
+        : res.status(400).json({ message: userMessages.EMAIL_EXISTS });
     } catch (error) {
+      errorObjectCatch(error);
       res.status(500).json({
         message:
           error instanceof Error
@@ -44,6 +53,8 @@ export class TutorController {
       const result = await this.tutorOTPUseCase.execute(email, otp);
 
       if (result.success) {
+        const user = await this.userRepository.findByEmail(email);
+        if (user) user.role = UserRole.TUTOR;
         res.status(200).json({ message: result.message });
       } else {
         if (

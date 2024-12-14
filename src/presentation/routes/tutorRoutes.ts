@@ -2,21 +2,19 @@ import express from "express";
 import { TutorController } from "../controllers/tutorController/tutorSignupController";
 import { UserRepository } from "../../infrastructure/repositories/UserRepository";
 import { EmailService } from "../../infrastructure/external-services/EmailService";
-import { TutorSignupUseCase } from "../../core/use-cases/tutor/tutor-signup/TutorSignupUseCase";
-import { TutorOTPUseCase } from "../../core/use-cases/tutor/tutor-signup/TutorOTPUseCase";
+import { SendOTPUseCase } from "../../core/use-cases/user/user-signup/SendOTPUseCase";
+import { VerifyOTPUseCase } from "../../core/use-cases/user/user-signup/VerifyOTPUseCase";
 
 const tutorRouter = express.Router();
 
-const tutorRepository = new UserRepository(); // Can be a separate TutorRepository
+const tutorRepository = new UserRepository();
 const emailService = new EmailService();
 
-const sendOTPTutorUseCase = new TutorSignupUseCase(
-  tutorRepository,
-  emailService
-);
-const verifyOTPTutorUseCase = new TutorOTPUseCase(tutorRepository);
+const sendOTPTutorUseCase = new SendOTPUseCase(tutorRepository, emailService);
+const verifyOTPTutorUseCase = new VerifyOTPUseCase(tutorRepository);
 
 const tutorAuthController = new TutorController(
+  tutorRepository,
   sendOTPTutorUseCase,
   verifyOTPTutorUseCase
 );
