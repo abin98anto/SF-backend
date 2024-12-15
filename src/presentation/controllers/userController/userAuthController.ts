@@ -17,28 +17,68 @@ export class AuthController {
     this.refreshAccessToken = this.refreshAccessToken.bind(this);
   }
 
+  // Login = async (req: Request, res: Response): Promise<void> => {
+  //   try {
+  //     const { email, password } = req.body;
+
+  //     const { accessToken, refreshToken } = await this.loginUseCase.execute(
+  //       email,
+  //       password
+  //     );
+
+  //     res
+  //       .cookie("userAccess", accessToken, {
+  //         httpOnly: true,
+  //         secure: true,
+  //         maxAge: 15 * 60 * 1000,
+  //       })
+  //       .cookie("userRefresh", refreshToken, {
+  //         httpOnly: true,
+  //         secure: true,
+  //         maxAge: 7 * 24 * 60 * 60 * 1000,
+  //       })
+  //       .status(200)
+  //       .json({ message: userMessages.LOGIN_SUCCESS });
+  //   } catch (error) {
+  //     const errMsg =
+  //       error instanceof Error
+  //         ? error.message
+  //         : miscMessages.INTERNAL_SERVER_ERROR;
+
+  //     if (errMsg === userMessages.INVALID_CRED) {
+  //       res.status(401).json({ message: userMessages.INVALID_CRED });
+  //     } else {
+  //       errorObjectCatch(error);
+  //       res.status(500).json({ message: miscMessages.INTERNAL_SERVER_ERROR });
+  //     }
+  //   }
+  // };
+
   Login = async (req: Request, res: Response): Promise<void> => {
     try {
       const { email, password } = req.body;
 
-      const { accessToken, refreshToken } = await this.loginUseCase.execute(
-        email,
-        password
-      );
+      const { accessToken, refreshToken, user } =
+        await this.loginUseCase.execute(email, password);
 
       res
         .cookie("userAccess", accessToken, {
           httpOnly: true,
           secure: true,
+          sameSite: "strict",
           maxAge: 15 * 60 * 1000,
         })
         .cookie("userRefresh", refreshToken, {
           httpOnly: true,
           secure: true,
+          sameSite: "strict",
           maxAge: 7 * 24 * 60 * 60 * 1000,
         })
         .status(200)
-        .json({ message: userMessages.LOGIN_SUCCESS });
+        .json({
+          message: userMessages.LOGIN_SUCCESS,
+          user: user,
+        });
     } catch (error) {
       const errMsg =
         error instanceof Error

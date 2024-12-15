@@ -13,7 +13,24 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+
+      const allowedOrigins = ["http://localhost:5173"];
+      if (allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
+  })
+);
 app.use(cookieParser());
 app.use(express.json());
 
@@ -23,9 +40,10 @@ const dbURI = process.env.MONGODB_URI || "";
 const databaseConnection = new DatabaseConnection(dbURI);
 
 const corsOptions = {
-  origin: ["http://localhost:5173/"],
+  origin: "http://localhost:5173", // Remove the trailing slash
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
+  allowedHeaders: ["Content-Type", "Authorization"], // Add allowed headers
 };
 
 app.use(cors(corsOptions));
