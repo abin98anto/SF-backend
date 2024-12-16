@@ -7,6 +7,7 @@ import { UserRepository } from "../../infrastructure/repositories/UserRepository
 import { verifyRefreshToken } from "../middleware/authMiddleware";
 import { UserManagementController } from "../controllers/adminController/userManagementController";
 import { GetUsersList } from "../../core/use-cases/admin/GetUsersList";
+import { ToogleUserStatus } from "../../core/use-cases/admin/ToogleUserStatus";
 
 const adminRouter = experess.Router();
 
@@ -17,7 +18,11 @@ const loginUseCase = new LoginUseCase(adminRepository, jwtService);
 const adminAuthController = new AdminAuthController(loginUseCase, jwtService);
 
 const getUsersList = new GetUsersList(adminRepository);
-const userManagementController = new UserManagementController(getUsersList);
+const toogleUserStatus = new ToogleUserStatus(adminRepository);
+const userManagementController = new UserManagementController(
+  getUsersList,
+  toogleUserStatus
+);
 
 adminRouter.post("/login", adminAuthController.Login);
 adminRouter.post(
@@ -28,5 +33,6 @@ adminRouter.post(
 adminRouter.post("/logout", adminAuthController.logout);
 
 adminRouter.get("/users", userManagementController.userList);
+adminRouter.patch("/toggle-status", userManagementController.userStatusToogle);
 
 export default adminRouter;

@@ -24,6 +24,16 @@ export class UserRepository implements UserRepositoryInterface {
     });
   }
 
+  // async update(
+  //   userData: Partial<User> & { _id: string }
+  // ): Promise<User | null> {
+  //   return await UserModel.findByIdAndUpdate(
+  //     userData._id,
+  //     { $set: userData },
+  //     { new: true }
+  //   );
+  // }
+
   async update(
     userData: Partial<User> & { _id: string }
   ): Promise<User | null> {
