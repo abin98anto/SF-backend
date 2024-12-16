@@ -8,6 +8,7 @@ import { miscMessages } from "./shared/constants/constants";
 import userRouter from "./presentation/routes/userRoutes";
 import { verifyAccessToken } from "./presentation/middleware/authMiddleware";
 import tutorRouter from "./presentation/routes/tutorRoutes";
+import adminRouter from "./presentation/routes/adminRoutes";
 
 dotenv.config();
 
@@ -57,6 +58,7 @@ app.get(
 
 app.use("/", userRouter);
 app.use("/tutor", tutorRouter);
+app.use("/admin", adminRouter);
 
 databaseConnection.connect().then(() => {
   app.listen(PORT, () => {

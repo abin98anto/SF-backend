@@ -1,5 +1,5 @@
 import { UserRepositoryInterface } from "../../core/interfaces/user/UserRepositoryInterface";
-import { User } from "../../core/entities/User";
+import { User, UserRole } from "../../core/entities/User";
 import { UserModel } from "../database/mongoose-schemas/UserSchema";
 
 export class UserRepository implements UserRepositoryInterface {
@@ -36,6 +36,12 @@ export class UserRepository implements UserRepositoryInterface {
 
   async delete(id: string): Promise<void> {
     await UserModel.findByIdAndDelete(id);
+  }
+
+  async users(role: UserRole): Promise<User[]> {
+    // const res = await UserModel.find({ role: role });
+    // console.log("repo", role, res);
+    return await UserModel.find({ role: role });
   }
 
   async saveOTP(email: string, otp: string, expiration: Date): Promise<void> {

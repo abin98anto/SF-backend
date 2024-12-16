@@ -9,7 +9,7 @@ import { JWTService } from "../../../infrastructure/external-services/JWTService
 import { JwtPayload } from "../../../core/entities/JwtPayload";
 import { UserRole } from "../../../core/entities/User";
 
-export class AuthController {
+export class AdminAuthController {
   constructor(
     private loginUseCase: LoginUseCase,
     private jwtService: JWTService
@@ -20,24 +20,26 @@ export class AuthController {
 
   Login = async (req: Request, res: Response): Promise<void> => {
     try {
+    //   console.log("first");
       const { email, password } = req.body;
 
       const { accessToken, refreshToken, user } =
         await this.loginUseCase.execute(email, password);
 
-      if (user?.role !== UserRole.USER) {
+    //   console.log("admin going in ", user);
+      if (user?.role !== UserRole.ADMIN) {
         res.status(403).json({ message: miscMessages.ACCESS_DENIED });
         return;
       }
 
       res
-        .cookie("userAccess", accessToken, {
+        .cookie("adminAccess", accessToken, {
           httpOnly: true,
           secure: true,
           sameSite: "strict",
           maxAge: 15 * 60 * 1000,
         })
-        .cookie("userRefresh", refreshToken, {
+        .cookie("adminRefresh", refreshToken, {
           httpOnly: true,
           secure: true,
           sameSite: "strict",
@@ -65,7 +67,7 @@ export class AuthController {
 
   refreshAccessToken = (req: Request, res: Response): void => {
     try {
-      const refreshToken = req.cookies.userRefresh;
+      const refreshToken = req.cookies.adminRefresh;
       if (!refreshToken) {
         res.status(401).json({ message: userMessages.TOKEN_NOT_FOUND });
         return;
@@ -80,7 +82,7 @@ export class AuthController {
       });
 
       res
-        .cookie("userAccess", newAccessToken, {
+        .cookie("adminAccess", newAccessToken, {
           httpOnly: true,
           secure: true,
           maxAge: 15 * 60 * 1000,
@@ -98,12 +100,12 @@ export class AuthController {
   logout = async (req: Request, res: Response): Promise<void> => {
     try {
       res
-        .clearCookie("userAccess", {
+        .clearCookie("adminAccess", {
           httpOnly: true,
           secure: true,
           sameSite: "strict",
         })
-        .clearCookie("userRefresh", {
+        .clearCookie("adminRefresh", {
           httpOnly: true,
           secure: true,
           sameSite: "strict",
