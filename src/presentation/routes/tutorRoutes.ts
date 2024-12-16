@@ -44,7 +44,7 @@ tutorRouter.post(
   verifyRefreshToken,
   tutorAuthController.refreshAccessToken
 );
-tutorRouter.post("/logout", verifyAccessToken, tutorAuthController.logout);
+tutorRouter.post("/logout",  tutorAuthController.logout);
 
 // update tutor profile.
 tutorRouter.put("/update-profile", updateTutor.updateProfile);

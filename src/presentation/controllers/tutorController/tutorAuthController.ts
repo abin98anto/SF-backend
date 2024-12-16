@@ -7,6 +7,7 @@ import { errorObjectCatch } from "../../../shared/utils/errorObjectCatch";
 import { LoginUseCase } from "../../../core/use-cases/user/user-login/LoginUseCase";
 import { JWTService } from "../../../infrastructure/external-services/JWTService";
 import { JwtPayload } from "../../../core/entities/JwtPayload";
+import { UserRole } from "../../../core/entities/User";
 
 export class TutorAuthController {
   constructor(
@@ -23,6 +24,11 @@ export class TutorAuthController {
 
       const { accessToken, refreshToken, user } =
         await this.loginUseCase.execute(email, password);
+
+      if (user?.role !== UserRole.TUTOR) {
+        res.status(403).json({ message: miscMessages.ACCESS_DENIED });
+        return;
+      }
 
       res
         .cookie("tutorAccess", accessToken, {

@@ -33,6 +33,7 @@ export const miscMessages = {
   ERROR: "An Error occured: ",
   ERROR_OBJECT: "And Error in the Error Object Catch!",
   INTERNAL_SERVER_ERROR: "Internal Server Error",
+  ACCESS_DENIED: "ACCESS DENIED!",
 };
 
 export const jwtMessages = {};
