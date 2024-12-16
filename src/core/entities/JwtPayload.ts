@@ -1,7 +1,6 @@
 import { User, UserRole } from "./User";
 
 export interface JwtPayload {
-  email: string;
+  _id?: string | null;
   role: UserRole;
-  user?: User;
 }

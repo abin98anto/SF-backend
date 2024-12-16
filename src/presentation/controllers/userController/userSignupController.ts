@@ -17,6 +17,7 @@ export class UserController {
   sendOTP = async (req: Request, res: Response): Promise<void> => {
     try {
       const {
+        _id,
         username: name,
         email,
         password,
@@ -24,6 +25,7 @@ export class UserController {
         profilePicture,
       } = req.body;
       const user: User = {
+        _id,
         name,
         email,
         password,

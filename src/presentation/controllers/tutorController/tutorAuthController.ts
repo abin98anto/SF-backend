@@ -8,7 +8,7 @@ import { LoginUseCase } from "../../../core/use-cases/user/user-login/LoginUseCa
 import { JWTService } from "../../../infrastructure/external-services/JWTService";
 import { JwtPayload } from "../../../core/entities/JwtPayload";
 
-export class AuthController {
+export class TutorAuthController {
   constructor(
     private loginUseCase: LoginUseCase,
     private jwtService: JWTService
@@ -25,13 +25,13 @@ export class AuthController {
         await this.loginUseCase.execute(email, password);
 
       res
-        .cookie("userAccess", accessToken, {
+        .cookie("tutorAccess", accessToken, {
           httpOnly: true,
           secure: true,
           sameSite: "strict",
           maxAge: 15 * 60 * 1000,
         })
-        .cookie("userRefresh", refreshToken, {
+        .cookie("tutorRefresh", refreshToken, {
           httpOnly: true,
           secure: true,
           sameSite: "strict",
@@ -74,7 +74,7 @@ export class AuthController {
       });
 
       res
-        .cookie("userAccess", newAccessToken, {
+        .cookie("tutorAccess", newAccessToken, {
           httpOnly: true,
           secure: true,
           maxAge: 15 * 60 * 1000,
@@ -92,12 +92,12 @@ export class AuthController {
   logout = async (req: Request, res: Response): Promise<void> => {
     try {
       res
-        .clearCookie("userAccess", {
+        .clearCookie("tutorAccess", {
           httpOnly: true,
           secure: true,
           sameSite: "strict",
         })
-        .clearCookie("userRefresh", {
+        .clearCookie("tutorRefresh", {
           httpOnly: true,
           secure: true,
           sameSite: "strict",

@@ -24,6 +24,9 @@ const userSchema = new Schema({
     type: String,
     default: null,
   },
+  resume: {
+    type: String,
+  },
   subscription: {
     type: String,
     enum: Object.values(SubscriptionType),

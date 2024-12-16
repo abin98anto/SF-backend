@@ -27,7 +27,7 @@ export class VerifyOTPUseCase {
       user.isActive = true;
       user.otp = null;
       user.otpExpiration = null;
-      await this.userRepository.update(user);
+      await this.userRepository.updatee(user);
 
       return { success: true, message: otpMessages.USER_VERFIED };
     } catch (error) {

@@ -24,7 +24,7 @@ export class LoginUseCase {
       throw new Error(userMessages.INVALID_CRED);
     }
 
-    let arg: JwtPayload = { email: user.email, role: user.role, user: user };
+    let arg: JwtPayload = { _id: user._id, role: user.role };
 
     const accessToken = this.jwtService.generateAccessToken(arg);
     const refreshToken = this.jwtService.generateRefreshToken(arg);

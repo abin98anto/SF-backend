@@ -19,8 +19,7 @@ export class TutorController {
 
   sendOTP = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { name, email, password, role, profilePicture, resumeUrl } =
-        req.body;
+      const { name, email, password, role, profilePicture, resume } = req.body;
       const user: User = {
         name,
         email,
@@ -28,7 +27,7 @@ export class TutorController {
         role: UserRole.TUTOR,
         isActive: false,
         profilePicture,
-        resumeUrl,
+        resume,
       };
 
       let result = await this.tutorSignupUseCase.execute(user);
@@ -55,7 +54,7 @@ export class TutorController {
       if (result.success) {
         const user = await this.userRepository.findByEmail(email);
         if (user) user.role = UserRole.TUTOR;
-        res.status(200).json({ message: result.message });
+        res.status(200).json({ success: true, message: result.message });
       } else {
         if (
           result.message === otpMessages.OTP_SENDING_ERROR ||
@@ -63,9 +62,11 @@ export class TutorController {
           result.message === otpMessages.USER_NOT_FOUND ||
           result.message === otpMessages.WRONG_OTP
         ) {
-          res.status(400).json({ error: result.message });
+          res.status(400).json({ success: false, error: result.message });
         } else {
-          res.status(500).json({ error: "Internal Server Error" });
+          res
+            .status(500)
+            .json({ success: false, error: "Internal Server Error" });
         }
       }
     } catch (error) {

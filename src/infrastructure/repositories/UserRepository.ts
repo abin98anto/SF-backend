@@ -4,8 +4,10 @@ import { UserModel } from "../database/mongoose-schemas/UserSchema";
 
 export class UserRepository implements UserRepositoryInterface {
   async add(user: User): Promise<User> {
-    const newUser = new UserModel(user);
-    return await newUser.save();
+    const { _id, ...userData } = user;
+    const newUser = new UserModel(userData);
+    await newUser.save();
+    return user;
   }
 
   async findByEmail(email: string): Promise<User | null> {
@@ -16,10 +18,20 @@ export class UserRepository implements UserRepositoryInterface {
     return await UserModel.findById(id);
   }
 
-  async update(user: User): Promise<User | null> {
-    return await UserModel.findOneAndUpdate({ email: user.email }, user, {
+  async updatee(user: User): Promise<User | null> {
+    return await UserModel.findOneAndUpdate({ _id: user._id }, user, {
       new: true,
     });
+  }
+
+  async update(
+    userData: Partial<User> & { _id: string }
+  ): Promise<User | null> {
+    return await UserModel.findByIdAndUpdate(
+      userData._id,
+      { $set: userData },
+      { new: true }
+    );
   }
 
   async delete(id: string): Promise<void> {

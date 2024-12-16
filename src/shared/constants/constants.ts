@@ -9,6 +9,7 @@ export const userMessages = {
   ACCESS_REFRESHED: "Access token refreshed successfully",
   NO_COOKIES: "No Cookies found!",
   LOGOUT_SUCCESS: "Logout Successful",
+  USER_NOT_FOUND: "User not found! Try signing up again.",
 };
 
 export const otpMessages = {
