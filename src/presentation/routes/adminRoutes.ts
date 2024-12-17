@@ -8,6 +8,7 @@ import { verifyRefreshToken } from "../middleware/authMiddleware";
 import { UserManagementController } from "../controllers/adminController/userManagementController";
 import { GetUsersList } from "../../core/use-cases/admin/GetUsersList";
 import { ToogleUserStatus } from "../../core/use-cases/admin/ToogleUserStatus";
+import { TutorManagementController } from "../controllers/adminController/tutorManagementController";
 
 const adminRouter = experess.Router();
 
@@ -24,6 +25,11 @@ const userManagementController = new UserManagementController(
   toogleUserStatus
 );
 
+const tutorManagementController = new TutorManagementController(
+  getUsersList,
+  toogleUserStatus
+);
+
 adminRouter.post("/login", adminAuthController.Login);
 adminRouter.post(
   "/refresh-token",
@@ -34,5 +40,7 @@ adminRouter.post("/logout", adminAuthController.logout);
 
 adminRouter.get("/users", userManagementController.userList);
 adminRouter.patch("/toggle-status", userManagementController.userStatusToogle);
+
+adminRouter.get("/tutors", tutorManagementController.tutorList);
 
 export default adminRouter;

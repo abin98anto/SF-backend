@@ -54,6 +54,7 @@ export class TutorController {
       if (result.success) {
         const user = await this.userRepository.findByEmail(email);
         if (user) user.role = UserRole.TUTOR;
+        // console.log("first", user);
         res.status(200).json({ success: true, message: result.message });
       } else {
         if (

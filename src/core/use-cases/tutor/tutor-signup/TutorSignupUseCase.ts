@@ -22,6 +22,7 @@ export class TutorSignupUseCase {
 
       user.password = await bcrypt.hash(user.password, 10);
       user.role = UserRole.TUTOR;
+      user.isActive = false;
 
       await this.userRepository.add(user);
 

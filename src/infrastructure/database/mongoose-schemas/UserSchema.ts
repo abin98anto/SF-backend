@@ -2,6 +2,23 @@ import mongoose, { Schema, Document } from "mongoose";
 import { UserRole } from "../../../core/entities/User";
 import { SubscriptionType } from "../../../core/entities/User";
 
+const ratingSchema = new Schema({
+  userId: {
+    type: String,
+    required: true,
+  },
+  stars: {
+    type: Number,
+    required: true,
+    min: 1,
+    max: 5,
+  },
+  comments: {
+    type: String,
+    default: "",
+  },
+});
+
 const userSchema = new Schema({
   name: {
     type: String,
@@ -46,6 +63,22 @@ const userSchema = new Schema({
   },
   otpExpiration: {
     type: Date,
+  },
+  ratings: {
+    type: [ratingSchema],
+    default: [],
+  },
+  batches: {
+    type: Array,
+    default: [],
+  },
+  reviewsTaken: {
+    type: Number,
+    default: 0,
+  },
+  sessionsTaken: {
+    type: Number,
+    default: 0,
   },
 });
 

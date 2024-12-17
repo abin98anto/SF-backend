@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { User, UserRole } from "../../../core/entities/User";
+import { UserRole } from "../../../core/entities/User";
 import { errorObjectCatch } from "../../../shared/utils/errorObjectCatch";
 import { GetUsersList } from "../../../core/use-cases/admin/GetUsersList";
 import { ToogleUserStatus } from "../../../core/use-cases/admin/ToogleUserStatus";

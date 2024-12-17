@@ -14,6 +14,8 @@ dotenv.config();
 
 const app = express();
 
+
+
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -40,10 +42,10 @@ const dbURI = process.env.MONGODB_URI || "";
 const databaseConnection = new DatabaseConnection(dbURI);
 
 const corsOptions = {
-  origin: "http://localhost:5173", // Remove the trailing slash
+  origin: "http://localhost:5173",
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
-  allowedHeaders: ["Content-Type", "Authorization"], // Add allowed headers
+  allowedHeaders: ["Content-Type", "Authorization"],
 };
 
 app.use(cors(corsOptions));
