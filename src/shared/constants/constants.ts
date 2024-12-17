@@ -36,8 +36,6 @@ export const miscMessages = {
   ACCESS_DENIED: "ACCESS DENIED!",
 };
 
-export const jwtMessages = {};
-
 export const corsDetails = {
   FE_URL: "http://localhost:5173",
   ERROR: "Not allowed by CORS",
