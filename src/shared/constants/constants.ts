@@ -37,3 +37,8 @@ export const miscMessages = {
 };
 
 export const jwtMessages = {};
+
+export const corsDetails = {
+  FE_URL: "http://localhost:5173",
+  ERROR: "Not allowed by CORS",
+};

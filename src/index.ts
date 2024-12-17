@@ -4,9 +4,8 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 
 import { DatabaseConnection } from "./infrastructure/database/connection";
-import { miscMessages } from "./shared/constants/constants";
+import { corsDetails, miscMessages } from "./shared/constants/constants";
 import userRouter from "./presentation/routes/userRoutes";
-import { verifyAccessToken } from "./presentation/middleware/authMiddleware";
 import tutorRouter from "./presentation/routes/tutorRoutes";
 import adminRouter from "./presentation/routes/adminRoutes";
 
@@ -14,18 +13,16 @@ dotenv.config();
 
 const app = express();
 
-
-
 app.use(
   cors({
     origin: function (origin, callback) {
       if (!origin) return callback(null, true);
 
-      const allowedOrigins = ["http://localhost:5173"];
+      const allowedOrigins = [corsDetails.FE_URL];
       if (allowedOrigins.indexOf(origin) !== -1) {
         callback(null, true);
       } else {
-        callback(new Error("Not allowed by CORS"));
+        callback(new Error(corsDetails.ERROR));
       }
     },
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
@@ -38,25 +35,11 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
 const dbURI = process.env.MONGODB_URI || "";
-
 const databaseConnection = new DatabaseConnection(dbURI);
 
-const corsOptions = {
-  origin: "http://localhost:5173",
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true,
-  allowedHeaders: ["Content-Type", "Authorization"],
-};
-
-app.use(cors(corsOptions));
-
-app.get(
-  "/",
-  (req, res, next) => verifyAccessToken(req, res, next),
-  (req, res) => {
-    res.send("Hello, Worlds!");
-  }
-);
+app.get("/", (req, res) => {
+  res.send("Hello, Worlds!");
+});
 
 app.use("/", userRouter);
 app.use("/tutor", tutorRouter);
