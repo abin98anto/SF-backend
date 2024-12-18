@@ -68,7 +68,7 @@ const userSchema = new Schema({
     type: [ratingSchema],
     default: [],
   },
-  batches: {
+  students: {
     type: Array,
     default: [],
   },
@@ -77,6 +77,10 @@ const userSchema = new Schema({
     default: 0,
   },
   sessionsTaken: {
+    type: Number,
+    default: 0,
+  },
+  wallet: {
     type: Number,
     default: 0,
   },
