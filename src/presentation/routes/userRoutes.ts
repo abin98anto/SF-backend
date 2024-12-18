@@ -24,9 +24,11 @@ const verifyOTPUseCase = new VerifyOTPUseCase(userRepository);
 const userController = new UserController(sendOTPUseCase, verifyOTPUseCase);
 const authController = new AuthController(loginUseCase, jwtService);
 
+// User signup.
 userRouter.post("/send-otp", userController.sendOTP);
 userRouter.post("/verify-otp", userController.verifyOTP);
 
+// User Auth.
 userRouter.post("/login", authController.Login);
 userRouter.post(
   "/refresh-token",

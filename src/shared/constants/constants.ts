@@ -10,6 +10,8 @@ export const userMessages = {
   NO_COOKIES: "No Cookies found!",
   LOGOUT_SUCCESS: "Logout Successful",
   USER_NOT_FOUND: "User not found! Try signing up again.",
+  DEFAULT_PICTURE:
+    "https://res.cloudinary.com/dqjjysikb/image/upload/v1733894416/casual-life-3d-boy-sitting-at-the-desk-with-open-book_9_q7m5yv.jpg",
 };
 
 export const otpMessages = {

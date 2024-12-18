@@ -7,10 +7,7 @@ import { VerifyOTPUseCase } from "../../core/use-cases/user/user-signup/VerifyOT
 import { JWTService } from "../../infrastructure/external-services/JWTService";
 import { LoginUseCase } from "../../core/use-cases/user/user-login/LoginUseCase";
 import { TutorAuthController } from "../controllers/tutorController/tutorAuthController";
-import {
-  verifyAccessToken,
-  verifyRefreshToken,
-} from "../middleware/authMiddleware";
+import { verifyRefreshToken } from "../middleware/authMiddleware";
 import { TutorUpdateProfile } from "../../core/use-cases/tutor/update-profile/TutorUpdateProfile";
 import { TutorProfileUpdate } from "../controllers/tutorController/tutorProlifeController";
 
@@ -44,7 +41,7 @@ tutorRouter.post(
   verifyRefreshToken,
   tutorAuthController.refreshAccessToken
 );
-tutorRouter.post("/logout",  tutorAuthController.logout);
+tutorRouter.post("/logout", tutorAuthController.logout);
 
 // update tutor profile.
 tutorRouter.put("/update-profile", updateTutor.updateProfile);

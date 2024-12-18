@@ -16,49 +16,32 @@ export class UserController {
 
   sendOTP = async (req: Request, res: Response): Promise<void> => {
     try {
-      const {
-        _id,
-        username: name,
-        email,
-        password,
-        role,
-        profilePicture,
-      } = req.body;
+      const { name, email, password, role } = req.body;
       const user: User = {
-        _id,
         name,
         email,
         password,
-        role: UserRole.USER,
-        isActive: false,
-        profilePicture,
+        role,
+        profilePicture: userMessages.DEFAULT_PICTURE,
+        isActive: role === UserRole.USER,
       };
 
       const result = await this.sendOTPUseCase.execute(user);
-      // console.log("jowy", result.data);
+
+      console.log("Send OTP result:", result);
 
       if (result.data === userMessages.EMAIL_EXISTS) {
-        // console.log("email exists");
-        res.status(200).json({
-          message: result.data,
-        });
+        res.status(200).json({ message: result.data });
+      } else if (result.success) {
+        res.status(200).json({ message: otpMessages.OTP_SENT });
       } else {
-        // console.log("some other error");
-        res.status(200).json({
-          message: result.data,
-        });
+        throw new Error("Unexpected response from OTP service.");
       }
-      // res
-      //   .status(200)
-      //   .json({ data: result.data })
-      //   .send(`${otpMessages.OTP_SENT} ${email}`);
-      // res.status(200).json({
-      //   message: result.data,
-      // });
     } catch (error) {
-      if (error instanceof Error) {
-        res.status(400).send(error.message);
-      }
+      console.error("Error in sendOTP:", error);
+      res
+        .status(400)
+        .send(error instanceof Error ? error.message : "Error occurred");
     }
   };
 

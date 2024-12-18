@@ -7,7 +7,7 @@ import { errorObjectCatch } from "../../../shared/utils/errorObjectCatch";
 import { LoginUseCase } from "../../../core/use-cases/user/user-login/LoginUseCase";
 import { JWTService } from "../../../infrastructure/external-services/JWTService";
 import { JwtPayload } from "../../../core/entities/JwtPayload";
-import { UserRole } from "../../../core/entities/User";
+// import { UserRole } from "../../../core/entities/User";
 
 export class AuthController {
   constructor(
@@ -25,13 +25,17 @@ export class AuthController {
       const { accessToken, refreshToken, user } =
         await this.loginUseCase.execute(email, password);
 
-      if (user?.role !== UserRole.USER) {
-        res.status(403).json({ message: miscMessages.ACCESS_DENIED });
-        return;
-      }
+      // if (user?.role !== UserRole.USER) {
+      //   res.status(403).json({ message: miscMessages.ACCESS_DENIED });
+      //   return;
+      // }
+
+      console.log(user?.role);
+
+      const accessTokenName = "userAccess";
 
       res
-        .cookie("userAccess", accessToken, {
+        .cookie(accessTokenName, accessToken, {
           httpOnly: true,
           secure: true,
           sameSite: "strict",
@@ -48,6 +52,7 @@ export class AuthController {
           message: userMessages.LOGIN_SUCCESS,
           user: user,
         });
+      // console.log("logged in .....");
     } catch (error) {
       const errMsg =
         error instanceof Error
@@ -97,19 +102,42 @@ export class AuthController {
 
   logout = async (req: Request, res: Response): Promise<void> => {
     try {
-      res
-        .clearCookie("userAccess", {
-          httpOnly: true,
-          secure: true,
-          sameSite: "strict",
-        })
-        .clearCookie("userRefresh", {
-          httpOnly: true,
-          secure: true,
-          sameSite: "strict",
-        })
-        .status(200)
-        .json({ message: userMessages.LOGOUT_SUCCESS });
+      const { role } = req.body; // Expecting "user" or "tutor" in the request body
+      console.log("logging out....", req.body);
+      if (role === "user") {
+        // Clear cookies for users
+        res
+          .clearCookie("userAccess", {
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+          })
+          .clearCookie("userRefresh", {
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+          })
+          .status(200)
+          .json({ message: userMessages.LOGOUT_SUCCESS });
+      } else if (role === "tutor") {
+        // Clear cookies for tutors
+        res
+          .clearCookie("tutorAccess", {
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+          })
+          .clearCookie("tutorRefresh", {
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+          })
+          .status(200)
+          .json({ message: userMessages.LOGOUT_SUCCESS });
+      } else {
+        // Invalid role or missing role
+        res.status(400).json({ message: "Invalid role specified for logout." });
+      }
     } catch (error) {
       res.status(500).json({ message: miscMessages.INTERNAL_SERVER_ERROR });
     }
