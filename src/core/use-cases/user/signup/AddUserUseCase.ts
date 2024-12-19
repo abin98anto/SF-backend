@@ -7,7 +7,7 @@ import { errorObjectCatch } from "../../../../shared/utils/errorObjectCatch";
 export class AddUserUseCase {
   constructor(private userRepository: UserRepositoryInterface) {}
 
-  async execute(userData: Omit<User, "_id" | "dateJoined">): Promise<User> {
+  async execute(userData: User): Promise<User> {
     try {
       const existingUser = await this.userRepository.findByEmail(
         userData.email
