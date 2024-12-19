@@ -5,8 +5,8 @@ import {
   userMessages,
 } from "../../../shared/constants/constants";
 import { User, UserRole } from "../../../core/entities/User";
-import { SendOTPUseCase } from "../../../core/use-cases/user/user-signup/SendOTPUseCase";
-import { VerifyOTPUseCase } from "../../../core/use-cases/user/user-signup/VerifyOTPUseCase";
+import { SendOTPUseCase } from "../../../core/use-cases/user/signup/SendOTPUseCase";
+import { VerifyOTPUseCase } from "../../../core/use-cases/user/signup/VerifyOTPUseCase";
 
 export class UserController {
   constructor(
@@ -28,8 +28,6 @@ export class UserController {
 
       const result = await this.sendOTPUseCase.execute(user);
 
-      console.log("Send OTP result:", result);
-
       if (result.data === userMessages.EMAIL_EXISTS) {
         res.status(200).json({ message: result.data });
       } else if (result.success) {
@@ -46,34 +44,26 @@ export class UserController {
   };
 
   verifyOTP = async (req: Request, res: Response): Promise<void> => {
-    // console.log("It's here!!!", req.body);
     const { email, otp } = req.body;
 
     const result = await this.verifyOTPUseCase.execute(email, otp);
 
-    // console.log("vOTP", result);
     if (result.success) {
-      // console.log("first");
       res.status(200).json({ success: true, message: result.message });
-      // console.log("W");
       return;
     } else {
       if (
         result.message === otpMessages.OTP_EXPIRED ||
         result.message === otpMessages.WRONG_OTP
       ) {
-        // console.log("Third");
         res.status(400).json({ success: true, error: result.message });
         return;
       } else {
-        // console.log("fourth");
         res
           .status(500)
           .json({ success: true, error: miscMessages.INTERNAL_SERVER_ERROR });
         return;
       }
     }
-    // res.status(400).json({ success: true, error: "nothing happened!" });
-    // return;
   };
 }

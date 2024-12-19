@@ -4,7 +4,7 @@ import {
   userMessages,
 } from "../../../shared/constants/constants";
 import { errorObjectCatch } from "../../../shared/utils/errorObjectCatch";
-import { LoginUseCase } from "../../../core/use-cases/user/user-login/LoginUseCase";
+import { LoginUseCase } from "../../../core/use-cases/user/login/LoginUseCase";
 import { JWTService } from "../../../infrastructure/external-services/JWTService";
 import { JwtPayload } from "../../../core/entities/JwtPayload";
 // import { UserRole } from "../../../core/entities/User";
@@ -52,7 +52,6 @@ export class AuthController {
           message: userMessages.LOGIN_SUCCESS,
           user: user,
         });
-      // console.log("logged in .....");
     } catch (error) {
       const errMsg =
         error instanceof Error
@@ -102,10 +101,8 @@ export class AuthController {
 
   logout = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { role } = req.body; // Expecting "user" or "tutor" in the request body
-      console.log("logging out....", req.body);
+      const { role } = req.body;
       if (role === "user") {
-        // Clear cookies for users
         res
           .clearCookie("userAccess", {
             httpOnly: true,
@@ -120,7 +117,6 @@ export class AuthController {
           .status(200)
           .json({ message: userMessages.LOGOUT_SUCCESS });
       } else if (role === "tutor") {
-        // Clear cookies for tutors
         res
           .clearCookie("tutorAccess", {
             httpOnly: true,
@@ -135,7 +131,6 @@ export class AuthController {
           .status(200)
           .json({ message: userMessages.LOGOUT_SUCCESS });
       } else {
-        // Invalid role or missing role
         res.status(400).json({ message: "Invalid role specified for logout." });
       }
     } catch (error) {

@@ -4,7 +4,7 @@ import {
   userMessages,
 } from "../../../shared/constants/constants";
 import { errorObjectCatch } from "../../../shared/utils/errorObjectCatch";
-import { LoginUseCase } from "../../../core/use-cases/user/user-login/LoginUseCase";
+import { LoginUseCase } from "../../../core/use-cases/user/login/LoginUseCase";
 import { JWTService } from "../../../infrastructure/external-services/JWTService";
 import { JwtPayload } from "../../../core/entities/JwtPayload";
 import { UserRole } from "../../../core/entities/User";
@@ -20,13 +20,13 @@ export class AdminAuthController {
 
   Login = async (req: Request, res: Response): Promise<void> => {
     try {
-    //   console.log("first");
+      //   console.log("first");
       const { email, password } = req.body;
 
       const { accessToken, refreshToken, user } =
         await this.loginUseCase.execute(email, password);
 
-    //   console.log("admin going in ", user);
+      //   console.log("admin going in ", user);
       if (user?.role !== UserRole.ADMIN) {
         res.status(403).json({ message: miscMessages.ACCESS_DENIED });
         return;

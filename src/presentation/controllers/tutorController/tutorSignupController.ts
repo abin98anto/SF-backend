@@ -6,8 +6,8 @@ import {
 } from "../../../shared/constants/constants";
 import { User, UserRole } from "../../../core/entities/User";
 import { errorObjectCatch } from "../../../shared/utils/errorObjectCatch";
-import { SendOTPUseCase } from "../../../core/use-cases/user/user-signup/SendOTPUseCase";
-import { VerifyOTPUseCase } from "../../../core/use-cases/user/user-signup/VerifyOTPUseCase";
+import { SendOTPUseCase } from "../../../core/use-cases/user/signup/SendOTPUseCase";
+import { VerifyOTPUseCase } from "../../../core/use-cases/user/signup/VerifyOTPUseCase";
 import { UserRepository } from "../../../infrastructure/repositories/UserRepository";
 
 export class TutorController {

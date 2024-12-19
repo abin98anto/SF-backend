@@ -1,7 +1,7 @@
 import experess from "express";
 
 import { AdminAuthController } from "../controllers/adminController/adminAuthController";
-import { LoginUseCase } from "../../core/use-cases/user/user-login/LoginUseCase";
+import { LoginUseCase } from "../../core/use-cases/user/login/LoginUseCase";
 import { JWTService } from "../../infrastructure/external-services/JWTService";
 import { UserRepository } from "../../infrastructure/repositories/UserRepository";
 import { verifyRefreshToken } from "../middleware/authMiddleware";

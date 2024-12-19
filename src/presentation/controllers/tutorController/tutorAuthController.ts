@@ -4,7 +4,7 @@ import {
   userMessages,
 } from "../../../shared/constants/constants";
 import { errorObjectCatch } from "../../../shared/utils/errorObjectCatch";
-import { LoginUseCase } from "../../../core/use-cases/user/user-login/LoginUseCase";
+import { LoginUseCase } from "../../../core/use-cases/user/login/LoginUseCase";
 import { JWTService } from "../../../infrastructure/external-services/JWTService";
 import { JwtPayload } from "../../../core/entities/JwtPayload";
 import { UserRole } from "../../../core/entities/User";
