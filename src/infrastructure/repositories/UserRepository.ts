@@ -18,22 +18,6 @@ export class UserRepository implements UserRepositoryInterface {
     return await UserModel.findById(id);
   }
 
-  // async updatee(user: User): Promise<User | null> {
-  //   return await UserModel.findOneAndUpdate({ _id: user._id }, user, {
-  //     new: true,
-  //   });
-  // }
-
-  // async update(
-  //   userData: Partial<User> & { _id: string }
-  // ): Promise<User | null> {
-  //   return await UserModel.findByIdAndUpdate(
-  //     userData._id,
-  //     { $set: userData },
-  //     { new: true }
-  //   );
-  // }
-
   async update(user: User): Promise<User | null> {
     console.log("in repo", user);
     return await UserModel.findByIdAndUpdate(
@@ -48,24 +32,6 @@ export class UserRepository implements UserRepositoryInterface {
   }
 
   async users(role: UserRole): Promise<User[]> {
-    // const res = await UserModel.find({ role: role });
-    // console.log("repo", role, res);
     return await UserModel.find({ role: role });
-  }
-
-  // async saveOTP(email: string, otp: string, expiration: Date): Promise<void> {
-  //   await UserModel.updateOne(
-  //     { email },
-  //     { otp, otpExpiration: expiration },
-  //     { upsert: true }
-  //   );
-  // }
-
-  async verifyOTP(email: string, otp: string): Promise<boolean> {
-    const user: User | null = await UserModel.findOne({ email });
-    if (!user || user.otp !== otp || user.otpExpiration! < new Date()) {
-      return false;
-    }
-    return true;
   }
 }
