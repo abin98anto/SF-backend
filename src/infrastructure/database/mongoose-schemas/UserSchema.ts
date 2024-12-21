@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { UserRole } from "../../../core/entities/User";
 import { SubscriptionType } from "../../../core/entities/User";
+import { userMessages } from "../../../shared/constants/constants";
 
 const ratingSchema = new Schema({
   userId: {
@@ -39,10 +40,7 @@ const userSchema = new Schema({
   },
   profilePicture: {
     type: String,
-    default: null,
-  },
-  resume: {
-    type: String,
+    default: userMessages.DEFAULT_PIC2,
   },
   subscription: {
     type: String,
@@ -50,21 +48,13 @@ const userSchema = new Schema({
     default: SubscriptionType.FREE,
     required: true,
   },
-  dateJoined: {
-    type: Date,
-    default: Date.now,
-  },
-  isActive: {
-    type: Boolean,
-    default: false,
-  },
-  otp: {
+  tutor: {
     type: String,
   },
-  otpExpiration: {
-    type: Date,
+  resume: {
+    type: String,
   },
-  ratings: {
+  tutorRatings: {
     type: [ratingSchema],
     default: [],
   },
@@ -83,6 +73,28 @@ const userSchema = new Schema({
   wallet: {
     type: Number,
     default: 0,
+  },
+  transactions: {
+    type: Array,
+    default: [],
+  },
+  isVerfied: {
+    type: Boolean,
+    default: false,
+  },
+  otp: {
+    type: String,
+  },
+  otpExpiration: {
+    type: Date,
+  },
+  dateJoined: {
+    type: Date,
+    default: Date.now,
+  },
+  isActive: {
+    type: Boolean,
+    default: false,
   },
 });
 

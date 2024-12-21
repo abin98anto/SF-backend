@@ -12,6 +12,8 @@ export const userMessages = {
   USER_NOT_FOUND: "User not found! Try signing up again.",
   DEFAULT_PICTURE:
     "https://res.cloudinary.com/dqjjysikb/image/upload/v1733894416/casual-life-3d-boy-sitting-at-the-desk-with-open-book_9_q7m5yv.jpg",
+  DEFAULT_PIC2:
+    "https://gravatar.com/avatar/27205e5c51cb03f862138b22bcb5dc20f94a342e744ff6df1b8dc8af3c865109?f=y",
 };
 
 export const otpMessages = {
