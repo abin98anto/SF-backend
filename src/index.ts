@@ -8,7 +8,7 @@ import { DatabaseConnection } from "./infrastructure/database/connection";
 import { miscMessages } from "./shared/constants/constants";
 import { errorHandler } from "./presentation/middleware/errorMiddleware";
 import userRouter from "./presentation/routes/userRoutes";
-import tutorRouter from "./presentation/routes/tutorRoutes";
+// import tutorRouter from "./presentation/routes/tutorRoutes";
 import adminRouter from "./presentation/routes/adminRoutes";
 import {
   requestLogger,
@@ -30,7 +30,7 @@ app.get("/", (req, res) => {
   res.send("Hello, Worlds!");
 });
 app.use("/", userRouter);
-app.use("/tutor", tutorRouter);
+// app.use("/tutor", tutorRouter);
 app.use("/admin", adminRouter);
 app.use(responseLogger);
 app.use(errorHandler);

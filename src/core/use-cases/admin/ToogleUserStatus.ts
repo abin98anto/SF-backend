@@ -12,10 +12,8 @@ export class ToogleUserStatus {
         return false;
       }
 
-      const updatedUser = await this.userRepository.update({
-        _id,
-        isActive: !user.isActive,
-      });
+      user.isActive = !user.isActive;
+      const updatedUser = await this.userRepository.update(user);
 
       return updatedUser !== null;
     } catch (error) {

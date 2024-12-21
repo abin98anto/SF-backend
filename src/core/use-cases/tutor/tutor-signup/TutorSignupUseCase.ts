@@ -29,8 +29,8 @@ export class TutorSignupUseCase {
       const { otp, expiresAt: expiration } = generateOTP();
       console.log("tutorSigupUseCase.ts >>> OTP : ", otp);
 
-      await this.userRepository.saveOTP(user.email, otp, expiration);
-      await this.emailService.sendOTP(user.email, otp);
+    //   await this.userRepository.saveOTP(user.email, otp, expiration);
+    //   await this.emailService.sendOTP(user.email, otp);
     } catch (error) {
       errorObjectCatch(error);
     }

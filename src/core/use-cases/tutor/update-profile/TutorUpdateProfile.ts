@@ -47,10 +47,7 @@ export class TutorUpdateProfile {
       const { _id, ...fieldsToUpdate } = updatedFields;
 
       // Update the database with only the changed fields
-      const updatedUser = await this.userRepository.update({
-        _id: user._id!, // Explicitly cast to string
-        ...fieldsToUpdate,
-      });
+      const updatedUser = await this.userRepository.update(user);
 
       // console.log("Updated user:", updatedUser);
     } catch (error) {

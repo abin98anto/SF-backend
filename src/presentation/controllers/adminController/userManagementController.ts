@@ -15,7 +15,7 @@ export class UserManagementController {
       // console.log("first");
       let result = await this.getUsersList.execute(UserRole.USER);
       // console.log("second", result);
-      res.status(200).json(result);
+      res.status(200).json({ data: result });
     } catch (error) {
       errorObjectCatch(error);
     }
