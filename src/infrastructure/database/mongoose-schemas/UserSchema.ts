@@ -78,7 +78,7 @@ const userSchema = new Schema({
     type: Array,
     default: [],
   },
-  isVerfied: {
+  isVerified: {
     type: Boolean,
     default: false,
   },
