@@ -2,7 +2,7 @@ import { errorObjectCatch } from "../../../shared/utils/errorObjectCatch";
 import { User, UserRole } from "../../entities/User";
 import { UserRepositoryInterface } from "../../interfaces/user/UserRepositoryInterface";
 
-export class GetUsersList {
+export class GetList {
   constructor(private userRepository: UserRepositoryInterface) {}
 
   async execute(role: UserRole): Promise<User[]> {
