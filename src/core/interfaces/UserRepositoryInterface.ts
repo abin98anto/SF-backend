@@ -1,4 +1,4 @@
-import { User, UserRole } from "../../entities/User";
+import { User, UserRole } from "../entities/User";
 
 export interface UserRepositoryInterface {
   add(user: User): Promise<User>;
