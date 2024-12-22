@@ -1,7 +1,7 @@
-export interface ICategory extends Document {
+export interface ICategory {
   _id?: string;
   name: string;
-  image?: string;
-  isActive: boolean;
-  createdAt: Date;
+  image: string;
+  isActive?: boolean;
+  createdAt?: Date;
 }

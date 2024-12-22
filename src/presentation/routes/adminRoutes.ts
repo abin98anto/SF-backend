@@ -12,11 +12,16 @@ import { TutorManagementController } from "../controllers/adminController/tutorM
 import { VerifyTutorUseCase } from "../../core/use-cases/admin/VerifyTutorUseCase";
 import { DenyTutorUseCase } from "../../core/use-cases/admin/DenyTutorUseCase";
 import { EmailService } from "../../infrastructure/external-services/EmailService";
-// import { TutorManagementController } from "../controllers/adminController/tutorManagementController";
+import { CategoryManagementController } from "../controllers/adminController/categoryManagementController";
+import { AddCategoryUseCase } from "../../core/use-cases/category/AddCategoryUseCase";
+import { CategoryRepositoryInterface } from "../../core/interfaces/CategoryRepositoryInterface";
+import { CategoryRepository } from "../../infrastructure/repositories/CategoryRepository";
+import { UserRepositoryInterface } from "../../core/interfaces/UserRepositoryInterface";
+import { UpdateCategoryUseCase } from "../../core/use-cases/category/UpdateCategoryUseCase";
 
 const adminRouter = experess.Router();
 
-const adminRepository = new UserRepository();
+const adminRepository: UserRepositoryInterface = new UserRepository();
 const jwtService = new JWTService();
 
 const loginUseCase = new LoginUseCase(adminRepository, jwtService);
@@ -29,7 +34,7 @@ const userManagementController = new UserManagementController(
   toogleUserStatus
 );
 
-const userRepository = new UserRepository();
+const userRepository: UserRepositoryInterface = new UserRepository();
 const emailService = new EmailService();
 const verifyTutorUseCase = new VerifyTutorUseCase(userRepository);
 const denyTutorUseCase = new DenyTutorUseCase(emailService, userRepository);
@@ -38,11 +43,16 @@ const tutorManagementController = new TutorManagementController(
   denyTutorUseCase
 );
 
-// const tutorManagementController = new TutorManagementController(
-//   getUsersList,
-//   toogleUserStatus
-// );
+const categoryRepository: CategoryRepositoryInterface =
+  new CategoryRepository();
+const addCategoryUseCase = new AddCategoryUseCase(categoryRepository);
+const updateCategoryUseCase = new UpdateCategoryUseCase(categoryRepository);
+const categoryManagementController = new CategoryManagementController(
+  addCategoryUseCase,
+  updateCategoryUseCase
+);
 
+// Admin Login.
 adminRouter.post("/login", adminAuthController.Login);
 adminRouter.post(
   "/refresh-token",
@@ -51,11 +61,17 @@ adminRouter.post(
 );
 adminRouter.post("/logout", adminAuthController.logout);
 
+// Management Routes.
 adminRouter.get("/list", userManagementController.list);
 adminRouter.patch("/toggle-status", userManagementController.userStatusToogle);
 adminRouter.patch("/update", tutorManagementController.VerifyTutor);
 adminRouter.post("/deny-tutor", tutorManagementController.DenyTutor);
 
-// adminRouter.get("/tutors", userManagementController.list);
+// Category Management.
+adminRouter.post("/add-category", categoryManagementController.AddCategory);
+adminRouter.patch(
+  "/update-category",
+  categoryManagementController.updateCategory
+);
 
 export default adminRouter;

@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 
-import { UserRepositoryInterface } from "../../../interfaces/user/UserRepositoryInterface";
+import { UserRepositoryInterface } from "../../../interfaces/UserRepositoryInterface";
 import { JWTService } from "../../../../infrastructure/external-services/JWTService";
 import { userMessages } from "../../../../shared/constants/constants";
 import { Token } from "../../../entities/Token";
