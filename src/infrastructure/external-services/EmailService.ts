@@ -1,12 +1,13 @@
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 import { errorObjectCatch } from "../../shared/utils/errorObjectCatch";
+import { EmailRepositoryInterface } from "../../core/interfaces/EmailRepositoryInterface";
 dotenv.config();
 
 const MAIL = process.env.MAIL;
 const MAIL_PASS = process.env.MAIL_PASS;
 
-export class EmailService {
+export class EmailService implements EmailRepositoryInterface {
   private transporter;
 
   constructor() {
@@ -35,4 +36,24 @@ export class EmailService {
       errorObjectCatch(error);
     }
   }
+
+  sendDenialEmail = async (email: string, name: string) => {
+    const transporter = nodemailer.createTransport({
+      service: "Gmail",
+      auth: {
+        user: MAIL,
+        pass: MAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: MAIL,
+      to: email,
+      subject: "Tutor Request Denied",
+      text: `Dear ${name},\n\nYour request to become a tutor has been denied.\n\nBest regards,\nThe SkillForge Team`,
+    };
+
+    transporter.sendMail(mailOptions);
+    return;
+  };
 }

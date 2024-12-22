@@ -29,6 +29,7 @@ export class SendOTPUseCase {
 
       console.log("SendOTPUseCase.ts >>> OTP : ", otp);
 
+      await this.emailService.sendOTP(user.email as string, user.otp);
       await this.userRepository.add(user);
 
       return { success: true };
