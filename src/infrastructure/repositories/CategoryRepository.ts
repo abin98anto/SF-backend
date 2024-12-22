@@ -16,4 +16,8 @@ export class CategoryRepository implements CategoryRepositoryInterface {
       { new: true }
     );
   }
+
+  async getCategories(): Promise<ICategory[]> {
+    return await CategoryModel.find();
+  }
 }

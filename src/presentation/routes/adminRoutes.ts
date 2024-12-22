@@ -18,6 +18,7 @@ import { CategoryRepositoryInterface } from "../../core/interfaces/CategoryRepos
 import { CategoryRepository } from "../../infrastructure/repositories/CategoryRepository";
 import { UserRepositoryInterface } from "../../core/interfaces/UserRepositoryInterface";
 import { UpdateCategoryUseCase } from "../../core/use-cases/category/UpdateCategoryUseCase";
+import { GetCategoriesUseCase } from "../../core/use-cases/category/GetCategoriesUseCase";
 
 const adminRouter = experess.Router();
 
@@ -45,11 +46,13 @@ const tutorManagementController = new TutorManagementController(
 
 const categoryRepository: CategoryRepositoryInterface =
   new CategoryRepository();
+const getCategoriesUseCase = new GetCategoriesUseCase(categoryRepository);
 const addCategoryUseCase = new AddCategoryUseCase(categoryRepository);
 const updateCategoryUseCase = new UpdateCategoryUseCase(categoryRepository);
 const categoryManagementController = new CategoryManagementController(
   addCategoryUseCase,
-  updateCategoryUseCase
+  updateCategoryUseCase,
+  getCategoriesUseCase
 );
 
 // Admin Login.
@@ -68,6 +71,7 @@ adminRouter.patch("/update", tutorManagementController.VerifyTutor);
 adminRouter.post("/deny-tutor", tutorManagementController.DenyTutor);
 
 // Category Management.
+adminRouter.get("/categories", categoryManagementController.GetCategories);
 adminRouter.post("/add-category", categoryManagementController.AddCategory);
 adminRouter.patch(
   "/update-category",

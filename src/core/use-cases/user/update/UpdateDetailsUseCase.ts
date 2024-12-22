@@ -1,6 +1,6 @@
 import { userMessages } from "../../../../shared/constants/constants";
 import { User } from "../../../entities/User";
-import { UserRepositoryInterface } from "../../../interfaces/user/UserRepositoryInterface";
+import { UserRepositoryInterface } from "../../../interfaces/UserRepositoryInterface";
 
 export class UpdateDetailsUseCase {
   constructor(private userRepository: UserRepositoryInterface) {}

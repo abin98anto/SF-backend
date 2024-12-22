@@ -1,4 +1,4 @@
-import { UserRepositoryInterface } from "../../../interfaces/user/UserRepositoryInterface";
+import { UserRepositoryInterface } from "../../../interfaces/UserRepositoryInterface";
 import { User } from "../../../entities/User";
 import { errorObjectCatch } from "../../../../shared/utils/errorObjectCatch";
 import { userMessages } from "../../../../shared/constants/constants";

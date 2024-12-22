@@ -1,5 +1,5 @@
 import { errorObjectCatch } from "../../../shared/utils/errorObjectCatch";
-import { UserRepositoryInterface } from "../../interfaces/user/UserRepositoryInterface";
+import { UserRepositoryInterface } from "../../interfaces/UserRepositoryInterface";
 
 export class VerifyTutorUseCase {
   constructor(private userRepository: UserRepositoryInterface) {}

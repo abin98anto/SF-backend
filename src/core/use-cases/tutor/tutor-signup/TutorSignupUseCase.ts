@@ -3,7 +3,7 @@ import { userMessages } from "../../../../shared/constants/constants";
 import { errorObjectCatch } from "../../../../shared/utils/errorObjectCatch";
 import { generateOTP } from "../../../../shared/utils/generateOTP";
 import { User, UserRole } from "../../../entities/User";
-import { UserRepositoryInterface } from "../../../interfaces/user/UserRepositoryInterface";
+import { UserRepositoryInterface } from "../../../interfaces/UserRepositoryInterface";
 import bcrypt from "bcrypt";
 
 export class TutorSignupUseCase {

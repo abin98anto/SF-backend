@@ -1,4 +1,4 @@
-import { UserRepositoryInterface } from "../../../interfaces/user/UserRepositoryInterface";
+import { UserRepositoryInterface } from "../../../interfaces/UserRepositoryInterface";
 import { otpMessages } from "../../../../shared/constants/constants";
 import { miscMessages } from "../../../../shared/constants/constants";
 import { errorObjectCatch } from "../../../../shared/utils/errorObjectCatch";
