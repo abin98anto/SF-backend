@@ -1,6 +1,6 @@
 import { errorObjectCatch } from "../../../shared/utils/errorObjectCatch";
 import { User, UserRole } from "../../entities/User";
-import { UserRepositoryInterface } from "../../interfaces/user/UserRepositoryInterface";
+import { UserRepositoryInterface } from "../../interfaces/UserRepositoryInterface";
 
 export class GetList {
   constructor(private userRepository: UserRepositoryInterface) {}

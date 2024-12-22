@@ -1,4 +1,4 @@
-import { UserRepositoryInterface } from "../../core/interfaces/user/UserRepositoryInterface";
+import { UserRepositoryInterface } from "../../core/interfaces/UserRepositoryInterface";
 import { User, UserRole } from "../../core/entities/User";
 import { UserModel } from "../database/mongoose-schemas/UserSchema";
 

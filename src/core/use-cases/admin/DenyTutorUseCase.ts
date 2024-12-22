@@ -1,5 +1,5 @@
 import { EmailRepositoryInterface } from "../../interfaces/EmailRepositoryInterface";
-import { UserRepositoryInterface } from "../../interfaces/user/UserRepositoryInterface";
+import { UserRepositoryInterface } from "../../interfaces/UserRepositoryInterface";
 
 export class DenyTutorUseCase {
   constructor(
