@@ -14,13 +14,15 @@ export class TutorSignupUseCase {
 
   async execute(user: User): Promise<void> {
     try {
-      const existingUser = await this.userRepository.findByEmail(user.email);
+      const existingUser = await this.userRepository.findByEmail(
+        user.email as string
+      );
 
       if (existingUser) {
         throw new Error(userMessages.EMAIL_EXISTS);
       }
 
-      user.password = await bcrypt.hash(user.password, 10);
+      user.password = await bcrypt.hash(user.password as string, 10);
       user.role = UserRole.TUTOR;
       user.isActive = false;
 
@@ -29,8 +31,8 @@ export class TutorSignupUseCase {
       const { otp, expiresAt: expiration } = generateOTP();
       console.log("tutorSigupUseCase.ts >>> OTP : ", otp);
 
-    //   await this.userRepository.saveOTP(user.email, otp, expiration);
-    //   await this.emailService.sendOTP(user.email, otp);
+      //   await this.userRepository.saveOTP(user.email, otp, expiration);
+      //   await this.emailService.sendOTP(user.email, otp);
     } catch (error) {
       errorObjectCatch(error);
     }

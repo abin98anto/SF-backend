@@ -42,6 +42,6 @@ userRouter.post(
 userRouter.post("/logout", verifyAccessToken, authController.logout);
 
 // User update.
-userRouter.put("/update", userUpdateController.updateUser);
+userRouter.patch("/update", userUpdateController.updateUser);
 
 export default userRouter;

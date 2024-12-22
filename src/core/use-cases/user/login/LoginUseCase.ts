@@ -5,6 +5,7 @@ import { JWTService } from "../../../../infrastructure/external-services/JWTServ
 import { userMessages } from "../../../../shared/constants/constants";
 import { Token } from "../../../entities/Token";
 import { JwtPayload } from "../../../entities/JwtPayload";
+import { UserRole } from "../../../entities/User";
 
 export class LoginUseCase {
   constructor(
@@ -19,12 +20,15 @@ export class LoginUseCase {
       throw new Error(userMessages.INVALID_CRED);
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await bcrypt.compare(
+      password,
+      user.password as string
+    );
     if (!isPasswordValid) {
       throw new Error(userMessages.INVALID_CRED);
     }
 
-    let arg: JwtPayload = { _id: user._id, role: user.role };
+    let arg: JwtPayload = { _id: user._id, role: user.role as UserRole };
 
     const accessToken = this.jwtService.generateAccessToken(arg);
     const refreshToken = this.jwtService.generateRefreshToken(arg);

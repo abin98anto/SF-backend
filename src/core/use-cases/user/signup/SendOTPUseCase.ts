@@ -14,13 +14,15 @@ export class SendOTPUseCase {
 
   async execute(user: User): Promise<{ success: boolean; data?: string }> {
     try {
-      const emailExists = await this.userRepository.findByEmail(user.email);
+      const emailExists = await this.userRepository.findByEmail(
+        user.email as string
+      );
 
       if (emailExists) {
         throw new Error(userMessages.EMAIL_EXISTS);
       }
 
-      user.password = await hashPassword(user.password);
+      user.password = await hashPassword(user.password as string);
       const { otp, expiresAt: expiration } = generateOTP();
       user.otp = otp;
       user.otpExpiration = expiration;

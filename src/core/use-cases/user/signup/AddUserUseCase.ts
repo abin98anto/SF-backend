@@ -10,14 +10,16 @@ export class AddUserUseCase {
   async execute(userData: User): Promise<User> {
     try {
       const existingUser = await this.userRepository.findByEmail(
-        userData.email
+        userData.email as string
       );
 
       if (existingUser) {
         throw new Error(userMessages.EMAIL_EXISTS);
       }
 
-      const hashedPassword = (await hashPassword(userData.password)).toString();
+      const hashedPassword = (
+        await hashPassword(userData.password as string)
+      ).toString();
 
       const newUser: User = {
         ...userData,
