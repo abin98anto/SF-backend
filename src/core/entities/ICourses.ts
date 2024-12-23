@@ -9,6 +9,7 @@ export interface Section {
 }
 
 export interface ICourse {
+  _id?: string;
   basicInfo: {
     title: string;
     subtitle: string;
