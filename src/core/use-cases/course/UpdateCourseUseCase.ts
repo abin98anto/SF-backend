@@ -1,6 +1,3 @@
-// import { ICourseRepository } from "../repositories/ICourseRepository";
-// import { ICourse } from "../entities/Course";
-
 import { ICourse } from "../../entities/ICourses";
 import { CourseRepositoryInterface } from "../../interfaces/CourseRepositoryInterface";
 

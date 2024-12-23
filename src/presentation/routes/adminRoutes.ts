@@ -19,6 +19,14 @@ import { CategoryRepository } from "../../infrastructure/repositories/CategoryRe
 import { UserRepositoryInterface } from "../../core/interfaces/UserRepositoryInterface";
 import { UpdateCategoryUseCase } from "../../core/use-cases/category/UpdateCategoryUseCase";
 import { GetCategoriesUseCase } from "../../core/use-cases/category/GetCategoriesUseCase";
+import { CreateCourse } from "../../core/use-cases/course/CreateCourseUseCase";
+import { CourseRepositoryInterface } from "../../core/interfaces/CourseRepositoryInterface";
+import { CourseRepository } from "../../infrastructure/repositories/CourseRepository";
+import { GetCourseById } from "../../core/use-cases/course/GetCourseUseCase";
+import { UpdateCourse } from "../../core/use-cases/course/UpdateCourseUseCase";
+import { DeleteCourse } from "../../core/use-cases/course/DeleteCourseUseCase";
+import { ListCourses } from "../../core/use-cases/course/ListCoursesUseCase";
+import { CourseManagementController } from "../controllers/adminController/courseManagementController";
 
 const adminRouter = experess.Router();
 
@@ -55,6 +63,20 @@ const categoryManagementController = new CategoryManagementController(
   getCategoriesUseCase
 );
 
+const courseRepository: CourseRepositoryInterface = new CourseRepository();
+const createCourseUseCase = new CreateCourse(courseRepository);
+const getByIdUseCase = new GetCourseById(courseRepository);
+const updateCourseUseCase = new UpdateCourse(courseRepository);
+const deleteCourseUseCase = new DeleteCourse(courseRepository);
+const listCourseUseCase = new ListCourses(courseRepository);
+const courseManagementController = new CourseManagementController(
+  createCourseUseCase,
+  getByIdUseCase,
+  updateCourseUseCase,
+  deleteCourseUseCase,
+  listCourseUseCase
+);
+
 // Admin Login.
 adminRouter.post("/login", adminAuthController.Login);
 adminRouter.post(
@@ -77,5 +99,12 @@ adminRouter.patch(
   "/update-category",
   categoryManagementController.updateCategory
 );
+
+// Course Management.
+adminRouter.post("/add-course", courseManagementController.create);
+adminRouter.get("/courses", courseManagementController.list);
+adminRouter.post("/get-course", courseManagementController.getById);
+adminRouter.put("/update-course", courseManagementController.update);
+adminRouter.delete("/delete-course", courseManagementController.delete);
 
 export default adminRouter;
