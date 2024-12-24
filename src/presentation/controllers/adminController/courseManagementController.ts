@@ -4,6 +4,7 @@ import { GetCourseById } from "../../../core/use-cases/course/GetCourseUseCase";
 import { UpdateCourse } from "../../../core/use-cases/course/UpdateCourseUseCase";
 import { DeleteCourse } from "../../../core/use-cases/course/DeleteCourseUseCase";
 import { ListCourses } from "../../../core/use-cases/course/ListCoursesUseCase";
+import mongoose from "mongoose";
 
 export class CourseManagementController {
   constructor(
@@ -16,8 +17,19 @@ export class CourseManagementController {
 
   create = async (req: Request, res: Response): Promise<void> => {
     try {
+      // console.log("first", req.body);
       const courseData = req.body;
-      await this.createCourse.execute(courseData);
+
+      console.log("heyo", courseData);
+      console.log("curicullum", courseData?.curriculum);
+
+      const course = {
+        basicInfo: courseData?.basicInfo,
+        advanceInfo: courseData?.advanceInfo,
+        curriculum: courseData?.curriculum?.sections,
+      };
+      console.log("first", course);
+      await this.createCourse.execute(course);
       res
         .status(201)
         .json({ success: true, message: "Course Added Sucssesfully." });

@@ -1,16 +1,23 @@
 import { Schema, model } from "mongoose";
-import { ICourse } from "../../../core/entities/ICourses";
+import { ICourse, Lesson, Section } from "../../../core/entities/ICourses";
+
+const LecturesSchema = new Schema<Lesson>({
+  name: String,
+  videoUrl: String,
+  pdfUrls: [String],
+});
+
+const SectionSchema = new Schema<Section>({
+  name: String,
+  lectures: [LecturesSchema],
+});
 
 const CourseSchema = new Schema<ICourse>(
   {
-    _id: String,
     basicInfo: {
       title: { type: String },
       subtitle: { type: String },
-      category: {
-        type: Schema.Types.ObjectId,
-        ref: "Category",
-      },
+      category: { type: String },
       topic: { type: String },
       language: { type: String },
       duration: { type: String },
@@ -19,19 +26,7 @@ const CourseSchema = new Schema<ICourse>(
       thumbnail: { type: String, default: null },
       description: { type: String },
     },
-    curriculum: {
-      sections: [
-        {
-          title: { type: String },
-          lessons: [
-            {
-              title: { type: String },
-              content: { type: String },
-            },
-          ],
-        },
-      ],
-    },
+    curriculum: [SectionSchema],
   },
   {
     timestamps: true,

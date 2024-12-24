@@ -1,11 +1,12 @@
 export interface Lesson {
-  title: string;
-  content: string;
+  name: string;
+  videoUrl: string;
+  pdfUrls: string[];
 }
 
 export interface Section {
-  title: string;
-  lessons: Lesson[];
+  name: string;
+  lectures: Lesson[];
 }
 
 export interface ICourse {
@@ -22,7 +23,5 @@ export interface ICourse {
     thumbnail: string | null;
     description: string;
   };
-  curriculum: {
-    sections: Section[];
-  };
+  curriculum: Section[];
 }

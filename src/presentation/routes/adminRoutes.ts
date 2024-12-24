@@ -33,9 +33,9 @@ const adminRouter = experess.Router();
 const adminRepository: UserRepositoryInterface = new UserRepository();
 const jwtService = new JWTService();
 
+// User Side.
 const loginUseCase = new LoginUseCase(adminRepository, jwtService);
 const adminAuthController = new AdminAuthController(loginUseCase, jwtService);
-
 const getUsersList = new GetList(adminRepository);
 const toogleUserStatus = new ToogleUserStatus(adminRepository);
 const userManagementController = new UserManagementController(
@@ -43,6 +43,7 @@ const userManagementController = new UserManagementController(
   toogleUserStatus
 );
 
+// Tutor Side.
 const userRepository: UserRepositoryInterface = new UserRepository();
 const emailService = new EmailService();
 const verifyTutorUseCase = new VerifyTutorUseCase(userRepository);
@@ -52,6 +53,7 @@ const tutorManagementController = new TutorManagementController(
   denyTutorUseCase
 );
 
+// Category Side.
 const categoryRepository: CategoryRepositoryInterface =
   new CategoryRepository();
 const getCategoriesUseCase = new GetCategoriesUseCase(categoryRepository);
@@ -63,6 +65,7 @@ const categoryManagementController = new CategoryManagementController(
   getCategoriesUseCase
 );
 
+// Course Side.
 const courseRepository: CourseRepositoryInterface = new CourseRepository();
 const createCourseUseCase = new CreateCourse(courseRepository);
 const getByIdUseCase = new GetCourseById(courseRepository);
