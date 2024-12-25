@@ -55,7 +55,9 @@ export class CourseManagementController {
   update = async (req: Request, res: Response): Promise<void> => {
     try {
       const updates = req.body;
+      console.log("the updates", updates);
       const updatedCourse = await this.updateCourse.execute(updates);
+      console.log("updated course", updatedCourse);
       if (!updatedCourse) {
         res.status(404).json({ success: false, message: "Course not found" });
       }

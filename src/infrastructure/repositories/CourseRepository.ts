@@ -13,7 +13,7 @@ export class CourseRepository implements CourseRepositoryInterface {
   }
 
   async updateCourse(updates: Partial<ICourse>): Promise<ICourse | null> {
-    return await Course.findByIdAndUpdate(updates, {
+    return await Course.findByIdAndUpdate(updates._id, updates, {
       new: true,
     }).exec();
   }
