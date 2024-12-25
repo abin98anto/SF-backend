@@ -27,6 +27,7 @@ const CourseSchema = new Schema<ICourse>(
       description: { type: String },
     },
     curriculum: [SectionSchema],
+    isActive: { type: Boolean, default: true },
   },
   {
     timestamps: true,

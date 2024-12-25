@@ -24,4 +24,5 @@ export interface ICourse {
     description: string;
   };
   curriculum: Section[];
+  isActive: Boolean;
 }
