@@ -106,7 +106,7 @@ adminRouter.patch(
 // Course Management.
 adminRouter.post("/add-course", courseManagementController.create);
 adminRouter.get("/courses", courseManagementController.list);
-adminRouter.post("/get-course", courseManagementController.getById);
+adminRouter.get("/get-course", courseManagementController.getById);
 adminRouter.put("/update-course", courseManagementController.update);
 adminRouter.delete("/delete-course", courseManagementController.delete);
 

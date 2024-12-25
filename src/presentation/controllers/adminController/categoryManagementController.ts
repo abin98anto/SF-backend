@@ -14,9 +14,9 @@ export class CategoryManagementController {
 
   GetCategories = async (req: Request, res: Response): Promise<void> => {
     try {
-      console.log("sleep");
+      // console.log("sleep");
       const categories = await this.getCategoriesUseCase.execute();
-      console.log("wakeup", categories);
+      // console.log("wakeup", categories);
       res.status(200).json({ success: true, data: categories });
     } catch (error) {
       console.log("error getting categories", error);
