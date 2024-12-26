@@ -1,6 +1,7 @@
 import { ICourse } from "../../core/entities/ICourses";
 import { CourseRepositoryInterface } from "../../core/interfaces/CourseRepositoryInterface";
 import { Course } from "../database/mongoose-schemas/CourseSchema";
+import { Document } from "mongoose";
 
 export class CourseRepository implements CourseRepositoryInterface {
   async createCourse(course: Partial<ICourse>): Promise<ICourse> {
@@ -12,93 +13,38 @@ export class CourseRepository implements CourseRepositoryInterface {
     return await Course.findById(_id).exec();
   }
 
-  // async updateCourse(updates: Partial<ICourse>): Promise<ICourse | null> {
-  //   return await Course.findByIdAndUpdate(updates._id, updates, {
-  //     new: true,
-  //   }).exec();
-  // }
-
-  // async updateCourse(updates: Partial<ICourse>): Promise<ICourse | null> {
-  //   const { _id, ...updateFields } = updates;
-
-  //   return await Course.findByIdAndUpdate(
-  //     _id,
-  //     { $set: updateFields },
-  //     { new: true }
-  //   ).exec();
-  // }
-
-  // async updateCourse(updates: Partial<ICourse>): Promise<ICourse | null> {
-  //   const updateObj: any = {};
-
-  //   // Handle top-level fields
-  //   for (const [key, value] of Object.entries(updates)) {
-  //     if (key !== "_id" && key !== "curriculum") {
-  //       updateObj[key] = value;
-  //     }
-  //   }
-
-  //   // Handle nested fields in basicInfo and advanceInfo
-  //   if (updates.basicInfo) {
-  //     for (const [key, value] of Object.entries(updates.basicInfo)) {
-  //       updateObj[`basicInfo.${key}`] = value;
-  //     }
-  //   }
-  //   if (updates.advanceInfo) {
-  //     for (const [key, value] of Object.entries(updates.advanceInfo)) {
-  //       updateObj[`advanceInfo.${key}`] = value;
-  //     }
-  //   }
-
-  //   // Handle curriculum updates
-  //   if (updates.curriculum) {
-  //     updateObj["curriculum"] = updates.curriculum;
-  //   }
-
-  //   return await Course.findByIdAndUpdate(
-  //     updates._id,
-  //     { $set: updateObj },
-  //     {
-  //       new: true,
-  //     }
-  //   ).exec();
-  // }
-
   async updateCourse(updates: Partial<ICourse>): Promise<ICourse | null> {
     if (!updates._id) {
       throw new Error("Course ID (_id) is required for updates.");
     }
 
-    const updateObj: any = {};
+    // Fetch the existing course
+    const existingCourse = await Course.findById(updates._id).exec();
+    if (!existingCourse) {
+      throw new Error("Course not found.");
+    }
 
-    // Update only the fields present in `updates`
+    // Update the fields present in `updates`
     for (const [key, value] of Object.entries(updates)) {
       if (value !== undefined && key !== "_id") {
         if (key === "basicInfo" || key === "advanceInfo") {
-          // Handle nested objects
           for (const [nestedKey, nestedValue] of Object.entries(
             value as Record<string, unknown>
           )) {
             if (nestedValue !== undefined) {
-              updateObj[`${key}.${nestedKey}`] = nestedValue;
+              (existingCourse[key] as any)[nestedKey] = nestedValue;
             }
           }
         } else if (key === "curriculum") {
-          // Handle curriculum array replacement
-          updateObj[key] = value;
+          existingCourse.curriculum = value as ICourse["curriculum"];
         } else {
-          // Handle top-level fields
-          updateObj[key] = value;
+          (existingCourse as any)[key] = value;
         }
       }
     }
 
-    // Perform the update
-    return await Course.findByIdAndUpdate(
-      updates._id,
-      { $set: updateObj },
-      { new: true } // Return the updated document
-    ).exec();
+    // Save the updated document
+    return await existingCourse.save();
   }
 
   async deleteCourse(_id: string): Promise<boolean> {
