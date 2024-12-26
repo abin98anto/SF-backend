@@ -66,4 +66,51 @@ export class UserController {
       }
     }
   };
+
+  //   googleLogin = async(req: Request, res: Response)=> {
+  //   const { credential, role } = req.body;
+
+  //   try {
+  //     // Verify the Google token
+  //     const ticket = await client.verifyIdToken({
+  //       idToken: credential,
+  //       audience: process.env.GOOGLE_CLIENT_ID
+  //     });
+
+  //     const payload = ticket.getPayload();
+
+  //      const user: User = {
+  //         name: payload.name,
+  //         email: payload.email,
+  //         password,
+  //         role,
+  //         profilePicture: userMessages.DEFAULT_PICTURE,
+  //         isActive: role === UserRole.USER,
+  //       };
+
+  //       const result = await this.sendOTPUseCase.execute(user);
+
+  //     // Create or update user in your database
+  //     const user = await User.findOneAndUpdate(
+  //       { email: payload.email },
+  //       {
+  //         name: payload.name,
+  //         email: payload.email,
+  //         profilePicture: payload.picture,
+  //         role: role
+  //       },
+  //       { upsert: true, new: true }
+  //     );
+
+  //     // Generate JWT or session token
+  //     const token = generateToken(user);
+
+  //     res.json({
+  //       user,
+  //       token
+  //     });
+  //   } catch (error) {
+  //     res.status(401).json({ message: 'Authentication failed' });
+  //   }
+  // });
 }

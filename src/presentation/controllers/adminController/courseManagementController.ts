@@ -37,7 +37,29 @@ export class CourseManagementController {
   getById = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.query;
-      // console.log("first", id);
+      console.log("first", id);
+      const course = await this.getCourseById.execute(id as string);
+      if (!course) {
+        res.status(404).json({ success: false, message: "Course not found" });
+      }
+      res
+        .status(200)
+        .json({ success: true, message: "Course Found.", data: course });
+    } catch (error) {
+      console.log("error finding course", error);
+      res
+        .status(400)
+        .json({ success: false, message: "Error Fetching Course." });
+    }
+  };
+
+  getByIdUsingPathParams = async (
+    req: Request,
+    res: Response
+  ): Promise<void> => {
+    try {
+      const { id } = req.params;
+      console.log("first", id);
       const course = await this.getCourseById.execute(id as string);
       if (!course) {
         res.status(404).json({ success: false, message: "Course not found" });
@@ -55,7 +77,9 @@ export class CourseManagementController {
 
   update = async (req: Request, res: Response): Promise<void> => {
     try {
+      const { id } = req.query;
       const updates = req.body;
+      updates._id = id;
       // console.log("the updates", updates);
       const updatedCourse = await this.updateCourse.execute(updates);
       // console.log("updated course", updatedCourse);

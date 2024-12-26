@@ -5,6 +5,7 @@ export class UpdateCourse {
   constructor(private courseRepository: CourseRepositoryInterface) {}
 
   async execute(updates: Partial<ICourse>): Promise<ICourse | null> {
+    console.log("updagessss", updates);
     if (!updates || Object.keys(updates).length === 0) {
       throw new Error("No updates provided.");
     }

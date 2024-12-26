@@ -13,6 +13,14 @@ import {
 } from "../middleware/authMiddleware";
 import { UserUpdateController } from "../controllers/userController/userUpdateController";
 import { UpdateDetailsUseCase } from "../../core/use-cases/user/update/UpdateDetailsUseCase";
+import { CourseRepository } from "../../infrastructure/repositories/CourseRepository";
+import { CreateCourse } from "../../core/use-cases/course/CreateCourseUseCase";
+import { GetCourseById } from "../../core/use-cases/course/GetCourseUseCase";
+import { UpdateCourse } from "../../core/use-cases/course/UpdateCourseUseCase";
+import { DeleteCourse } from "../../core/use-cases/course/DeleteCourseUseCase";
+import { ListCourses } from "../../core/use-cases/course/ListCoursesUseCase";
+import { CourseManagementController } from "../controllers/adminController/courseManagementController";
+import { CourseRepositoryInterface } from "../../core/interfaces/CourseRepositoryInterface";
 
 const userRouter = express.Router();
 
@@ -28,6 +36,21 @@ const userController = new UserController(sendOTPUseCase, verifyOTPUseCase);
 const authController = new AuthController(loginUseCase, jwtService);
 const userUpdateController = new UserUpdateController(updateDetailsUseCase);
 
+// Course Side.
+const courseRepository: CourseRepositoryInterface = new CourseRepository();
+const createCourseUseCase = new CreateCourse(courseRepository);
+const getByIdUseCase = new GetCourseById(courseRepository);
+const updateCourseUseCase = new UpdateCourse(courseRepository);
+const deleteCourseUseCase = new DeleteCourse(courseRepository);
+const listCourseUseCase = new ListCourses(courseRepository);
+const courseManagementController = new CourseManagementController(
+  createCourseUseCase,
+  getByIdUseCase,
+  updateCourseUseCase,
+  deleteCourseUseCase,
+  listCourseUseCase
+);
+
 // User signup.
 userRouter.post("/send-otp", userController.sendOTP);
 userRouter.post("/verify-otp", userController.verifyOTP);
@@ -39,9 +62,19 @@ userRouter.post(
   verifyRefreshToken,
   authController.refreshAccessToken
 );
-userRouter.post("/logout", verifyAccessToken, authController.logout);
+
+// Google Login
+// userRouter.post("/auth/google", userController.);
+
+userRouter.post("/logout", authController.logout);
 
 // User update.
-userRouter.patch("/update", userUpdateController.updateUser);
+userRouter.patch("/update", verifyAccessToken, userUpdateController.updateUser);
 
+// Course Routes
+userRouter.get("/courses", courseManagementController.list);
+userRouter.get(
+  "/course/:id",
+  courseManagementController.getByIdUsingPathParams
+);
 export default userRouter;
