@@ -75,11 +75,34 @@ export class CourseManagementController {
     }
   };
 
+  changeStatus = async (req: Request, res: Response): Promise<void> => {
+    try {
+      // const { id } = req.query;
+      const updates = req.body;
+      console.log("upda controller", updates);
+      // updates._id = id;
+      // console.log("the updates", updates);
+      const updatedCourse = await this.updateCourse.execute(updates);
+      // console.log("updated course", updatedCourse);
+      if (!updatedCourse) {
+        res.status(404).json({ success: false, message: "Course not found" });
+      }
+      res
+        .status(200)
+        .json({ success: true, message: "Course Updated Sucssesfully." });
+    } catch (error) {
+      console.log("error updating course", error);
+      res
+        .status(400)
+        .json({ success: false, message: "Error Updating Course." });
+    }
+  };
+
   update = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.query;
       const updates = req.body;
-      console.log("upda controller", updates?.curriculum);
+      console.log("upda controller", updates);
       updates._id = id;
       // console.log("the updates", updates);
       const updatedCourse = await this.updateCourse.execute(updates);

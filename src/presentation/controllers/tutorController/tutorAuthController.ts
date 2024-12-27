@@ -24,7 +24,6 @@ export class TutorAuthController {
 
       const { accessToken, refreshToken, user } =
         await this.loginUseCase.execute(email, password);
-
       if (user?.role !== UserRole.TUTOR) {
         res.status(403).json({ message: miscMessages.ACCESS_DENIED });
         return;

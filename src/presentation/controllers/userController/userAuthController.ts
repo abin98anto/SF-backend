@@ -25,7 +25,7 @@ export class AuthController {
       const { accessToken, refreshToken, user } =
         await this.loginUseCase.execute(email, password);
 
-      console.log("first", user);
+      // console.log("first", user);
       if (user?.isActive === false) {
         res.status(403).json({ message: miscMessages.ACCESS_DENIED });
         return;

@@ -113,6 +113,7 @@ adminRouter.post("/add-course", courseManagementController.create);
 adminRouter.get("/courses", courseManagementController.list);
 adminRouter.get("/get-course", courseManagementController.getById);
 adminRouter.put("/update-course", courseManagementController.update);
+adminRouter.put("/change-status", courseManagementController.changeStatus);
 adminRouter.delete("/delete-course", courseManagementController.delete);
 
 export default adminRouter;

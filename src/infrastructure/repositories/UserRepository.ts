@@ -27,6 +27,21 @@ export class UserRepository implements UserRepositoryInterface {
     );
   }
 
+  // async update(user: User): Promise<User | null> {
+  //   console.log("in repo", user);
+  //   return await UserModel.findByIdAndUpdate(
+  //     user._id,
+  //     {
+  //       $set: user,
+  //       $setOnInsert: user,
+  //     },
+  //     {
+  //       new: true,
+  //       upsert: false,
+  //     }
+  //   );
+  // }
+
   async delete(id: string): Promise<void> {
     await UserModel.findByIdAndDelete(id);
   }

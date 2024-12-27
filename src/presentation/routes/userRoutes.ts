@@ -69,7 +69,7 @@ userRouter.post(
 userRouter.post("/logout", authController.logout);
 
 // User update.
-userRouter.patch("/update", verifyAccessToken, userUpdateController.updateUser);
+userRouter.patch("/update",  userUpdateController.updateUser);
 
 // Course Routes
 userRouter.get("/courses", courseManagementController.list);

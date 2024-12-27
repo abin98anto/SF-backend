@@ -39,7 +39,7 @@ tutorRouter.post("/signup", tutorController.sendOTP);
 tutorRouter.post("/verify-otp", tutorController.verifyOTP);
 
 // tutor login.
-tutorRouter.post("/login", verifyTutorToken, tutorAuthController.Login);
+tutorRouter.post("/login", tutorAuthController.Login);
 tutorRouter.post(
   "/refresh-token",
   verifyRefreshToken,
