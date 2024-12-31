@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "types": ["node", "express"],
     "target": "ESNext",
     "module": "CommonJS",
     "outDir": "./dist",

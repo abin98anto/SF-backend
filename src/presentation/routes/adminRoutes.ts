@@ -1,4 +1,4 @@
-import experess from "express";
+import express from "express";
 
 import { AdminAuthController } from "../controllers/adminController/adminAuthController";
 import { LoginUseCase } from "../../core/use-cases/user/login/LoginUseCase";
@@ -30,8 +30,16 @@ import { UpdateCourse } from "../../core/use-cases/course/UpdateCourseUseCase";
 import { DeleteCourse } from "../../core/use-cases/course/DeleteCourseUseCase";
 import { ListCourses } from "../../core/use-cases/course/ListCoursesUseCase";
 import { CourseManagementController } from "../controllers/adminController/courseManagementController";
+import { SubscriptionRepositoryInterface } from "../../core/interfaces/SubscriptionRepositoryInterface";
+import { SubscriptionRepository } from "../../infrastructure/repositories/SubscriptionRepository";
+import { AddNewPlanUseCase } from "../../core/use-cases/Subscription/AddNewPlanUseCase";
+import { UpdateSubscriptionUseCase } from "../../core/use-cases/Subscription/UpdateSubscriptionUseCase";
+import { DeleteSubscriptionUseCase } from "../../core/use-cases/Subscription/DeleteSubscriptionUseCase";
+import { GetAllSubscriptionUseCase } from "../../core/use-cases/Subscription/GetAllSubscriptionsUseCase";
+import { GetSubscriptionDetailsUseCase } from "../../core/use-cases/Subscription/GetSubscriptionDetailsUseCase";
+import { SubscriptionManagementController } from "../controllers/adminController/subscriptionManagementController";
 
-const adminRouter = experess.Router();
+const adminRouter = express.Router();
 
 const adminRepository: UserRepositoryInterface = new UserRepository();
 const jwtService = new JWTService();
@@ -83,6 +91,30 @@ const courseManagementController = new CourseManagementController(
   listCourseUseCase
 );
 
+// Subscription Side.
+const subscriptionRepository: SubscriptionRepositoryInterface =
+  new SubscriptionRepository();
+const addNewPlanUseCase = new AddNewPlanUseCase(subscriptionRepository);
+const updateSubscriptionUseCase = new UpdateSubscriptionUseCase(
+  subscriptionRepository
+);
+const deleteSubscriptionUseCase = new DeleteSubscriptionUseCase(
+  subscriptionRepository
+);
+const getAllSubscriptionUseCase = new GetAllSubscriptionUseCase(
+  subscriptionRepository
+);
+const getSubscriptionDetailsUseCase = new GetSubscriptionDetailsUseCase(
+  subscriptionRepository
+);
+const subscriptionManagementController = new SubscriptionManagementController(
+  addNewPlanUseCase,
+  updateSubscriptionUseCase,
+  deleteSubscriptionUseCase,
+  getAllSubscriptionUseCase,
+  getSubscriptionDetailsUseCase
+);
+
 // Admin Login.
 adminRouter.post("/login", adminAuthController.Login);
 adminRouter.post(
@@ -115,5 +147,24 @@ adminRouter.get("/get-course", courseManagementController.getById);
 adminRouter.put("/update-course", courseManagementController.update);
 adminRouter.put("/change-status", courseManagementController.changeStatus);
 adminRouter.delete("/delete-course", courseManagementController.delete);
+
+// Subscription Management.
+adminRouter.get("/subscriptions", subscriptionManagementController.getAllPlans);
+adminRouter.post(
+  "/create-subscription",
+  subscriptionManagementController.addNewPlan
+);
+adminRouter.put(
+  "/update-subscription",
+  subscriptionManagementController.updatePlan
+);
+adminRouter.delete(
+  "/delete-subscription",
+  subscriptionManagementController.deletePlan
+);
+adminRouter.get(
+  "/subscription-details",
+  subscriptionManagementController.getPlanDetails
+);
 
 export default adminRouter;
