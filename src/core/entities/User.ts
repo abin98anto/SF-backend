@@ -10,6 +10,13 @@ export enum SubscriptionType {
   ANNUAL = "annual",
 }
 
+export interface Subscription {
+  type: SubscriptionType;
+  startDate: Date;
+  endDate: Date;
+  cancelledDate: Date;
+}
+
 export class User {
   constructor(
     public _id?: string | null,
@@ -18,7 +25,7 @@ export class User {
     public password?: string,
     public role?: UserRole,
     public profilePicture?: string | null | undefined,
-    public subscription?: SubscriptionType,
+    public subscription?: Subscription,
     public tutor?: string,
     public resume?: string | null | undefined,
     public tutorRatings?: [],
@@ -31,6 +38,6 @@ export class User {
     public otp?: string | null | undefined,
     public otpExpiration?: Date | null | undefined,
     public dateJoined?: Date,
-    public isActive?: boolean // public body?: object | null | undefined,
+    public isActive?: boolean
   ) {}
 }
