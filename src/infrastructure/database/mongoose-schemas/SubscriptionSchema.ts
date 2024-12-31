@@ -3,12 +3,13 @@ import { prices } from "../../../core/entities/Subscription";
 
 const subscriptionSchema = new Schema(
   {
-    name: { type: String },
-    description: { type: String },
-    features: { type: [] },
-    pricing: { type: prices },
-    discount: { type: Number },
+    name: { type: String, required: true },
+    description: { type: String, required: true, default: "" },
+    features: { type: [String], required: true },
+    pricing: { type: Object, required: true },
+    discount: { type: Number, default: 0 },
     discountValidUntil: { type: Date },
+    isActive: { type: Boolean, default: true },
   },
   {
     timestamps: true,

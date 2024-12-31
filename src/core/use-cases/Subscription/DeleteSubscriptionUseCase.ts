@@ -1,16 +1,17 @@
+import mongoose, { Mongoose } from "mongoose";
 import SubscriptionPlan from "../../entities/Subscription";
 import { SubscriptionRepositoryInterface } from "../../interfaces/SubscriptionRepositoryInterface";
 
-export class AddNewPlanUseCase {
+export class DeleteSubscriptionUseCase {
   constructor(
     private subscriptionRepository: SubscriptionRepositoryInterface
   ) {}
 
-  async execute(plan: SubscriptionPlan) {
+  async execute(id: mongoose.Types.ObjectId) {
     try {
-      return await this.subscriptionRepository.add(plan);
+      return await this.subscriptionRepository.delete(id);
     } catch (error) {
-      console.log("error creating new subscription plan", error);
+      console.log("error deleting subscription", error);
     }
   }
 }
