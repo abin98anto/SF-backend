@@ -17,6 +17,7 @@ export class SubscriptionManagementController {
 
   addNewPlan = async (req: Request, res: Response): Promise<void> => {
     try {
+      console.log("in the controller", req.body);
       const result = await this.addSubscription.execute(req.body);
       res.status(201).json({ success: true, data: result });
     } catch (error) {
