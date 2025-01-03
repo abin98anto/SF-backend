@@ -5,7 +5,6 @@ import { LoginUseCase } from "../../core/use-cases/user/login/LoginUseCase";
 import { JWTService } from "../../infrastructure/external-services/JWTService";
 import { UserRepository } from "../../infrastructure/repositories/UserRepository";
 import {
-  verifyAdminToken,
   verifyRefreshToken,
 } from "../middleware/authMiddleware";
 import { UserManagementController } from "../controllers/adminController/userManagementController";
