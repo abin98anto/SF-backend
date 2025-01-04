@@ -17,7 +17,6 @@ export class SubscriptionManagementController {
 
   addNewPlan = async (req: Request, res: Response): Promise<void> => {
     try {
-      console.log("in the controller", req.body);
       const result = await this.addSubscription.execute(req.body);
       res.status(201).json({ success: true, data: result });
     } catch (error) {
@@ -38,7 +37,7 @@ export class SubscriptionManagementController {
 
       const objectId = new mongoose.Types.ObjectId(id);
       const result = await this.updateSubscription.execute({
-        id: objectId,
+        _id: objectId,
         ...req.body,
       });
       res.status(200).json({ success: true, data: result });
