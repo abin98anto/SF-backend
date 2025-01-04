@@ -2,6 +2,7 @@ import { UserRepositoryInterface } from "../../../interfaces/UserRepositoryInter
 import { otpMessages } from "../../../../shared/constants/constants";
 import { miscMessages } from "../../../../shared/constants/constants";
 import { errorObjectCatch } from "../../../../shared/utils/errorObjectCatch";
+import { UserRole } from "../../../entities/User";
 
 export class VerifyOTPUseCase {
   constructor(private userRepository: UserRepositoryInterface) {}
@@ -24,7 +25,9 @@ export class VerifyOTPUseCase {
         return { success: false, message: otpMessages.OTP_EXPIRED };
       }
 
-      user.isActive = false;
+      user.role === UserRole.USER
+        ? (user.isActive = true)
+        : (user.isActive = false);
       user.otp = null;
       user.otpExpiration = null;
       await this.userRepository.update(user);

@@ -23,7 +23,7 @@ export class UserController {
         password,
         role,
         profilePicture: userMessages.DEFAULT_PICTURE,
-        isActive: role === UserRole.USER,
+        // isActive: role === UserRole.USER,
       };
 
       const result = await this.sendOTPUseCase.execute(user);

@@ -6,8 +6,8 @@ export enum UserRole {
 
 export enum SubscriptionType {
   FREE = "free",
-  MONTHLY = "monthly",
-  ANNUAL = "annual",
+  BASIC = "basic",
+  PRO = "pro",
 }
 
 export interface Subscription {
