@@ -1,6 +1,9 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { UserRole } from "../../../core/entities/User";
-import { SubscriptionType } from "../../../core/entities/User";
+import {
+  Subscription,
+  SubscriptionType,
+  UserRole,
+} from "../../../core/entities/User";
 import { userMessages } from "../../../shared/constants/constants";
 
 const ratingSchema = new Schema({
@@ -17,6 +20,23 @@ const ratingSchema = new Schema({
   comments: {
     type: String,
     default: "",
+  },
+});
+
+const subscriptionSchema = new Schema({
+  type: {
+    type: String,
+    enum: SubscriptionType,
+    required: true,
+  },
+  startDate: {
+    type: Date,
+  },
+  endDate: {
+    type: Date,
+  },
+  cancelledDate: {
+    type: Date,
   },
 });
 
@@ -43,9 +63,8 @@ const userSchema = new Schema({
     default: userMessages.DEFAULT_PIC2,
   },
   subscription: {
-    type: String,
-    enum: Object.values(SubscriptionType),
-    default: SubscriptionType.FREE,
+    type: subscriptionSchema,
+    default: () => ({ type: SubscriptionType.FREE }),
     required: true,
   },
   tutor: {

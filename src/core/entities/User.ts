@@ -5,16 +5,18 @@ export enum UserRole {
 }
 
 export enum SubscriptionType {
-  FREE = "free",
-  BASIC = "basic",
-  PRO = "pro",
+  FREE = "Free",
+  BASIC = "Basic",
+  PRO = "Pro",
 }
 
-export interface Subscription {
-  type: SubscriptionType;
-  startDate: Date;
-  endDate: Date;
-  cancelledDate: Date;
+export class Subscription {
+  constructor(
+    public type: SubscriptionType,
+    public startDate?: Date,
+    public endDate?: Date,
+    public cancelledDate?: Date
+  ) {}
 }
 
 export class User {
