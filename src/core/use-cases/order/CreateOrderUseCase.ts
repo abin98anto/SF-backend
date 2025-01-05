@@ -1,7 +1,7 @@
 import Order from "../../entities/Order";
 import { OrderRepositoryInterface } from "../../interfaces/OrderRepositoryInterface";
 
-export class CreateOrder {
+export class CreateOrderUseCase {
   constructor(private orderRepository: OrderRepositoryInterface) {}
 
   async execute(order: Order) {
