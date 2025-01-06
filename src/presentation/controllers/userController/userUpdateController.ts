@@ -6,9 +6,8 @@ export class UserUpdateController {
 
   updateUser = async (req: Request, res: Response): Promise<void> => {
     try {
-      // console.log("heart foundation.", req.body);
+      // console.log("its in the backend!!");
       const updateData = req.body;
-      // console.log("first,", updateData);
 
       if (!updateData) {
         res.status(400).send("Missing updateData in request body!");
@@ -22,10 +21,8 @@ export class UserUpdateController {
       }
 
       const user = { ...updateData, _id: id };
-
       const result = await this.updateDetailsUseCase.execute(user);
 
-      // console.log("update result", result);
       res
         .status(200)
         .json({ message: "User updation successful!", user: result });

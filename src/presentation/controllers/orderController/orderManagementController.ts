@@ -13,10 +13,27 @@ export class OrderManagementController {
 
   addOrder = async (req: Request, res: Response) => {
     try {
-      const result = await this.createOrder.execute(req.body);
-      res.status(201).json({ success: true, data: result });
+      const { userId, item, amount, paymentId, orderId } = req.body;
+
+      const order = await this.createOrder.execute({
+        userId,
+        item,
+        amount,
+        razorpayPaymentId: paymentId,
+        razorpayOrderId: orderId,
+        status: "completed",
+      });
+
+      res.status(201).json({
+        success: true,
+        order,
+      });
     } catch (error) {
-      res.status(500).json({ success: false, error: error });
+      res.status(500).json({
+        success: false,
+        message: "Error creating order",
+        error: error instanceof Error ? error.message : "Unknown error",
+      });
     }
   };
 

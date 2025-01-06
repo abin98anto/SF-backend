@@ -24,7 +24,7 @@ const ratingSchema = new Schema({
 });
 
 const subscriptionSchema = new Schema({
-  type: {
+  name: {
     type: String,
     enum: SubscriptionType,
     required: true,

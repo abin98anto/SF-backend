@@ -12,10 +12,10 @@ export enum SubscriptionType {
 
 export class Subscription {
   constructor(
-    public type: SubscriptionType,
+    public name: String,
     public startDate?: Date,
     public endDate?: Date,
-    public cancelledDate?: Date
+    // public cancelledDate?: Date
   ) {}
 }
 
