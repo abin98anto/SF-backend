@@ -40,6 +40,15 @@ const subscriptionSchema = new Schema({
   },
 });
 
+const coursesEnrolledSchema = new Schema({
+  courseId: String,
+  tutorId: String,
+  lastCompletedChapter: Array,
+  progressPercentage: Number,
+  startDate: Date,
+  EndDate: Date || null,
+});
+
 const userSchema = new Schema({
   name: {
     type: String,
@@ -64,8 +73,6 @@ const userSchema = new Schema({
   },
   subscription: {
     type: subscriptionSchema,
-    default: () => ({ type: SubscriptionType.FREE }),
-    required: true,
   },
   tutor: {
     type: String,
@@ -115,6 +122,7 @@ const userSchema = new Schema({
     type: Boolean,
     default: true,
   },
+  coursesEnrolled: { type: [coursesEnrolledSchema], default: [] },
 });
 
 userSchema.index({ otpExpiration: 1 }, { expireAfterSeconds: 0 });

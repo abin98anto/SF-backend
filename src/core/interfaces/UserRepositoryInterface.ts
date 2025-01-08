@@ -7,4 +7,6 @@ export interface UserRepositoryInterface {
   update(user: User): Promise<User | null>;
   delete(id: string): Promise<void>;
   users(role: UserRole): Promise<User[]>;
+  isCourseEnrolled(userId: string, courseId: string): Promise<boolean>;
+  addCourseToUser(userId: string, course: any): Promise<void>;
 }

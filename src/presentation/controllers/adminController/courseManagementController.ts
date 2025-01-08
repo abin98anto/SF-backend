@@ -37,7 +37,7 @@ export class CourseManagementController {
   getById = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.query;
-      console.log("first", id);
+      // console.log("first", req.query);
       const course = await this.getCourseById.execute(id as string);
       if (!course) {
         res.status(404).json({ success: false, message: "Course not found" });

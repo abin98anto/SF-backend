@@ -33,4 +33,20 @@ export class UserRepository implements UserRepositoryInterface {
   async users(role: UserRole): Promise<User[]> {
     return await UserModel.find({ role: role });
   }
+
+  async isCourseEnrolled(userId: string, courseId: string): Promise<boolean> {
+    const user = await UserModel.findById(userId);
+    if (!user) throw new Error("User not found");
+    return user.coursesEnrolled.some(
+      (course: any) => course.courseId === courseId
+    );
+  }
+
+  async addCourseToUser(userId: string, course: any): Promise<void> {
+    await UserModel.findByIdAndUpdate(
+      userId,
+      { $push: { coursesEnrolled: course } },
+      { new: true }
+    );
+  }
 }

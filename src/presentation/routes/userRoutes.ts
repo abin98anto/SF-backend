@@ -21,6 +21,7 @@ import { DeleteCourse } from "../../core/use-cases/course/DeleteCourseUseCase";
 import { ListCourses } from "../../core/use-cases/course/ListCoursesUseCase";
 import { CourseManagementController } from "../controllers/adminController/courseManagementController";
 import { CourseRepositoryInterface } from "../../core/interfaces/CourseRepositoryInterface";
+import { EnrollCourseUseCase } from "../../core/use-cases/course/EnrollCourseUseCase";
 
 const userRouter = express.Router();
 
@@ -28,13 +29,17 @@ const userRepository = new UserRepository();
 const emailService = new EmailService();
 const jwtService = new JWTService();
 
+const enrollCourseUseCase = new EnrollCourseUseCase(userRepository);
 const updateDetailsUseCase = new UpdateDetailsUseCase(userRepository);
 const loginUseCase = new LoginUseCase(userRepository, jwtService);
 const sendOTPUseCase = new SendOTPUseCase(userRepository, emailService);
 const verifyOTPUseCase = new VerifyOTPUseCase(userRepository);
 const userController = new UserController(sendOTPUseCase, verifyOTPUseCase);
 const authController = new AuthController(loginUseCase, jwtService);
-const userUpdateController = new UserUpdateController(updateDetailsUseCase);
+const userUpdateController = new UserUpdateController(
+  updateDetailsUseCase,
+  enrollCourseUseCase
+);
 
 // Course Side.
 const courseRepository: CourseRepositoryInterface = new CourseRepository();
@@ -69,7 +74,8 @@ userRouter.post(
 userRouter.post("/logout", authController.logout);
 
 // User update.
-userRouter.patch("/update",  userUpdateController.updateUser);
+userRouter.patch("/update", userUpdateController.updateUser);
+userRouter.patch("/course-enroll", userUpdateController.enrollCourse);
 
 // Course Routes
 userRouter.get("/courses", courseManagementController.list);

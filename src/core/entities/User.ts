@@ -14,8 +14,18 @@ export class Subscription {
   constructor(
     public name: String,
     public startDate?: Date,
-    public endDate?: Date,
-    // public cancelledDate?: Date
+    public endDate?: Date
+  ) {}
+}
+
+export class CoursesEnrolled {
+  constructor(
+    public courseId: string,
+    public tutorId: string,
+    public lastCompletedChapter: number[],
+    public progressPercentage: number,
+    public startDate: Date,
+    public endDate: Date | null
   ) {}
 }
 
@@ -40,6 +50,7 @@ export class User {
     public otp?: string | null | undefined,
     public otpExpiration?: Date | null | undefined,
     public dateJoined?: Date,
-    public isActive?: boolean
+    public isActive?: boolean,
+    public coursesEnrolled?: CoursesEnrolled[]
   ) {}
 }
