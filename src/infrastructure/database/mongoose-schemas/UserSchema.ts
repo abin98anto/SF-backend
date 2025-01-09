@@ -43,7 +43,7 @@ const subscriptionSchema = new Schema({
 const coursesEnrolledSchema = new Schema({
   courseId: String,
   tutorId: String,
-  lastCompletedChapter: Array,
+  completedChapters: Array,
   progressPercentage: Number,
   startDate: Date,
   EndDate: Date || null,

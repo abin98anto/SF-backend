@@ -17,17 +17,19 @@ export class AddUserUseCase {
         throw new Error(userMessages.EMAIL_EXISTS);
       }
 
-      const hashedPassword = (
-        await hashPassword(userData.password as string)
-      ).toString();
+      if (userData.password) {
+        const hashedPassword = (
+          await hashPassword(userData.password as string)
+        ).toString();
 
-      const newUser: User = {
-        ...userData,
-        password: hashedPassword,
-        dateJoined: new Date(),
-      };
-
-      return await this.userRepository.add(newUser);
+        const newUser: User = {
+          ...userData,
+          password: hashedPassword,
+          dateJoined: new Date(),
+        };
+        return await this.userRepository.add(newUser);
+      }
+      return await this.userRepository.add(userData);
     } catch (error) {
       errorObjectCatch(error);
       return userData;

@@ -7,11 +7,16 @@ import {
 import { User, UserRole } from "../../../core/entities/User";
 import { SendOTPUseCase } from "../../../core/use-cases/user/signup/SendOTPUseCase";
 import { VerifyOTPUseCase } from "../../../core/use-cases/user/signup/VerifyOTPUseCase";
+import { GoogleAuthUseCase } from "../../../core/use-cases/user/signup/GoogleAuthUseCase";
+import { OAuth2Client } from "google-auth-library";
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 export class UserController {
   constructor(
     private sendOTPUseCase: SendOTPUseCase,
-    private verifyOTPUseCase: VerifyOTPUseCase
+    private verifyOTPUseCase: VerifyOTPUseCase,
+    private googleAuthUseCase: GoogleAuthUseCase
   ) {}
 
   sendOTP = async (req: Request, res: Response): Promise<void> => {
@@ -64,6 +69,24 @@ export class UserController {
           .json({ success: true, error: miscMessages.INTERNAL_SERVER_ERROR });
         return;
       }
+    }
+  };
+
+  GoogleSignIn = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { token } = req.body;
+
+      if (!token) {
+        res.status(400).json({ error: "Token is required" });
+        return;
+      }
+
+      const response = await this.googleAuthUseCase.execute(token);
+
+      res.status(200).json(response);
+    } catch (error) {
+      console.log("google sign in error", error);
+      res.status(401).json({ error: "Authentication failed" });
     }
   };
 

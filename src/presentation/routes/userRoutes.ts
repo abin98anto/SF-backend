@@ -22,19 +22,32 @@ import { ListCourses } from "../../core/use-cases/course/ListCoursesUseCase";
 import { CourseManagementController } from "../controllers/adminController/courseManagementController";
 import { CourseRepositoryInterface } from "../../core/interfaces/CourseRepositoryInterface";
 import { EnrollCourseUseCase } from "../../core/use-cases/course/EnrollCourseUseCase";
+import { GoogleAuthUseCase } from "../../core/use-cases/user/signup/GoogleAuthUseCase";
+import { GoogleAuthService } from "../../infrastructure/external-services/GoogleAuthService";
+import { AddUserUseCase } from "../../core/use-cases/user/signup/AddUserUseCase";
 
 const userRouter = express.Router();
 
 const userRepository = new UserRepository();
 const emailService = new EmailService();
 const jwtService = new JWTService();
+const googleAuthService = new GoogleAuthService();
+const addUserUseCase = new AddUserUseCase(userRepository);
 
+const googleAuthUseCase = new GoogleAuthUseCase(
+  googleAuthService,
+  addUserUseCase
+);
 const enrollCourseUseCase = new EnrollCourseUseCase(userRepository);
 const updateDetailsUseCase = new UpdateDetailsUseCase(userRepository);
 const loginUseCase = new LoginUseCase(userRepository, jwtService);
 const sendOTPUseCase = new SendOTPUseCase(userRepository, emailService);
 const verifyOTPUseCase = new VerifyOTPUseCase(userRepository);
-const userController = new UserController(sendOTPUseCase, verifyOTPUseCase);
+const userController = new UserController(
+  sendOTPUseCase,
+  verifyOTPUseCase,
+  googleAuthUseCase
+);
 const authController = new AuthController(loginUseCase, jwtService);
 const userUpdateController = new UserUpdateController(
   updateDetailsUseCase,
@@ -69,7 +82,7 @@ userRouter.post(
 );
 
 // Google Login
-// userRouter.post("/auth/google", userController.);
+userRouter.post("/auth/google", userController.GoogleSignIn);
 
 userRouter.post("/logout", authController.logout);
 
