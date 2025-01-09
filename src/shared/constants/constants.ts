@@ -48,6 +48,13 @@ export const miscMessages = {
   SUBS_DETAILS_FAIL: "error getting subscription details",
   SUBS_UPDATE_FAIL: "error updating subscription",
   TUTOR_UPDATE_USE_CASE_ERROR: "Error in tutor profile updaet use-case:",
+  FORGOT_PASSWORD_USECASE_ERR: "Error in forgot password use case",
+  FORGOT_PASS_CONTROLLER_ERR:
+    "Error sending otp in forgot password control function",
+  PASS_CHANGE_SUCC: "Password Change Successful!",
+  PASS_CHANGE_FAIL: "Password Change Failed!",
+  SET_PASS_CONTROLLER_ERR:
+    "Error verifying and setting new password - controller",
 };
 
 export const corsDetails = {

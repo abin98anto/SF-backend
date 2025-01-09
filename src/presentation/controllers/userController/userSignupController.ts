@@ -4,11 +4,13 @@ import {
   otpMessages,
   userMessages,
 } from "../../../shared/constants/constants";
-import { User, UserRole } from "../../../core/entities/User";
+import { User } from "../../../core/entities/User";
 import { SendOTPUseCase } from "../../../core/use-cases/user/signup/SendOTPUseCase";
 import { VerifyOTPUseCase } from "../../../core/use-cases/user/signup/VerifyOTPUseCase";
 import { GoogleAuthUseCase } from "../../../core/use-cases/user/signup/GoogleAuthUseCase";
 import { OAuth2Client } from "google-auth-library";
+import { ForgotPasswordUseCase } from "../../../core/use-cases/user/login/ForgotPasswordUseCase";
+import { SetNewPasswordUseCase } from "../../../core/use-cases/user/login/SetNewPasswordUseCase";
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -16,7 +18,9 @@ export class UserController {
   constructor(
     private sendOTPUseCase: SendOTPUseCase,
     private verifyOTPUseCase: VerifyOTPUseCase,
-    private googleAuthUseCase: GoogleAuthUseCase
+    private googleAuthUseCase: GoogleAuthUseCase,
+    private forgotPasswordUseCase: ForgotPasswordUseCase,
+    private setNewPasswordUseCase: SetNewPasswordUseCase
   ) {}
 
   sendOTP = async (req: Request, res: Response): Promise<void> => {
@@ -28,23 +32,24 @@ export class UserController {
         password,
         role,
         profilePicture: userMessages.DEFAULT_PICTURE,
-        // isActive: role === UserRole.USER,
       };
 
       const result = await this.sendOTPUseCase.execute(user);
 
-      if (result.data === userMessages.EMAIL_EXISTS) {
-        res.status(200).json({ message: result.data });
+      if (result.message === userMessages.EMAIL_EXISTS) {
+        res.status(200).json({ message: result.message });
       } else if (result.success) {
         res.status(200).json({ message: otpMessages.OTP_SENT });
       } else {
-        throw new Error("Unexpected response from OTP service.");
+        throw new Error(otpMessages.OTP_SENDING_ERROR);
       }
     } catch (error) {
-      console.error("Error in sendOTP:", error);
+      console.error(otpMessages.OTP_SENDING_ERROR, error);
       res
         .status(400)
-        .send(error instanceof Error ? error.message : "Error occurred");
+        .send(
+          error instanceof Error ? error.message : miscMessages.UNKNOWN_ERROR
+        );
     }
   };
 
@@ -90,50 +95,31 @@ export class UserController {
     }
   };
 
-  //   googleLogin = async(req: Request, res: Response)=> {
-  //   const { credential, role } = req.body;
+  forgotPassword = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { email } = req.query;
+      await this.forgotPasswordUseCase.execute(email as string);
+      res.status(200).json({ success: true });
+    } catch (error) {
+      console.log(miscMessages.FORGOT_PASS_CONTROLLER_ERR);
+      res.status(401).json({
+        success: false,
+        error: miscMessages.FORGOT_PASS_CONTROLLER_ERR,
+      });
+    }
+  };
 
-  //   try {
-  //     // Verify the Google token
-  //     const ticket = await client.verifyIdToken({
-  //       idToken: credential,
-  //       audience: process.env.GOOGLE_CLIENT_ID
-  //     });
-
-  //     const payload = ticket.getPayload();
-
-  //      const user: User = {
-  //         name: payload.name,
-  //         email: payload.email,
-  //         password,
-  //         role,
-  //         profilePicture: userMessages.DEFAULT_PICTURE,
-  //         isActive: role === UserRole.USER,
-  //       };
-
-  //       const result = await this.sendOTPUseCase.execute(user);
-
-  //     // Create or update user in your database
-  //     const user = await User.findOneAndUpdate(
-  //       { email: payload.email },
-  //       {
-  //         name: payload.name,
-  //         email: payload.email,
-  //         profilePicture: payload.picture,
-  //         role: role
-  //       },
-  //       { upsert: true, new: true }
-  //     );
-
-  //     // Generate JWT or session token
-  //     const token = generateToken(user);
-
-  //     res.json({
-  //       user,
-  //       token
-  //     });
-  //   } catch (error) {
-  //     res.status(401).json({ message: 'Authentication failed' });
-  //   }
-  // });
+  setPassword = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { email, otp, password } = req.body;
+      await this.setNewPasswordUseCase.execute(email, otp, password);
+      res.status(200).json({ success: true });
+    } catch (error) {
+      console.log(miscMessages.SET_PASS_CONTROLLER_ERR);
+      res.status(401).json({
+        success: false,
+        error: miscMessages.SET_PASS_CONTROLLER_ERR,
+      });
+    }
+  };
 }

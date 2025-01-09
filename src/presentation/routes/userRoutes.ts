@@ -25,6 +25,8 @@ import { EnrollCourseUseCase } from "../../core/use-cases/course/EnrollCourseUse
 import { GoogleAuthUseCase } from "../../core/use-cases/user/signup/GoogleAuthUseCase";
 import { GoogleAuthService } from "../../infrastructure/external-services/GoogleAuthService";
 import { AddUserUseCase } from "../../core/use-cases/user/signup/AddUserUseCase";
+import { ForgotPasswordUseCase } from "../../core/use-cases/user/login/ForgotPasswordUseCase";
+import { SetNewPasswordUseCase } from "../../core/use-cases/user/login/SetNewPasswordUseCase";
 
 const userRouter = express.Router();
 
@@ -43,10 +45,17 @@ const updateDetailsUseCase = new UpdateDetailsUseCase(userRepository);
 const loginUseCase = new LoginUseCase(userRepository, jwtService);
 const sendOTPUseCase = new SendOTPUseCase(userRepository, emailService);
 const verifyOTPUseCase = new VerifyOTPUseCase(userRepository);
+const setNewPasswordUseCase = new SetNewPasswordUseCase(userRepository);
+const forgotPasswordUseCase = new ForgotPasswordUseCase(
+  userRepository,
+  emailService
+);
 const userController = new UserController(
   sendOTPUseCase,
   verifyOTPUseCase,
-  googleAuthUseCase
+  googleAuthUseCase,
+  forgotPasswordUseCase,
+  setNewPasswordUseCase
 );
 const authController = new AuthController(loginUseCase, jwtService);
 const userUpdateController = new UserUpdateController(
@@ -96,4 +105,9 @@ userRouter.get(
   "/course/:id",
   courseManagementController.getByIdUsingPathParams
 );
+
+// Forgot Password.
+userRouter.post("/forgot-password", userController.forgotPassword);
+userRouter.patch("/set-password", userController.setPassword);
+
 export default userRouter;

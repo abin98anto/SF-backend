@@ -1,41 +1,38 @@
-import { UserRepositoryInterface } from "../../../interfaces/UserRepositoryInterface";
 import { EmailService } from "../../../../infrastructure/external-services/EmailService";
+import {
+  miscMessages,
+  userMessages,
+} from "../../../../shared/constants/constants";
 import { generateOTP } from "../../../../shared/utils/generateOTP";
-import { User } from "../../../entities/User";
-import { userMessages } from "../../../../shared/constants/constants";
-import { hashPassword } from "../../../../shared/utils/hashing";
-import { errorObjectCatch } from "../../../../shared/utils/errorObjectCatch";
 import { UseCaseResponse } from "../../../entities/UseCaseResponse";
+import { UserRepositoryInterface } from "../../../interfaces/UserRepositoryInterface";
 
-export class SendOTPUseCase {
+export class ForgotPasswordUseCase {
   constructor(
     private userRepository: UserRepositoryInterface,
     private emailService: EmailService
   ) {}
 
-  async execute(user: User): Promise<UseCaseResponse> {
+  async execute(email: string): Promise<UseCaseResponse> {
     try {
-      const emailExists = await this.userRepository.findByEmail(
-        user.email as string
-      );
+      const user = await this.userRepository.findByEmail(email);
 
-      if (emailExists) {
-        throw new Error(userMessages.EMAIL_EXISTS);
+      if (!user) {
+        throw new Error(userMessages.USER_NOT_FOUND);
       }
 
-      user.password = await hashPassword(user.password as string);
       const { otp, expiresAt: expiration } = generateOTP();
       user.otp = otp;
       user.otpExpiration = expiration;
 
-      console.log("SendOTPUseCase.ts >>> OTP : ", otp);
+      console.log("ForgotPasswordUseCase.ts >>> OTP : ", otp);
 
       await this.emailService.sendOTP(user.email as string, user.otp);
       await this.userRepository.add(user);
 
       return { success: true };
     } catch (error) {
-      errorObjectCatch(error);
+      console.log(miscMessages.FORGOT_PASSWORD_USECASE_ERR, error);
       if (error instanceof Error) {
         return { success: false, message: error.message };
       } else {
