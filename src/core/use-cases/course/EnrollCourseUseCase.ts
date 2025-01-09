@@ -1,3 +1,4 @@
+import { miscMessages } from "../../../shared/constants/constants";
 import { UserRepositoryInterface } from "../../interfaces/UserRepositoryInterface";
 
 interface CourseEnrollment {
@@ -15,7 +16,6 @@ export class EnrollCourseUseCase {
 
   async execute(updates: any): Promise<void> {
     const { _id, courseId } = updates;
-    // console.log("enroll use case", updates);
 
     const alreadyEnrolled = await this.userRepository.isCourseEnrolled(
       _id,
@@ -23,7 +23,7 @@ export class EnrollCourseUseCase {
     );
 
     if (alreadyEnrolled) {
-      throw new Error("User is already enrolled in this course.");
+      throw new Error(miscMessages.USER_ENROLL_ERROR);
     }
 
     const courseData = {

@@ -8,7 +8,6 @@ export class GetList {
   async execute(role: UserRole): Promise<User[]> {
     try {
       const res = await this.userRepository.users(role);
-    //   console.log("userlist use case", res);
       return res;
     } catch (error) {
       errorObjectCatch(error);

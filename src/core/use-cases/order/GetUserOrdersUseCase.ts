@@ -1,3 +1,4 @@
+import { miscMessages } from "../../../shared/constants/constants";
 import { OrderRepositoryInterface } from "../../interfaces/OrderRepositoryInterface";
 import { Types } from "mongoose";
 
@@ -8,7 +9,7 @@ export class GetUserOrdersUseCase {
     try {
       return await this.orderRepository.findUserOrders(userId);
     } catch (error) {
-      console.log("error getting orders of the user", error);
+      console.log(miscMessages.USER_ORDER_FETCH_FAIL, error);
     }
   }
 }

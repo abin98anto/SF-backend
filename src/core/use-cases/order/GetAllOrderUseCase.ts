@@ -1,3 +1,4 @@
+import { miscMessages } from "../../../shared/constants/constants";
 import { OrderRepositoryInterface } from "../../interfaces/OrderRepositoryInterface";
 
 export class GetAllOrderUseCase {
@@ -7,7 +8,7 @@ export class GetAllOrderUseCase {
     try {
       return await this.orderRepository.findAll();
     } catch (error) {
-      console.log("error getting all orders", error);
+      console.log(miscMessages.GET_ORDER_FAIL, error);
     }
   }
 }

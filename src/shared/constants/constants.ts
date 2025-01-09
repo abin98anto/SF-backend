@@ -38,6 +38,16 @@ export const miscMessages = {
   ERROR_OBJECT: "And Error in the Error Object Catch!",
   INTERNAL_SERVER_ERROR: "Internal Server Error",
   ACCESS_DENIED: "ACCESS DENIED!",
+  USER_ENROLL_ERROR: "User is already enrolled in this course.",
+  ORDER_ADD_FAIL: "error creating order",
+  GET_ORDER_FAIL: "error getting all orders",
+  USER_ORDER_FETCH_FAIL: "error getting orders of the user",
+  SUBS_ADD_FAIL: "error creating new subscription plan",
+  SUBS_DEL_FAIL: "error deleting subscription",
+  SUBS_FETCH_FAIL: "error fetching all subscriptions",
+  SUBS_DETAILS_FAIL: "error getting subscription details",
+  SUBS_UPDATE_FAIL: "error updating subscription",
+  TUTOR_UPDATE_USE_CASE_ERROR: "Error in tutor profile updaet use-case:",
 };
 
 export const corsDetails = {

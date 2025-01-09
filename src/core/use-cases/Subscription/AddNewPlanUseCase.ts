@@ -1,3 +1,4 @@
+import { miscMessages } from "../../../shared/constants/constants";
 import SubscriptionPlan from "../../entities/Subscription";
 import { SubscriptionRepositoryInterface } from "../../interfaces/SubscriptionRepositoryInterface";
 
@@ -10,7 +11,7 @@ export class AddNewPlanUseCase {
     try {
       return await this.subscriptionRepository.add(plan);
     } catch (error) {
-      console.log("error creating new subscription plan", error);
+      console.log(miscMessages.SUBS_ADD_FAIL, error);
     }
   }
 }

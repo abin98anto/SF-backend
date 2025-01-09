@@ -1,3 +1,4 @@
+import { miscMessages } from "../../../shared/constants/constants";
 import Order from "../../entities/Order";
 import { OrderRepositoryInterface } from "../../interfaces/OrderRepositoryInterface";
 
@@ -8,7 +9,7 @@ export class CreateOrderUseCase {
     try {
       return await this.orderRepository.add(order);
     } catch (error) {
-      console.log("error creating order", error);
+      console.log(miscMessages.ORDER_ADD_FAIL, error);
     }
   }
 }

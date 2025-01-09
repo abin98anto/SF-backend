@@ -1,6 +1,7 @@
 import mongoose, { Mongoose } from "mongoose";
 import SubscriptionPlan from "../../entities/Subscription";
 import { SubscriptionRepositoryInterface } from "../../interfaces/SubscriptionRepositoryInterface";
+import { miscMessages } from "../../../shared/constants/constants";
 
 export class DeleteSubscriptionUseCase {
   constructor(
@@ -11,7 +12,7 @@ export class DeleteSubscriptionUseCase {
     try {
       return await this.subscriptionRepository.delete(id);
     } catch (error) {
-      console.log("error deleting subscription", error);
+      console.log(miscMessages.SUBS_DEL_FAIL, error);
     }
   }
 }

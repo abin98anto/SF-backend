@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { SubscriptionRepositoryInterface } from "../../interfaces/SubscriptionRepositoryInterface";
+import { miscMessages } from "../../../shared/constants/constants";
 
 export class GetSubscriptionDetailsUseCase {
   constructor(
@@ -10,7 +11,7 @@ export class GetSubscriptionDetailsUseCase {
     try {
       return await this.subscriptionRepository.find(id);
     } catch (error) {
-      console.log("error getting subscription details", error);
+      console.log(miscMessages.SUBS_DETAILS_FAIL, error);
     }
   }
 }

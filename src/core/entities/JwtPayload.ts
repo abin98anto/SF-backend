@@ -1,4 +1,4 @@
-import { User, UserRole } from "./User";
+import { UserRole } from "./User";
 
 export interface JwtPayload {
   _id?: string | null;

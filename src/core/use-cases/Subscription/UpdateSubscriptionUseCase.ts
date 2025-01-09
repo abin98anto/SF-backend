@@ -1,3 +1,4 @@
+import { miscMessages } from "../../../shared/constants/constants";
 import SubscriptionPlan from "../../entities/Subscription";
 import { SubscriptionRepositoryInterface } from "../../interfaces/SubscriptionRepositoryInterface";
 
@@ -10,7 +11,7 @@ export class UpdateSubscriptionUseCase {
     try {
       return await this.subscriptionRepository.update(updates);
     } catch (error) {
-      console.log("error updating subscription", error);
+      console.log(miscMessages.SUBS_UPDATE_FAIL, error);
     }
   }
 }
