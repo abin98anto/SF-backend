@@ -82,7 +82,7 @@ export class UserController {
       const { token } = req.body;
 
       if (!token) {
-        res.status(400).json({ error: "Token is required" });
+        res.status(400).json({ error: miscMessages.GOOGLE_TOKEN_REQ });
         return;
       }
 
@@ -90,16 +90,25 @@ export class UserController {
 
       res.status(200).json(response);
     } catch (error) {
-      console.log("google sign in error", error);
-      res.status(401).json({ error: "Authentication failed" });
+      console.log(miscMessages.GOOGLE_SIGNIN_FAIL, error);
+      res.status(401).json({ error: miscMessages.GOOGLE_SIGNIN_FAIL });
     }
   };
 
   forgotPassword = async (req: Request, res: Response): Promise<void> => {
     try {
+      console.log("forgot passord", req.query);
       const { email } = req.query;
-      await this.forgotPasswordUseCase.execute(email as string);
-      res.status(200).json({ success: true });
+      const response = await this.forgotPasswordUseCase.execute(
+        email as string
+      );
+      // console.log("the response ", response);
+      if (response.success) {
+        res.status(200).json({ success: true });
+      } else {
+        // console.log("no user");
+        res.status(404).json({ success: false, message: response.message });
+      }
     } catch (error) {
       console.log(miscMessages.FORGOT_PASS_CONTROLLER_ERR);
       res.status(401).json({
@@ -111,9 +120,20 @@ export class UserController {
 
   setPassword = async (req: Request, res: Response): Promise<void> => {
     try {
+      // console.log(first)
       const { email, otp, password } = req.body;
-      await this.setNewPasswordUseCase.execute(email, otp, password);
-      res.status(200).json({ success: true });
+      const response = await this.setNewPasswordUseCase.execute(
+        email,
+        otp,
+        password
+      );
+      // console.log("set otp response", response);
+      if (response.success) {
+        res.status(200).json({ success: true });
+      } else {
+        // console.log("no user");
+        res.status(404).json({ success: false, message: response.message });
+      }
     } catch (error) {
       console.log(miscMessages.SET_PASS_CONTROLLER_ERR);
       res.status(401).json({

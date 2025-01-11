@@ -125,6 +125,6 @@ const userSchema = new Schema({
   coursesEnrolled: { type: [coursesEnrolledSchema], default: [] },
 });
 
-userSchema.index({ otpExpiration: 1 }, { expireAfterSeconds: 0 });
+// userSchema.index({ otpExpiration: 1 }, { expireAfterSeconds: 0 });
 
 export const UserModel = mongoose.model("User", userSchema);

@@ -54,7 +54,10 @@ export const miscMessages = {
   PASS_CHANGE_SUCC: "Password Change Successful!",
   PASS_CHANGE_FAIL: "Password Change Failed!",
   SET_PASS_CONTROLLER_ERR:
-    "Error verifying and setting new password - controller",
+    "Error verifying and setting new password - controller`",
+  GOOGLE_TOKEN_REQ: "Token is required",
+  GOOGLE_SIGNIN_FAIL: "google sign in error",
+  EMAIL_NOT_FOUND: "No accounts associated with the email!",
 };
 
 export const corsDetails = {

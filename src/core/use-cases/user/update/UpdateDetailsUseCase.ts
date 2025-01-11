@@ -6,7 +6,6 @@ export class UpdateDetailsUseCase {
   constructor(private userRepository: UserRepositoryInterface) {}
 
   async execute(user: User): Promise<User> {
-    // console.log("to update ", user);
     const userInfo = await this.userRepository.findById(user._id!);
 
     if (!userInfo) {
@@ -22,7 +21,6 @@ export class UpdateDetailsUseCase {
     }
 
     const updatedUser = await this.userRepository.update(user);
-    // console.log("Updated user:", updatedUser);
 
     if (!updatedUser) {
       throw new Error("User update failed.");
