@@ -23,7 +23,7 @@ import { CourseManagementController } from "../controllers/adminController/cours
 import { CourseRepositoryInterface } from "../../core/interfaces/CourseRepositoryInterface";
 import { EnrollCourseUseCase } from "../../core/use-cases/course/EnrollCourseUseCase";
 import { GoogleAuthUseCase } from "../../core/use-cases/user/signup/GoogleAuthUseCase";
-import { GoogleAuthService } from "../../infrastructure/external-services/GoogleAuthService";
+// import { GoogleAuthService } from "../../infrastructure/external-services/GoogleAuthService";
 import { AddUserUseCase } from "../../core/use-cases/user/signup/AddUserUseCase";
 import { ForgotPasswordUseCase } from "../../core/use-cases/user/login/ForgotPasswordUseCase";
 import { SetNewPasswordUseCase } from "../../core/use-cases/user/login/SetNewPasswordUseCase";
@@ -33,13 +33,10 @@ const userRouter = express.Router();
 const userRepository = new UserRepository();
 const emailService = new EmailService();
 const jwtService = new JWTService();
-const googleAuthService = new GoogleAuthService();
+// const googleAuthService = new GoogleAuthService();
 const addUserUseCase = new AddUserUseCase(userRepository);
 
-const googleAuthUseCase = new GoogleAuthUseCase(
-  googleAuthService,
-  addUserUseCase
-);
+const googleAuthUseCase = new GoogleAuthUseCase(addUserUseCase, userRepository);
 const enrollCourseUseCase = new EnrollCourseUseCase(userRepository);
 const updateDetailsUseCase = new UpdateDetailsUseCase(userRepository);
 const loginUseCase = new LoginUseCase(userRepository, jwtService);
@@ -55,7 +52,8 @@ const userController = new UserController(
   verifyOTPUseCase,
   googleAuthUseCase,
   forgotPasswordUseCase,
-  setNewPasswordUseCase
+  setNewPasswordUseCase,
+  addUserUseCase
 );
 const authController = new AuthController(loginUseCase, jwtService);
 const userUpdateController = new UserUpdateController(
