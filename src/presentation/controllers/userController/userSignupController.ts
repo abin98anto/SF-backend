@@ -102,11 +102,9 @@ export class UserController {
       const response = await this.forgotPasswordUseCase.execute(
         email as string
       );
-      // console.log("the response ", response);
       if (response.success) {
         res.status(200).json({ success: true });
       } else {
-        // console.log("no user");
         res.status(404).json({ success: false, message: response.message });
       }
     } catch (error) {
@@ -120,18 +118,15 @@ export class UserController {
 
   setPassword = async (req: Request, res: Response): Promise<void> => {
     try {
-      // console.log(first)
       const { email, otp, password } = req.body;
       const response = await this.setNewPasswordUseCase.execute(
         email,
         otp,
         password
       );
-      // console.log("set otp response", response);
       if (response.success) {
         res.status(200).json({ success: true });
       } else {
-        // console.log("no user");
         res.status(404).json({ success: false, message: response.message });
       }
     } catch (error) {

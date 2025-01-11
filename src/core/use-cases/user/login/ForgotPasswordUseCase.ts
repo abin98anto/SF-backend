@@ -16,16 +16,13 @@ export class ForgotPasswordUseCase {
   async execute(email: string): Promise<UseCaseResponse> {
     try {
       const user = await this.userRepository.findByEmail(email);
-      //   console.log("user found", user);
       if (!user) {
-        // throw new Error(userMessages.USER_NOT_FOUND);
         return { success: false, message: miscMessages.EMAIL_NOT_FOUND };
       }
 
       const { otp, expiresAt: expiration } = generateOTP();
       user.otp = otp;
       user.otpExpiration = expiration;
-      //   console.log("user modified", user);
       console.log("ForgotPasswordUseCase.ts >>> OTP : ", otp);
 
       await this.emailService.sendOTP(user.email as string, user.otp);
