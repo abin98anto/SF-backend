@@ -1,9 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
-import {
-  Subscription,
-  SubscriptionType,
-  UserRole,
-} from "../../../core/entities/User";
+import { SubscriptionType, UserRole } from "../../../core/entities/User";
 import { userMessages } from "../../../shared/constants/constants";
 
 const ratingSchema = new Schema({

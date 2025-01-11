@@ -7,10 +7,7 @@ import { VerifyOTPUseCase } from "../../core/use-cases/user/signup/VerifyOTPUseC
 import { AuthController } from "../controllers/userController/userAuthController";
 import { LoginUseCase } from "../../core/use-cases/user/login/LoginUseCase";
 import { JWTService } from "../../infrastructure/external-services/JWTService";
-import {
-  verifyAccessToken,
-  verifyRefreshToken,
-} from "../middleware/authMiddleware";
+import { verifyRefreshToken } from "../middleware/authMiddleware";
 import { UserUpdateController } from "../controllers/userController/userUpdateController";
 import { UpdateDetailsUseCase } from "../../core/use-cases/user/update/UpdateDetailsUseCase";
 import { CourseRepository } from "../../infrastructure/repositories/CourseRepository";
@@ -23,7 +20,6 @@ import { CourseManagementController } from "../controllers/adminController/cours
 import { CourseRepositoryInterface } from "../../core/interfaces/CourseRepositoryInterface";
 import { EnrollCourseUseCase } from "../../core/use-cases/course/EnrollCourseUseCase";
 import { GoogleAuthUseCase } from "../../core/use-cases/user/signup/GoogleAuthUseCase";
-// import { GoogleAuthService } from "../../infrastructure/external-services/GoogleAuthService";
 import { AddUserUseCase } from "../../core/use-cases/user/signup/AddUserUseCase";
 import { ForgotPasswordUseCase } from "../../core/use-cases/user/login/ForgotPasswordUseCase";
 import { SetNewPasswordUseCase } from "../../core/use-cases/user/login/SetNewPasswordUseCase";
@@ -33,7 +29,6 @@ const userRouter = express.Router();
 const userRepository = new UserRepository();
 const emailService = new EmailService();
 const jwtService = new JWTService();
-// const googleAuthService = new GoogleAuthService();
 const addUserUseCase = new AddUserUseCase(userRepository);
 
 const googleAuthUseCase = new GoogleAuthUseCase(addUserUseCase, userRepository);
@@ -52,8 +47,7 @@ const userController = new UserController(
   verifyOTPUseCase,
   googleAuthUseCase,
   forgotPasswordUseCase,
-  setNewPasswordUseCase,
-  addUserUseCase
+  setNewPasswordUseCase
 );
 const authController = new AuthController(loginUseCase, jwtService);
 const userUpdateController = new UserUpdateController(

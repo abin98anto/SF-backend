@@ -11,7 +11,6 @@ import { GoogleAuthUseCase } from "../../../core/use-cases/user/signup/GoogleAut
 import { OAuth2Client } from "google-auth-library";
 import { ForgotPasswordUseCase } from "../../../core/use-cases/user/login/ForgotPasswordUseCase";
 import { SetNewPasswordUseCase } from "../../../core/use-cases/user/login/SetNewPasswordUseCase";
-import { AddUserUseCase } from "../../../core/use-cases/user/signup/AddUserUseCase";
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -21,8 +20,7 @@ export class UserController {
     private verifyOTPUseCase: VerifyOTPUseCase,
     private googleAuthUseCase: GoogleAuthUseCase,
     private forgotPasswordUseCase: ForgotPasswordUseCase,
-    private setNewPasswordUseCase: SetNewPasswordUseCase,
-    private addUserUseCase: AddUserUseCase
+    private setNewPasswordUseCase: SetNewPasswordUseCase
   ) {}
 
   sendOTP = async (req: Request, res: Response): Promise<void> => {
@@ -82,22 +80,18 @@ export class UserController {
   GoogleSignIn = async (req: Request, res: Response): Promise<void> => {
     try {
       const { token } = req.body;
-      // console.log("the token ", token);
       if (!token) {
         res.status(400).json({ error: miscMessages.GOOGLE_TOKEN_REQ });
         return;
       }
 
       const response = await this.googleAuthUseCase.execute(token);
-      // const response = await this.addUserUseCase.execute(token);
-      // console.log("google controller response", response);
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: response.message,
-          data: response.data,
-        });
+
+      res.status(200).json({
+        success: true,
+        message: response.message,
+        data: response.data,
+      });
       return;
     } catch (error) {
       console.log(miscMessages.GOOGLE_SIGNIN_FAIL, error);
@@ -107,11 +101,11 @@ export class UserController {
 
   forgotPassword = async (req: Request, res: Response): Promise<void> => {
     try {
-      // console.log("forgot passord", req.query);
       const { email } = req.query;
       const response = await this.forgotPasswordUseCase.execute(
         email as string
       );
+      
       if (response.success) {
         res.status(200).json({ success: true });
       } else {
