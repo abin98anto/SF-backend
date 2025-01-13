@@ -31,7 +31,11 @@ const emailService = new EmailService();
 const jwtService = new JWTService();
 const addUserUseCase = new AddUserUseCase(userRepository);
 
-const googleAuthUseCase = new GoogleAuthUseCase(addUserUseCase, userRepository);
+const googleAuthUseCase = new GoogleAuthUseCase(
+  addUserUseCase,
+  userRepository,
+  jwtService
+);
 const enrollCourseUseCase = new EnrollCourseUseCase(userRepository);
 const updateDetailsUseCase = new UpdateDetailsUseCase(userRepository);
 const loginUseCase = new LoginUseCase(userRepository, jwtService);

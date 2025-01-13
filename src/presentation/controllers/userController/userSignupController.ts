@@ -86,12 +86,29 @@ export class UserController {
       }
 
       const response = await this.googleAuthUseCase.execute(token);
+      
+      const accessTokenName = "userAccess";
+      const { accessToken, refreshToken } = response.tokens;
 
-      res.status(200).json({
-        success: true,
-        message: response.message,
-        data: response.data,
-      });
+      res
+        .cookie(accessTokenName, accessToken, {
+          httpOnly: true,
+          secure: true,
+          sameSite: "strict",
+          maxAge: 15 * 60 * 1000,
+        })
+        .cookie("userRefresh", refreshToken, {
+          httpOnly: true,
+          secure: true,
+          sameSite: "strict",
+          maxAge: 7 * 24 * 60 * 60 * 1000,
+        })
+        .status(200)
+        .json({
+          success: true,
+          message: response.message,
+          data: response.data,
+        });
       return;
     } catch (error) {
       console.log(miscMessages.GOOGLE_SIGNIN_FAIL, error);
@@ -105,7 +122,7 @@ export class UserController {
       const response = await this.forgotPasswordUseCase.execute(
         email as string
       );
-      
+
       if (response.success) {
         res.status(200).json({ success: true });
       } else {

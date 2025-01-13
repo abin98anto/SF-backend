@@ -7,7 +7,6 @@ import { errorObjectCatch } from "../../../shared/utils/errorObjectCatch";
 import { LoginUseCase } from "../../../core/use-cases/user/login/LoginUseCase";
 import { JWTService } from "../../../infrastructure/external-services/JWTService";
 import { JwtPayload } from "../../../core/entities/JwtPayload";
-// import { UserRole } from "../../../core/entities/User";
 
 export class AuthController {
   constructor(
@@ -25,13 +24,10 @@ export class AuthController {
       const { accessToken, refreshToken, user } =
         await this.loginUseCase.execute(email, password);
 
-      // console.log("first", user);
       if (user?.isActive === false) {
         res.status(403).json({ message: miscMessages.ACCESS_DENIED });
         return;
       }
-
-      // console.log(user?.role);
 
       const accessTokenName = "userAccess";
 
