@@ -1,48 +1,33 @@
 import { Request, Response } from "express";
-import { UserRepository } from "../../../infrastructure/repositories/UserRepository";
-import { TutorUpdateProfile } from "../../../core/use-cases/tutor/update-profile/TutorUpdateProfile";
 import { errorObjectCatch } from "../../../shared/utils/errorObjectCatch";
 import { miscMessages } from "../../../shared/constants/constants";
-import { User, UserRole } from "../../../core/entities/User";
-import { JWTService } from "../../../infrastructure/external-services/JWTService";
+import { UpdateDetailsUseCase } from "../../../core/use-cases/user/update/UpdateDetailsUseCase";
 
 export class TutorProfileUpdate {
-  constructor(
-    private tutorUpdateProfile: TutorUpdateProfile,
-    private jwtService: JWTService
-  ) {}
+  constructor(private updateDetailsUseCase: UpdateDetailsUseCase) {}
 
   updateProfile = async (req: Request, res: Response): Promise<void> => {
     try {
-      const token = req.cookies.tutorAccess;
-      // console.log("the toekken", token);
-      if (!token) {
-        res.status(401).json({ message: "Unauthorized" });
+      const updateData = req.body;
+
+      if (!updateData) {
+        res.status(400).send("Missing updateData in request body!");
         return;
       }
 
-      // Verify the token and extract the payload
-      const payload = this.jwtService.verifyAccessToken(token);
-      if (!payload || !payload._id) {
-        res.status(401).json({ message: "Invalid token" });
+      const { id } = req.query;
+      if (!id) {
+        res.status(400).send("Missing user ID in query!");
         return;
       }
-      const { name, email, password, profilePicture, resume } = req.body;
-      const user: User = {
-        _id: payload._id,
-        name,
-        email,
-        password,
-        role: UserRole.TUTOR,
-        isActive: false,
-        profilePicture,
-        resume,
-      };
-      // console.log("in the controller", user);
-      await this.tutorUpdateProfile.execute(user);
-      res.status(200).json({ message: "Profile updated successfully" });
+
+      const user = { ...updateData, _id: id };
+      const result = await this.updateDetailsUseCase.execute(user);
+
+      res
+        .status(200)
+        .json({ message: "User updation successful!", user: result });
     } catch (error) {
-      // console.log("controller");
       errorObjectCatch(error);
       res.status(500).json({
         message:

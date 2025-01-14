@@ -7,7 +7,10 @@ import { VerifyOTPUseCase } from "../../core/use-cases/user/signup/VerifyOTPUseC
 import { AuthController } from "../controllers/userController/userAuthController";
 import { LoginUseCase } from "../../core/use-cases/user/login/LoginUseCase";
 import { JWTService } from "../../infrastructure/external-services/JWTService";
-import { verifyRefreshToken } from "../middleware/authMiddleware";
+import {
+  verifyRefreshToken,
+  verifyAccessToken,
+} from "../middleware/authMiddleware";
 import { UserUpdateController } from "../controllers/userController/userUpdateController";
 import { UpdateDetailsUseCase } from "../../core/use-cases/user/update/UpdateDetailsUseCase";
 import { CourseRepository } from "../../infrastructure/repositories/CourseRepository";
@@ -89,11 +92,15 @@ userRouter.post(
 // Google Login
 userRouter.post("/auth/google", userController.GoogleSignIn);
 
-userRouter.post("/logout", authController.logout);
+userRouter.post("/logout", verifyAccessToken, authController.logout);
 
 // User update.
-userRouter.patch("/update", userUpdateController.updateUser);
-userRouter.patch("/course-enroll", userUpdateController.enrollCourse);
+userRouter.patch("/update", verifyAccessToken, userUpdateController.updateUser);
+userRouter.patch(
+  "/course-enroll",
+  verifyAccessToken,
+  userUpdateController.enrollCourse
+);
 
 // Course Routes
 userRouter.get("/courses", courseManagementController.list);

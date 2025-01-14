@@ -8,18 +8,18 @@ import { JWTService } from "../../infrastructure/external-services/JWTService";
 import { LoginUseCase } from "../../core/use-cases/user/login/LoginUseCase";
 import { TutorAuthController } from "../controllers/tutorController/tutorAuthController";
 import {
-  verifyAccessToken,
   verifyRefreshToken,
   verifyTutorToken,
 } from "../middleware/authMiddleware";
-import { TutorUpdateProfile } from "../../core/use-cases/tutor/update-profile/TutorUpdateProfile";
 import { TutorProfileUpdate } from "../controllers/tutorController/tutorProlifeController";
+import { UpdateDetailsUseCase } from "../../core/use-cases/user/update/UpdateDetailsUseCase";
 
 const tutorRouter = express.Router();
 
 const tutorRepository = new UserRepository();
 const emailService = new EmailService();
 const jwtService = new JWTService();
+const updateDetailsUseCase = new UpdateDetailsUseCase(tutorRepository);
 
 const loginUseCase = new LoginUseCase(tutorRepository, jwtService);
 const sendOTPTutorUseCase = new SendOTPUseCase(tutorRepository, emailService);
@@ -30,9 +30,8 @@ const tutorController = new TutorController(
   verifyOTPTutorUseCase
 );
 const tutorAuthController = new TutorAuthController(loginUseCase, jwtService);
-const tutorUpdateProfile = new TutorUpdateProfile(tutorRepository);
 
-const updateTutor = new TutorProfileUpdate(tutorUpdateProfile, jwtService);
+const updateTutor = new TutorProfileUpdate(updateDetailsUseCase);
 
 // tutor singup.
 tutorRouter.post("/signup", tutorController.sendOTP);
@@ -45,9 +44,13 @@ tutorRouter.post(
   verifyRefreshToken,
   tutorAuthController.refreshAccessToken
 );
-tutorRouter.post("/logout", tutorAuthController.logout);
+tutorRouter.post("/logout", verifyTutorToken, tutorAuthController.logout);
 
 // update tutor profile.
-tutorRouter.put("/update-profile", verifyTutorToken, updateTutor.updateProfile);
+tutorRouter.patch(
+  "/update-profile",
+  verifyTutorToken,
+  updateTutor.updateProfile
+);
 
 export default tutorRouter;
