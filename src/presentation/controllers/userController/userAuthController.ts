@@ -7,6 +7,7 @@ import { errorObjectCatch } from "../../../shared/utils/errorObjectCatch";
 import { LoginUseCase } from "../../../core/use-cases/user/login/LoginUseCase";
 import { JWTService } from "../../../infrastructure/external-services/JWTService";
 import { JwtPayload } from "../../../core/entities/JwtPayload";
+// import jwt from "jsonwebtoken";
 
 export class AuthController {
   constructor(
@@ -66,6 +67,7 @@ export class AuthController {
 
   refreshAccessToken = (req: Request, res: Response): void => {
     try {
+      console.log("refreshing the access toekn");
       const refreshToken = req.cookies.userRefresh;
       if (!refreshToken) {
         res.status(401).json({ message: userMessages.TOKEN_NOT_FOUND });
