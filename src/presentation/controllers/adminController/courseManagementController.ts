@@ -102,7 +102,7 @@ export class CourseManagementController {
     try {
       const { id } = req.query;
       const updates = req.body;
-      console.log("upda controller", updates);
+      // console.log("upda controller", updates);
       updates._id = id;
       // console.log("the updates", updates);
       const updatedCourse = await this.updateCourse.execute(updates);

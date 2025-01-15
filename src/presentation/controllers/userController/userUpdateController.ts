@@ -1,11 +1,13 @@
 import { Request, Response } from "express";
 import { UpdateDetailsUseCase } from "../../../core/use-cases/user/update/UpdateDetailsUseCase";
 import { EnrollCourseUseCase } from "../../../core/use-cases/course/EnrollCourseUseCase";
+import { LessonUpdateUseCase } from "../../../core/use-cases/user/update/LessonUpdateUseCase";
 
 export class UserUpdateController {
   constructor(
     private updateDetailsUseCase: UpdateDetailsUseCase,
-    private enrollCourseUseCase: EnrollCourseUseCase
+    private enrollCourseUseCase: EnrollCourseUseCase,
+    private lessonUpdateUseCase: LessonUpdateUseCase
   ) {}
 
   updateUser = async (req: Request, res: Response): Promise<void> => {
@@ -69,6 +71,30 @@ export class UserUpdateController {
         .json({ message: "User updation successful!", user: result });
     } catch (error) {
       console.log("error enrolling in course", error);
+      res
+        .status(400)
+        .send(error instanceof Error ? error.message : "Error updating user!");
+    }
+  };
+
+  lessonUpdate = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { userId, courseId, lesson } = req.body;
+
+      const result = await this.lessonUpdateUseCase.execute(
+        userId,
+        courseId,
+        lesson
+      );
+
+      res
+        .status(200)
+        .json({
+          message: "Course progress updation successful!",
+          user: result,
+        });
+    } catch (error) {
+      console.log("error updating lesson", error);
       res
         .status(400)
         .send(error instanceof Error ? error.message : "Error updating user!");

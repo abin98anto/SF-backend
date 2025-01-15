@@ -1,7 +1,6 @@
 import { ICourse } from "../../core/entities/ICourses";
 import { CourseRepositoryInterface } from "../../core/interfaces/CourseRepositoryInterface";
 import { Course } from "../database/mongoose-schemas/CourseSchema";
-import { Document } from "mongoose";
 
 export class CourseRepository implements CourseRepositoryInterface {
   async createCourse(course: Partial<ICourse>): Promise<ICourse> {

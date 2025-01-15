@@ -58,6 +58,7 @@ export const miscMessages = {
   GOOGLE_TOKEN_REQ: "Token is required",
   GOOGLE_SIGNIN_FAIL: "google sign in error",
   EMAIL_NOT_FOUND: "No accounts associated with the email!",
+  LESSON_UPDATE_FAIL: "error adding lesson",
 };
 
 export const corsDetails = {

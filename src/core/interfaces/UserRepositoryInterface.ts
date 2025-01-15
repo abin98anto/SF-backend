@@ -9,4 +9,5 @@ export interface UserRepositoryInterface {
   users(role: UserRole): Promise<User[]>;
   isCourseEnrolled(userId: string, courseId: string): Promise<boolean>;
   addCourseToUser(userId: string, course: any): Promise<void>;
+  progress(userId: string, courseId: string, lesson: string): Promise<void>;
 }
