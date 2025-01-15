@@ -6,6 +6,10 @@ import { OrderRepository } from "../../infrastructure/repositories/OrderReposito
 import { OrderManagementController } from "../controllers/orderController/orderManagementController";
 import { RazorpayController } from "../controllers/orderController/razorPayController";
 import express from "express";
+import {
+  verifyAccessToken,
+  verifyAdminToken,
+} from "../middleware/authMiddleware";
 
 const orderRouter = express.Router();
 
@@ -21,10 +25,26 @@ const orderManagementController = new OrderManagementController(
 
 const razorpayController = new RazorpayController();
 
-orderRouter.post("/create-order", orderManagementController.addOrder);
-orderRouter.get("/all-orders", orderManagementController.getAllOrders);
-orderRouter.get("/user-orders", orderManagementController.getUserOrders);
+orderRouter.post(
+  "/create-order",
+  verifyAccessToken,
+  orderManagementController.addOrder
+);
+orderRouter.get(
+  "/all-orders",
+  verifyAdminToken,
+  orderManagementController.getAllOrders
+);
+orderRouter.get(
+  "/user-orders",
+  verifyAdminToken,
+  orderManagementController.getUserOrders
+);
 
-orderRouter.post("/razorpay/create", razorpayController.createRazorpayOrder);
+orderRouter.post(
+  "/razorpay/create",
+  verifyAccessToken,
+  razorpayController.createRazorpayOrder
+);
 
 export default orderRouter;

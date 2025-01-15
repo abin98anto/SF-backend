@@ -17,7 +17,7 @@ export const userMessages = {
 };
 
 export const otpMessages = {
-  OTP_SENT: `OTP send to the mail : `,
+  OTP_SENT: `OTP send to the mail`,
   OTP_SENDING_ERROR: "Error sending OTP.",
   OTP_EXPIRED: "The OTP has expired. Please request a new one.",
   USER_VERFIED: "OTP verification successful. User is now active.",
