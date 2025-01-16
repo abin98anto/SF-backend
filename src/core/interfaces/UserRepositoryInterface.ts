@@ -10,4 +10,5 @@ export interface UserRepositoryInterface {
   isCourseEnrolled(userId: string, courseId: string): Promise<boolean>;
   addCourseToUser(userId: string, course: any): Promise<void>;
   progress(userId: string, courseId: string, lesson: string): Promise<void>;
+  completedChapters(userId: string, courseId: string): Promise<string[]>;
 }

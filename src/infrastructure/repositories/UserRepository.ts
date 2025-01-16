@@ -100,8 +100,25 @@ export class UserRepository implements UserRepositoryInterface {
     completedChaptersCount: number,
     course: any
   ): number {
-    // Assuming course has a total number of chapters or lessons
     const totalChapters = course.completedChapters.length;
     return (completedChaptersCount / totalChapters) * 100;
+  }
+
+  async completedChapters(userId: string, courseId: string): Promise<string[]> {
+    // console.log("the user id", userId);
+    const user: User | null = await this.findById(userId);
+    // console.log("the uesr", user);
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const course = user!.coursesEnrolled!.find(
+      (course) => course.courseId === courseId
+    );
+    if (!course) {
+      throw new Error("Course not found");
+    }
+    // console.log(course);
+    return course.completedChapters;
   }
 }
