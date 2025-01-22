@@ -9,9 +9,16 @@ export class UpdateSubscriptionUseCase {
 
   async execute(updates: SubscriptionPlan) {
     try {
-      return await this.subscriptionRepository.update(updates);
+      const updatedSubscription = await this.subscriptionRepository.update(
+        updates
+      );
+      if (!updatedSubscription) {
+        throw new Error("Subscription not found");
+      }
+      return updatedSubscription;
     } catch (error) {
       console.log(miscMessages.SUBS_UPDATE_FAIL, error);
+      // throw error;
     }
   }
 }

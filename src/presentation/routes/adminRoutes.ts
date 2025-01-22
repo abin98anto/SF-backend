@@ -4,9 +4,7 @@ import { AdminAuthController } from "../controllers/adminController/adminAuthCon
 import { LoginUseCase } from "../../core/use-cases/user/login/LoginUseCase";
 import { JWTService } from "../../infrastructure/external-services/JWTService";
 import { UserRepository } from "../../infrastructure/repositories/UserRepository";
-import {
-  verifyRefreshToken,
-} from "../middleware/authMiddleware";
+import { verifyRefreshToken } from "../middleware/authMiddleware";
 import { UserManagementController } from "../controllers/adminController/userManagementController";
 import { GetList } from "../../core/use-cases/admin/GetList";
 import { ToogleUserStatus } from "../../core/use-cases/admin/ToogleUserStatus";
@@ -157,7 +155,7 @@ adminRouter.put(
   "/update-subscription",
   subscriptionManagementController.updatePlan
 );
-adminRouter.delete(
+adminRouter.put(
   "/delete-subscription",
   subscriptionManagementController.deletePlan
 );

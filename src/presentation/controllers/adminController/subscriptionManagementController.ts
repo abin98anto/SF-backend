@@ -26,21 +26,28 @@ export class SubscriptionManagementController {
 
   updatePlan = async (req: Request, res: Response): Promise<void> => {
     try {
+      console.log("updating the plan...");
       const id = req.query.id as string;
       if (!id) {
         res.status(400).json({ success: false, error: "ID is required" });
+        return;
       }
 
       if (!mongoose.Types.ObjectId.isValid(id)) {
         res.status(400).json({ success: false, error: "Invalid ID format" });
+        return;
       }
 
+      console.log("the req body", req.body);
       const objectId = new mongoose.Types.ObjectId(id);
       const result = await this.updateSubscription.execute({
         _id: objectId,
         ...req.body,
       });
+
+      console.log("result", result);
       res.status(200).json({ success: true, data: result });
+      return;
     } catch (error) {
       res.status(500).json({ success: false, error: error });
     }

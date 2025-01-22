@@ -11,21 +11,21 @@ export class SubscriptionRepository implements SubscriptionRepositoryInterface {
   }
 
   async update(plan: SubscriptionPlan): Promise<SubscriptionPlan | null> {
-    if (!plan._id) {
-      throw new Error("Plan must have a valid _id for update.");
-    }
-
-    const updatedPlan = await SubscriptionModel.findByIdAndUpdate(
-      plan._id,
-      { ...plan },
+    const { _id, ...updates } = plan;
+    return await SubscriptionModel.findByIdAndUpdate(
+      _id,
+      { $set: updates },
       { new: true }
     );
-
-    return updatedPlan ? (updatedPlan.toObject() as SubscriptionPlan) : null;
   }
 
   async delete(id: mongoose.Types.ObjectId): Promise<void> {
-    await SubscriptionModel.findByIdAndUpdate(id, { isActive: false });
+    const subscription = await SubscriptionModel.findById(id);
+    if (subscription) {
+      await SubscriptionModel.findByIdAndUpdate(id, {
+        isActive: !subscription.isActive,
+      });
+    }
     return;
   }
 
