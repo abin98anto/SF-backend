@@ -28,6 +28,7 @@ import { ForgotPasswordUseCase } from "../../core/use-cases/user/login/ForgotPas
 import { SetNewPasswordUseCase } from "../../core/use-cases/user/login/SetNewPasswordUseCase";
 import { LessonUpdateUseCase } from "../../core/use-cases/user/update/LessonUpdateUseCase";
 import { GetCompletedLessonsUseCase } from "../../core/use-cases/user/update/GetCompletedLessonsUseCase";
+import { GetEnrolledCoursesUseCase } from "../../core/use-cases/user/update/GetEnrolledCoursesUseCase";
 
 const userRouter = express.Router();
 
@@ -40,6 +41,7 @@ const getCompletedLessonsUseCase = new GetCompletedLessonsUseCase(
   userRepository
 );
 
+const getEnrolledCoursesUseCase = new GetEnrolledCoursesUseCase(userRepository);
 const googleAuthUseCase = new GoogleAuthUseCase(
   addUserUseCase,
   userRepository,
@@ -68,7 +70,8 @@ const userUpdateController = new UserUpdateController(
   updateDetailsUseCase,
   enrollCourseUseCase,
   lessonUpdateUseCase,
-  getCompletedLessonsUseCase
+  getCompletedLessonsUseCase,
+  getEnrolledCoursesUseCase
 );
 
 // Course Side.
@@ -119,6 +122,7 @@ userRouter.get(
 );
 userRouter.post("/lesson", userUpdateController.lessonUpdate);
 userRouter.post("/completed-lessons", userUpdateController.completedLessons);
+userRouter.post("/my-learning", userUpdateController.enrollCourse);
 
 // Forgot Password.
 userRouter.post("/forgot-password", userController.forgotPassword);

@@ -3,13 +3,15 @@ import { UpdateDetailsUseCase } from "../../../core/use-cases/user/update/Update
 import { EnrollCourseUseCase } from "../../../core/use-cases/course/EnrollCourseUseCase";
 import { LessonUpdateUseCase } from "../../../core/use-cases/user/update/LessonUpdateUseCase";
 import { GetCompletedLessonsUseCase } from "../../../core/use-cases/user/update/GetCompletedLessonsUseCase";
+import { GetEnrolledCoursesUseCase } from "../../../core/use-cases/user/update/GetEnrolledCoursesUseCase";
 
 export class UserUpdateController {
   constructor(
     private updateDetailsUseCase: UpdateDetailsUseCase,
     private enrollCourseUseCase: EnrollCourseUseCase,
     private lessonUpdateUseCase: LessonUpdateUseCase,
-    private getCompletedLessonUseCase: GetCompletedLessonsUseCase
+    private getCompletedLessonUseCase: GetCompletedLessonsUseCase,
+    private getEnrolledCoursesUseCase: GetEnrolledCoursesUseCase
   ) {}
 
   updateUser = async (req: Request, res: Response): Promise<void> => {
@@ -116,6 +118,29 @@ export class UserUpdateController {
       });
     } catch (error) {
       console.log("error getting completed lessons", error);
+      res
+        .status(400)
+        .send(
+          error instanceof Error
+            ? error.message
+            : "error getting completed lessons"
+        );
+    }
+  };
+
+  enrolledCourses = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { userId } = req.query;
+      const result = await this.getEnrolledCoursesUseCase.execute(
+        userId as string
+      );
+
+      res.status(200).json({
+        message: "enrolled courses id fetched.",
+        user: result,
+      });
+    } catch (error) {
+      console.log("error getting enrolled courses", error);
       res
         .status(400)
         .send(

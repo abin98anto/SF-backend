@@ -138,4 +138,12 @@ export class UserRepository implements UserRepositoryInterface {
       { $unset: { subscription: "" } }
     );
   }
+
+  async getEnrolledCourses(userId: string): Promise<string[]> {
+    const user = await UserModel.findById(userId).select("coursesEnrolled");
+    if (!user) return [];
+    return user.coursesEnrolled
+      .map((course) => course.courseId)
+      .filter(Boolean) as string[];
+  }
 }

@@ -17,4 +17,5 @@ export interface UserRepositoryInterface {
     userId: mongoose.Types.ObjectId,
     cancelledDate: Date
   ): Promise<UpdateResult>;
+  getEnrolledCourses(userId: string): Promise<string[]>;
 }
