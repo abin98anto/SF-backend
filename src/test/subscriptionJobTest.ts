@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
 import { handleExpiredSubscriptions } from "../core/use-cases/Subscription/ExpiredSubsUseCase";
 
-const dbURI = "mongodb+srv://abin:2%40Teachers@skillforge.dk3au.mongodb.net/";
+import dotenv from "dotenv";
+dotenv.config();
+const dbURI = process.env.MONGODB_URI as string;
 
 const testJob = async () => {
   try {
