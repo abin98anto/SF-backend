@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
+import cron from "./shared/utils/subscriptionJob";
+
 import { config } from "./config/env";
 import { DatabaseConnection } from "./infrastructure/database/connection";
 import { miscMessages } from "./shared/constants/constants";
@@ -38,4 +40,7 @@ databaseConnection.connect().then(() => {
   app.listen(config.port, () => {
     console.log(miscMessages.SERVER_STARTED);
   });
+
+  cron.start();
+  console.log("Subscription cron job started.");
 });

@@ -2,6 +2,7 @@ import { UserRepositoryInterface } from "../../core/interfaces/UserRepositoryInt
 import { User, UserRole } from "../../core/entities/User";
 import { UserModel } from "../database/mongoose-schemas/UserSchema";
 import { miscMessages } from "../../shared/constants/constants";
+import mongoose, { UpdateResult } from "mongoose";
 
 export class UserRepository implements UserRepositoryInterface {
   async add(user: User): Promise<User> {
@@ -105,9 +106,7 @@ export class UserRepository implements UserRepositoryInterface {
   }
 
   async completedChapters(userId: string, courseId: string): Promise<string[]> {
-    // console.log("the user id", userId);
     const user: User | null = await this.findById(userId);
-    // console.log("the uesr", user);
     if (!user) {
       throw new Error("User not found");
     }
@@ -118,7 +117,25 @@ export class UserRepository implements UserRepositoryInterface {
     if (!course) {
       throw new Error("Course not found");
     }
-    // console.log(course);
     return course.completedChapters;
+  }
+
+  async findExpiredSubscriptions(currentDate: Date): Promise<any> {
+    return await UserModel.find({
+      role: "user",
+      subscription: { $exists: true },
+      "subscription.endDate": { $lte: currentDate },
+      "subscription.cancelledDate": { $exists: false },
+    }).lean();
+  }
+
+  async markSubscriptionAsCancelled(
+    userId: mongoose.Types.ObjectId,
+    cancelledDate: Date
+  ): Promise<UpdateResult> {
+    return await UserModel.updateOne(
+      { _id: userId },
+      { $unset: { subscription: "" } }
+    );
   }
 }

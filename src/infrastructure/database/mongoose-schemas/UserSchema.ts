@@ -120,6 +120,14 @@ const userSchema = new Schema({
   coursesEnrolled: { type: [coursesEnrolledSchema], default: [] },
 });
 
+userSchema.index(
+  { role: 1, "subscription.endDate": 1, "subscription.cancelledDate": 1 },
+  { name: "SubscriptionExpiryIndex" } // Optional: index name for clarity
+);
+
+// If `email` needs to be unique
+userSchema.index({ email: 1 }, { unique: true });
+
 // userSchema.index({ otpExpiration: 1 }, { expireAfterSeconds: 0 });
 
 export const UserModel = mongoose.model("User", userSchema);

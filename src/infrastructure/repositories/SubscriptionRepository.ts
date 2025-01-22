@@ -25,7 +25,7 @@ export class SubscriptionRepository implements SubscriptionRepositoryInterface {
   }
 
   async delete(id: mongoose.Types.ObjectId): Promise<void> {
-    await SubscriptionModel.findByIdAndDelete(id);
+    await SubscriptionModel.findByIdAndUpdate(id, { isActive: false });
     return;
   }
 

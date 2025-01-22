@@ -1,3 +1,4 @@
+import mongoose, { UpdateResult } from "mongoose";
 import { User, UserRole } from "../entities/User";
 
 export interface UserRepositoryInterface {
@@ -11,4 +12,9 @@ export interface UserRepositoryInterface {
   addCourseToUser(userId: string, course: any): Promise<void>;
   progress(userId: string, courseId: string, lesson: string): Promise<void>;
   completedChapters(userId: string, courseId: string): Promise<string[]>;
+  findExpiredSubscriptions(currentDate: Date): Promise<any>;
+  markSubscriptionAsCancelled(
+    userId: mongoose.Types.ObjectId,
+    cancelledDate: Date
+  ): Promise<UpdateResult>;
 }
