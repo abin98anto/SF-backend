@@ -130,11 +130,12 @@ export class UserUpdateController {
 
   enrolledCourses = async (req: Request, res: Response): Promise<void> => {
     try {
+      // console.log("userid ", req.query);
       const { userId } = req.query;
       const result = await this.getEnrolledCoursesUseCase.execute(
         userId as string
       );
-
+      console.log("the result", result);
       res.status(200).json({
         message: "enrolled courses id fetched.",
         user: result,

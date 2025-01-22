@@ -122,7 +122,7 @@ userRouter.get(
 );
 userRouter.post("/lesson", userUpdateController.lessonUpdate);
 userRouter.post("/completed-lessons", userUpdateController.completedLessons);
-userRouter.post("/my-learning", userUpdateController.enrollCourse);
+userRouter.post("/my-learning", userUpdateController.enrolledCourses);
 
 // Forgot Password.
 userRouter.post("/forgot-password", userController.forgotPassword);
