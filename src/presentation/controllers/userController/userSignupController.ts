@@ -86,7 +86,7 @@ export class UserController {
       }
 
       const response = await this.googleAuthUseCase.execute(token);
-      
+
       const accessTokenName = "userAccess";
       const { accessToken, refreshToken } = response.tokens;
 
@@ -125,8 +125,10 @@ export class UserController {
 
       if (response.success) {
         res.status(200).json({ success: true });
+        return;
       } else {
-        res.status(404).json({ success: false, message: response.message });
+        res.status(400).json({ success: false, message: response.message });
+        return;
       }
     } catch (error) {
       console.log(miscMessages.FORGOT_PASS_CONTROLLER_ERR);
