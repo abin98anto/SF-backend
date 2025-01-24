@@ -2,8 +2,8 @@ import mongoose, { Schema } from "mongoose";
 import { IMessage } from "../../../core/entities/IMessages";
 
 const messageSchema = new Schema<IMessage>({
-  conversationId: { type: String, required: true },
-  senderId: { type: String, required: true },
+  conversationId: { type: String, required: true, ref: "Conversation" },
+  senderId: { type: String, required: true, ref:"user" },
   content: String,
   contentType: { type: String, required: true },
   isRead: { type: Boolean, default: false },
