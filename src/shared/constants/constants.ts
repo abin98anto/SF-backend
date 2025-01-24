@@ -59,6 +59,9 @@ export const miscMessages = {
   GOOGLE_SIGNIN_FAIL: "google sign in error",
   EMAIL_NOT_FOUND: "No accounts associated with the email!",
   LESSON_UPDATE_FAIL: "error adding lesson",
+  SND_MSG_USE_CASE: "Error sending message in use case.",
+  FND_MSG_USE_CASE:"Error finding conversation in use case.",
+  MARK_AS_READ:"Error marking message as read in use case."
 };
 
 export const corsDetails = {
