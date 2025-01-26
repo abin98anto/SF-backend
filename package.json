@@ -32,6 +32,7 @@
     "node-cron": "^3.0.3",
     "nodemailer": "^6.9.16",
     "razorpay": "^2.9.5",
+    "socket.io": "^4.8.1",
     "winston": "^3.17.0"
   },
   "devDependencies": {
