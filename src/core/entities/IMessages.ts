@@ -1,11 +1,11 @@
 export type contentType = "text" | "image";
 
 export interface IMessage {
-  conversationId: string;
+  chatId: string;
   senderId: string;
   receiverId: string;
   content: string;
   contentType: contentType;
   isRead: boolean;
-  createdAt: Date;
+  timestamp: Date;
 }

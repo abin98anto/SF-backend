@@ -37,7 +37,6 @@ export class CourseManagementController {
   getById = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.query;
-      // console.log("first", req.query);
       const course = await this.getCourseById.execute(id as string);
       if (!course) {
         res.status(404).json({ success: false, message: "Course not found" });
@@ -77,13 +76,8 @@ export class CourseManagementController {
 
   changeStatus = async (req: Request, res: Response): Promise<void> => {
     try {
-      // const { id } = req.query;
       const updates = req.body;
-      console.log("upda controller", updates);
-      // updates._id = id;
-      // console.log("the updates", updates);
       const updatedCourse = await this.updateCourse.execute(updates);
-      // console.log("updated course", updatedCourse);
       if (!updatedCourse) {
         res.status(404).json({ success: false, message: "Course not found" });
       }
@@ -102,11 +96,8 @@ export class CourseManagementController {
     try {
       const { id } = req.query;
       const updates = req.body;
-      // console.log("upda controller", updates);
       updates._id = id;
-      // console.log("the updates", updates);
       const updatedCourse = await this.updateCourse.execute(updates);
-      // console.log("updated course", updatedCourse);
       if (!updatedCourse) {
         res.status(404).json({ success: false, message: "Course not found" });
       }

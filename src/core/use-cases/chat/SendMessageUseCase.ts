@@ -1,6 +1,6 @@
 import { miscMessages } from "../../../shared/constants/constants";
 import { IMessage } from "../../entities/IMessages";
-import { MessageInterface } from "../../interfaces/MessageInterface";
+import { MessageInterface } from "../../interfaces/chat/MessageInterface";
 
 export class SendMessageUseCase {
   constructor(private messageRepository: MessageInterface) {}

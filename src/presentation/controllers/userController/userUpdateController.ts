@@ -46,7 +46,6 @@ export class UserUpdateController {
 
   enrollCourse = async (req: Request, res: Response): Promise<void> => {
     try {
-      // console.log("when in back", req.body);
       const { courseId } = req.body.coursesEnrolled;
 
       if (!courseId) {

@@ -1,5 +1,4 @@
-import { IConversation } from "../entities/IConversation";
-import { IMessage } from "../entities/IMessages";
+import { IMessage } from "../../entities/IMessages";
 
 export interface MessageInterface {
   create(message: IMessage): Promise<IMessage>;

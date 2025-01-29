@@ -2,13 +2,13 @@ import mongoose, { Schema } from "mongoose";
 import { IMessage } from "../../../core/entities/IMessages";
 
 const messageSchema = new Schema<IMessage>({
-  conversationId: { type: String, required: true, ref: "Conversation" },
+  chatId: { type: String, required: true, ref: "Conversation" },
   senderId: { type: String, required: true, ref: "user" },
   receiverId: { type: String, required: true, ref: "user" },
   content: String,
   contentType: { type: String, required: true },
   isRead: { type: Boolean, default: false },
-  createdAt: { type: Date, default: new Date() },
+  timestamp: { type: Date, default: new Date() },
 });
 
 export const MessageModel = mongoose.model("Message", messageSchema);

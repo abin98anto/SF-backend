@@ -1,5 +1,5 @@
 import { miscMessages } from "../../../shared/constants/constants";
-import { MessageInterface } from "../../interfaces/MessageInterface";
+import { MessageInterface } from "../../interfaces/chat/MessageInterface";
 
 export class MarkAsReadUseCase {
   constructor(private messageRepository: MessageInterface) {}

@@ -1,6 +1,6 @@
-import { IMessage } from "../../core/entities/IMessages";
-import { MessageInterface } from "../../core/interfaces/MessageInterface";
-import { MessageModel } from "../database/mongoose-schemas/MessageSchema";
+import { IMessage } from "../../../core/entities/IMessages";
+import { MessageInterface } from "../../../core/interfaces/chat/MessageInterface";
+import { MessageModel } from "../../database/mongoose-schemas/MessageSchema";
 
 export class MessageRepository implements MessageInterface {
   create = async (message: IMessage): Promise<IMessage> => {

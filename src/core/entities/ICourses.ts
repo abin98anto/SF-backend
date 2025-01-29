@@ -1,3 +1,5 @@
+import { User } from "./User";
+
 export interface Lesson {
   name: string;
   videoUrl: string;
@@ -24,5 +26,6 @@ export interface ICourse {
     description: string;
   };
   curriculum: Section[];
+  tutors?: User[];
   isActive: Boolean;
 }
