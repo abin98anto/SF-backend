@@ -1,15 +1,16 @@
-import { miscMessages } from "../../../shared/constants/constants";
-import { IMessage } from "../../entities/IMessages";
 import { MessageInterface } from "../../interfaces/chat/MessageInterface";
+import { IMessage } from "../../entities/IMessages";
 
-export class SendMessageUseCase {
-  constructor(private messageRepository: MessageInterface) {}
+class SendMessageUseCase {
+  private messageRepository: MessageInterface;
 
-  async execute(data: IMessage) {
-    try {
-      return await this.messageRepository.create(data);
-    } catch (error) {
-      console.log(miscMessages.SND_MSG_USE_CASE, error);
-    }
+  constructor(messageRepository: MessageInterface) {
+    this.messageRepository = messageRepository;
+  }
+
+  async execute(message: IMessage): Promise<void> {
+    await this.messageRepository.createMessage(message);
   }
 }
+
+export default SendMessageUseCase;

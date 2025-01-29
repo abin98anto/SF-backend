@@ -1,21 +1,26 @@
-import { IMessage } from "../../../core/entities/IMessages";
 import { MessageInterface } from "../../../core/interfaces/chat/MessageInterface";
+import { IMessage } from "../../../core/entities/IMessages";
 import { MessageModel } from "../../database/mongoose-schemas/MessageSchema";
 
-export class MessageRepository implements MessageInterface {
-  create = async (message: IMessage): Promise<IMessage> => {
-    return MessageModel.create({ ...message, isRead: false, deletedFor: [] });
-  };
+class MessageRepository implements MessageInterface {
+  async createMessage(message: IMessage): Promise<IMessage> {
+    const newMessage = new MessageModel(message);
+    return newMessage.save();
+  }
 
-  findByConversation = async (conversationId: string): Promise<IMessage[]> => {
-    return MessageModel.find({ conversationId: conversationId });
-  };
+  async findByConversation(conversationId: string): Promise<IMessage[]> {
+    return MessageModel.find({ conversationId });
+  }
 
-  markAsRead = async (messageId: string): Promise<IMessage | null> => {
-    return MessageModel.findByIdAndUpdate(
-      messageId,
-      { isRead: true },
-      { new: true }
-    );
-  };
+  async markAsRead(messageId: string): Promise<IMessage | null> {
+    const message = await MessageModel.findById(messageId);
+    if (message) {
+      message.isRead = true;
+      await message.save();
+      return message;
+    }
+    return null;
+  }
 }
+
+export default MessageRepository;

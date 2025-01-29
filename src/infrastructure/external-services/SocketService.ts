@@ -1,72 +1,24 @@
-import { Server as HttpServer } from "http";
-import { Server, Socket } from "socket.io";
-import { IMessage } from "../../core/entities/IMessages";
-import { SendMessageUseCase } from "../../core/use-cases/chat/SendMessageUseCase";
-import { MarkAsReadUseCase } from "../../core/use-cases/chat/MarkAsReadUseCase";
+import { Server } from "socket.io";
+import ChatRepository from "../repositories/chat/ChatRepository";
+import MessageRepository from "../repositories/chat/MessageRepository";
 
-export class SocketService {
-  private io: Server;
+const chatRepository = new ChatRepository();
+const messageRepository = new MessageRepository();
 
-  constructor(
-    httpServer: HttpServer,
-    private sendMessageUseCase: SendMessageUseCase,
-    private markAsReadUseCase: MarkAsReadUseCase
-  ) {
-    this.io = new Server(httpServer, {
-      cors: {
-        origin: process.env.FRONTEND_URL,
-        methods: ["GET", "POST"],
-      },
-    });
+const socket = new Server();
 
-    this.initializeSocketEvents();
-  }
+socket.on("connection", (socket) => {
+  console.log("Client connected");
 
-  private initializeSocketEvents() {
-    this.io.on("connection", (socket: Socket) => {
-      console.log("New client connected");
+  socket.on("create-chat", async (data) => {
+    const chat = await chatRepository.createChat(data);
+    socket.emit("chat-created", chat);
+  });
 
-      // Join user's personal room
-      socket.on("join", (userId: string) => {
-        socket.join(userId);
-      });
+  socket.on("send-message", async (data) => {
+    await messageRepository.createMessage(data);
+    socket.emit("message-sent", data);
+  });
+});
 
-      // Handle sending a message
-      socket.on("send_message", async (messageData: IMessage) => {
-        try {
-          const savedMessage = await this.sendMessageUseCase.execute(
-            messageData
-          );
-
-          // Emit to receiver
-          this.io
-            .to(messageData.receiverId)
-            .emit("receive_message", savedMessage);
-        } catch (error) {
-          socket.emit("message_error", error);
-        }
-      });
-
-      // Mark messages as read
-      socket.on("mark_read", async (messageId: string) => {
-        try {
-          const updatedMessage = await this.markAsReadUseCase.execute(
-            messageId
-          );
-          socket.emit("message_read_confirmation", updatedMessage);
-        } catch (error) {
-          socket.emit("message_read_error", error);
-        }
-      });
-
-      socket.on("disconnect", () => {
-        console.log("Client disconnected");
-      });
-    });
-  }
-
-  // Method to get socket.io instance if needed
-  getIO() {
-    return this.io;
-  }
-}
+export default socket;

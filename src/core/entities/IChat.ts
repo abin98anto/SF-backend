@@ -5,5 +5,5 @@ export interface IChat {
   tutorId: string;
   studentId: string;
   courseId: string;
-  messages: IMessage[];
+  messages: string[];
 }

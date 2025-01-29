@@ -6,7 +6,7 @@ const chatSchema = new Schema<IChat>(
     studentId: { type: String, required: true },
     tutorId: { type: String, required: true },
     courseId: { type: String, required: true },
-    messages: [],
+    messages: [{ type: String, ref: "Message" }],
   },
   {
     timestamps: true,
