@@ -1,5 +1,3 @@
-export type contentType = "text" | "image";
-
 export interface IMessage {
   _id?: string;
   chatId: string;

@@ -29,6 +29,7 @@ import { SetNewPasswordUseCase } from "../../core/use-cases/user/login/SetNewPas
 import { LessonUpdateUseCase } from "../../core/use-cases/user/update/LessonUpdateUseCase";
 import { GetCompletedLessonsUseCase } from "../../core/use-cases/user/update/GetCompletedLessonsUseCase";
 import { GetEnrolledCoursesUseCase } from "../../core/use-cases/user/update/GetEnrolledCoursesUseCase";
+import ChatRepository from "../../infrastructure/repositories/chat/ChatRepository";
 
 const userRouter = express.Router();
 
@@ -41,13 +42,19 @@ const getCompletedLessonsUseCase = new GetCompletedLessonsUseCase(
   userRepository
 );
 
+const chatRepository = new ChatRepository();
+const getCourseById = new GetCourseById(new CourseRepository());
 const getEnrolledCoursesUseCase = new GetEnrolledCoursesUseCase(userRepository);
 const googleAuthUseCase = new GoogleAuthUseCase(
   addUserUseCase,
   userRepository,
   jwtService
 );
-const enrollCourseUseCase = new EnrollCourseUseCase(userRepository);
+const enrollCourseUseCase = new EnrollCourseUseCase(
+  userRepository,
+  getCourseById,
+  chatRepository
+);
 const updateDetailsUseCase = new UpdateDetailsUseCase(userRepository);
 const loginUseCase = new LoginUseCase(userRepository, jwtService);
 const sendOTPUseCase = new SendOTPUseCase(userRepository, emailService);

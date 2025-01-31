@@ -3,10 +3,12 @@ import { IChat } from "../../../core/entities/IChat";
 
 const chatSchema = new Schema<IChat>(
   {
-    studentId: { type: String, required: true },
-    tutorId: { type: String, required: true },
-    courseId: { type: String, required: true },
-    messages: [{ type: String, ref: "Message" }],
+    _id: { type: String, required: true },
+    studentId: { type: String, required: true, ref: "User" },
+    tutorId: { type: String, required: true, ref: "User" },
+    courseId: { type: String, required: true, ref: "Course" },
+    // messages: [{ type: String, ref: "Message" }],
+    messages: [{ type: Schema.Types.ObjectId, ref: "Message" }],
   },
   {
     timestamps: true,

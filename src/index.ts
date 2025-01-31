@@ -11,21 +11,19 @@ import userRouter from "./presentation/routes/userRoutes";
 import tutorRouter from "./presentation/routes/tutorRoutes";
 import adminRouter from "./presentation/routes/adminRoutes";
 import cron from "./shared/utils/subscriptionJob";
-// import {
-//   requestLogger,
-//   responseLogger,
-// } from "./presentation/middleware/loggerMiddleware";
 import orderRouter from "./presentation/routes/orderRoutes";
 import { createServer } from "http";
-import socket from "./infrastructure/external-services/SocketService";
+// import socket from "./infrastructure/external-services/SocketService";
 import chatRouter from "./presentation/routes/chatRoutes";
+import { initializeSocket } from "./infrastructure/external-services/SocketService";
 
 dotenv.config();
 
 const app = express();
 
 const server = createServer(app);
-socket.listen(server);
+const io = initializeSocket(server);
+app.set("io", io);
 
 app.use(cors(config.corsOptions));
 app.use(cookieParser());
@@ -33,13 +31,11 @@ app.use(express.json());
 
 const databaseConnection = new DatabaseConnection(config.database.uri);
 
-// app.use(requestLogger);
 app.use("/", userRouter);
 app.use("/tutor", tutorRouter);
 app.use("/admin", adminRouter);
 app.use("/order", orderRouter);
 app.use("/m", chatRouter);
-// app.use(responseLogger);
 app.use(errorHandler);
 
 databaseConnection.connect().then(() => {

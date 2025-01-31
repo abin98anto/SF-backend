@@ -17,7 +17,11 @@ class ChatRepository implements ChatInterface {
     courseId: string,
     userId: string
   ): Promise<IChat | null> {
-    return ChatModel.findOne({ courseId, userId });
+    return ChatModel.findOne({ courseId, studentId: userId })
+      .populate("tutorId")
+      .populate("studentId")
+      .populate("courseId")
+      .populate("messages");
   }
 
   async storeMessage(message: IMessage): Promise<void> {
@@ -29,7 +33,16 @@ class ChatRepository implements ChatInterface {
   }
 
   async getChatsForUser(userId: string): Promise<IChat[]> {
-    return ChatModel.find({ userId });
+    const chats = await ChatModel.find({
+      $or: [{ studentId: userId }, { tutorId: userId }],
+    })
+      .populate("tutorId")
+      .populate("studentId")
+      .populate("courseId")
+      .populate("messages")
+      .exec();
+
+    return chats;
   }
 }
 
