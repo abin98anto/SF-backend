@@ -7,7 +7,6 @@ const chatSchema = new Schema<IChat>(
     studentId: { type: String, required: true, ref: "User" },
     tutorId: { type: String, required: true, ref: "User" },
     courseId: { type: String, required: true, ref: "Course" },
-    // messages: [{ type: String, ref: "Message" }],
     messages: [{ type: Schema.Types.ObjectId, ref: "Message" }],
   },
   {

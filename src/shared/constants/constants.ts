@@ -60,8 +60,18 @@ export const miscMessages = {
   EMAIL_NOT_FOUND: "No accounts associated with the email!",
   LESSON_UPDATE_FAIL: "error adding lesson",
   SND_MSG_USE_CASE: "Error sending message in use case.",
-  FND_MSG_USE_CASE:"Error finding conversation in use case.",
-  MARK_AS_READ:"Error marking message as read in use case."
+  FND_MSG_USE_CASE: "Error finding conversation in use case.",
+  MARK_AS_READ: "Error marking message as read in use case.",
+  COURSE_NOT_ENROLLED: "Course not found in user's enrolled courses",
+  LSN_PROGRESS_SUCC: "Lesson progress updated successfully.",
+  LSN_ALREADY_DONE: "You have already completed this lesson.",
+  COURSE_NOT_FOUND: "Course not found",
+  MSG_SAVE_FAIL: "Error saving message",
+  CHAT_CREATE_FAIL: "Error creating chat",
+  MSG_SENT_SUCC: "Message sent successfully",
+  MSG_SENT_FAIL: "Error sending message",
+  CHAT_FETCH_FAIL: "Error fetching chat",
+  CHAT_LIST_FETCH_FAIL: "Error fetching chat list",
 };
 
 export const corsDetails = {

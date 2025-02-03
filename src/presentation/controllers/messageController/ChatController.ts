@@ -6,6 +6,7 @@ import SendMessageUseCase from "../../../core/use-cases/chat/SendMessageUseCase"
 import MessageRepository from "../../../infrastructure/repositories/chat/MessageRepository";
 import ChatRepository from "../../../infrastructure/repositories/chat/ChatRepository";
 import { FindUserChatsUseCase } from "../../../core/use-cases/chat/FindUserChatsUseCase";
+import { miscMessages } from "../../../shared/constants/constants";
 
 class ChatController {
   private createChatUseCase: CreateChatUseCase;
@@ -30,7 +31,7 @@ class ChatController {
       const newChat = await this.createChatUseCase.execute(chat);
       res.status(201).json(newChat);
     } catch (error) {
-      res.status(500).json({ message: "Error creating chat" });
+      res.status(500).json({ message: miscMessages.CHAT_CREATE_FAIL });
     }
   };
 
@@ -40,9 +41,9 @@ class ChatController {
       await this.sendMessageUseCase.execute(message);
       const io = req.app.get("io");
       io.emit("receive_message", message);
-      res.status(200).json({ message: "Message sent successfully" });
+      res.status(200).json({ message: miscMessages.MSG_SENT_SUCC });
     } catch (error) {
-      res.status(500).json({ message: "Error sending message" });
+      res.status(500).json({ message: miscMessages.MSG_SENT_FAIL });
     }
   };
 
@@ -52,23 +53,21 @@ class ChatController {
       const messages = await this.messageRepository.getMessagesForChat(chatId);
       res.status(200).json(messages);
     } catch (error) {
-      res.status(500).json({ message: "Error fetching messages" });
+      res.status(500).json({ message: miscMessages.CHAT_FETCH_FAIL });
     }
   };
 
   getUserChats = async (req: Request, res: Response): Promise<void> => {
     try {
-      // console.log("ddddddddd", req.body);
       const { courseId, userId } = req.body;
       const result = await this.chatRepository.getChatByCourseAndUser(
         courseId,
         userId
       );
-      console.log("user chat result ", result);
       res.status(200).json(result);
     } catch (error) {
-      console.log("error fetching user chats", error);
-      res.status(500).json({ message: "Error fetching user chats" });
+      console.log(miscMessages.CHAT_FETCH_FAIL, error);
+      res.status(500).json({ message: miscMessages.CHAT_FETCH_FAIL });
     }
   };
 
@@ -76,11 +75,10 @@ class ChatController {
     try {
       const { userId } = req.query;
       const result = await this.findUserChatsUseCase.execute(userId as string);
-      // console.log("user id in chat controllre ", result);
       res.status(200).json(result);
     } catch (error) {
-      console.log("error fetching user chats", error);
-      res.status(500).json({ message: "Error fetching user chats" });
+      console.log(miscMessages.CHAT_LIST_FETCH_FAIL, error);
+      res.status(500).json({ message: miscMessages.CHAT_LIST_FETCH_FAIL });
     }
   };
 }

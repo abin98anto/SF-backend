@@ -22,10 +22,6 @@ const chatController = new ChatController(
   findUserChatsUseCase
 );
 
-// chatRouter.post("/chats", chatController.createChat);
-// chatRouter.post("/messages", chatController.sendMessage);
-// chatRouter.get("/chats/:chatId/messages", chatController.getMessages);
-
 chatRouter.post("/send-message", chatController.sendMessage);
 chatRouter.post("/user-chat", chatController.getUserChats);
 chatRouter.get("/chats-list", chatController.getChatList);

@@ -2,16 +2,13 @@ import { MessageInterface } from "../../../core/interfaces/chat/MessageInterface
 import { IMessage } from "../../../core/entities/IMessages";
 import { MessageModel } from "../../database/mongoose-schemas/MessageSchema";
 import { ChatModel } from "../../database/mongoose-schemas/ChatSchema";
+import { miscMessages } from "../../../shared/constants/constants";
 
 class MessageRepository implements MessageInterface {
   async createMessage(message: IMessage): Promise<IMessage> {
-    // const newMessage = new MessageModel(message);
-    // return newMessage.save();
     try {
-      // Save the message
       const savedMessage = await MessageModel.create(message);
 
-      // Update the chat's messages array
       await ChatModel.findByIdAndUpdate(
         message.chatId,
         {
@@ -22,7 +19,7 @@ class MessageRepository implements MessageInterface {
 
       return savedMessage;
     } catch (error) {
-      console.error("Error saving message:", error);
+      console.error(miscMessages.MSG_SAVE_FAIL, error);
       throw error;
     }
   }

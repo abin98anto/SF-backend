@@ -1,7 +1,7 @@
 import { UserRepositoryInterface } from "../../core/interfaces/UserRepositoryInterface";
 import { User, UserRole } from "../../core/entities/User";
 import { UserModel } from "../database/mongoose-schemas/UserSchema";
-import { miscMessages } from "../../shared/constants/constants";
+import { miscMessages, otpMessages } from "../../shared/constants/constants";
 import mongoose, { UpdateResult } from "mongoose";
 
 export class UserRepository implements UserRepositoryInterface {
@@ -38,7 +38,7 @@ export class UserRepository implements UserRepositoryInterface {
 
   async isCourseEnrolled(userId: string, courseId: string): Promise<boolean> {
     const user = await UserModel.findById(userId);
-    if (!user) throw new Error("User not found");
+    if (!user) throw new Error(otpMessages.USER_NOT_FOUND);
     return user.coursesEnrolled.some(
       (course: any) => course.courseId === courseId
     );
@@ -64,21 +64,19 @@ export class UserRepository implements UserRepositoryInterface {
       });
 
       if (!user) {
-        console.log("User or course not found");
+        console.log(otpMessages.USER_NOT_FOUND);
         return;
       }
 
-      // Find the specific course enrollment object
       const course = user.coursesEnrolled.find(
         (course) => course.courseId === courseId
       );
 
       if (!course) {
-        console.log("Course not found in user's enrolled courses");
+        console.log(miscMessages.COURSE_NOT_ENROLLED);
         return;
       }
 
-      // Add the lesson to the completedChapters array if it's not already there
       if (!course.completedChapters.includes(lesson)) {
         course.completedChapters.push(lesson);
         course.progressPercentage = this.calculateProgress(
@@ -86,11 +84,10 @@ export class UserRepository implements UserRepositoryInterface {
           course
         );
 
-        // Save the user with the updated course
         await user.save();
-        console.log("Lesson progress updated successfully.");
+        console.log(miscMessages.LSN_PROGRESS_SUCC);
       } else {
-        console.log("Lesson already completed.");
+        console.log(miscMessages.LSN_ALREADY_DONE);
       }
     } catch (error) {
       console.log(miscMessages.LESSON_UPDATE_FAIL, error);
@@ -108,14 +105,14 @@ export class UserRepository implements UserRepositoryInterface {
   async completedChapters(userId: string, courseId: string): Promise<string[]> {
     const user: User | null = await this.findById(userId);
     if (!user) {
-      throw new Error("User not found");
+      throw new Error(otpMessages.USER_NOT_FOUND);
     }
 
     const course = user!.coursesEnrolled!.find(
       (course) => course.courseId === courseId
     );
     if (!course) {
-      throw new Error("Course not found");
+      throw new Error(miscMessages.COURSE_NOT_FOUND);
     }
     return course.completedChapters;
   }
