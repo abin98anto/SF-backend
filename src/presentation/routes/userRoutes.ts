@@ -30,6 +30,12 @@ import { LessonUpdateUseCase } from "../../core/use-cases/user/update/LessonUpda
 import { GetCompletedLessonsUseCase } from "../../core/use-cases/user/update/GetCompletedLessonsUseCase";
 import { GetEnrolledCoursesUseCase } from "../../core/use-cases/user/update/GetEnrolledCoursesUseCase";
 import ChatRepository from "../../infrastructure/repositories/chat/ChatRepository";
+import { NotificationInterface } from "../../core/interfaces/NotificationInterface";
+import { NotificationRepository } from "../../infrastructure/repositories/NotificationRepository";
+import { CreateNotificationUseCase } from "../../core/use-cases/notification/CreateNotificationUseCase";
+import { GetUserNotificationsUseCase } from "../../core/use-cases/notification/GetUserNotifications";
+import { MarkNotificationReadUseCase } from "../../core/use-cases/notification/MarkNotificationRead";
+import { NotificationController } from "../controllers/userController/notificationController";
 
 const userRouter = express.Router();
 
@@ -96,6 +102,24 @@ const courseManagementController = new CourseManagementController(
   listCourseUseCase
 );
 
+// Notification Side.
+const notificationRepository: NotificationInterface =
+  new NotificationRepository();
+const createNotificationUseCase = new CreateNotificationUseCase(
+  notificationRepository
+);
+const getUserNotificationsUseCase = new GetUserNotificationsUseCase(
+  notificationRepository
+);
+const markNotificatoinReadUseCase = new MarkNotificationReadUseCase(
+  notificationRepository
+);
+const notificationController = new NotificationController(
+  createNotificationUseCase,
+  getUserNotificationsUseCase,
+  markNotificatoinReadUseCase
+);
+
 // User signup.
 userRouter.post("/send-otp", userController.sendOTP);
 userRouter.post("/verify-otp", userController.verifyOTP);
@@ -135,4 +159,16 @@ userRouter.post("/my-learning", userUpdateController.enrolledCourses);
 userRouter.post("/forgot-password", userController.forgotPassword);
 userRouter.patch("/set-password", userController.setPassword);
 
+// Notification Routes.
+userRouter.post("/notification", notificationController.createNotification);
+userRouter.get(
+  "/notification",
+  verifyAccessToken,
+  notificationController.getUserNotifications
+);
+userRouter.patch(
+  "/notification",
+  verifyAccessToken,
+  notificationController.markNotificationRead
+);
 export default userRouter;
