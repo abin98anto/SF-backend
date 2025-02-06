@@ -47,6 +47,18 @@ export const initializeSocket = (httpServer: HTTPServer) => {
     socket.on("disconnect", () => {
       console.log("Client disconnected");
     });
+
+    socket.on("video-call-invitation", (data) => {
+      socket.to(data.to).emit("video-call-invitation", {
+        roomID: data.roomID,
+        from: data.from,
+        fromName: data.fromName,
+      });
+    });
+
+    socket.on("video-call-rejected", (data) => {
+      socket.to(data.to).emit("video-call-rejected");
+    });
   });
 
   return io;
